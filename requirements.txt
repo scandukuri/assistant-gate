@@ -15,7 +15,5 @@ scipy
 fire
 sentencepiece
 trl
-pyext
 vllm
 langchain
-flash-attn
