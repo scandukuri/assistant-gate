@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import GENERATION_PROMPTS, PROMPT_IDX, SYS_MSGS, SYS_IDX, EXPERT_DIR, OUT_DIR
+from utils import GENERATION_PROMPTS, PROMPT_IDX, SYS_MSGS, SYS_IDX, EXPERT_DIR, OUT_DIR, SHOT_GROUPS
 
 
 # import models
@@ -40,21 +40,17 @@ def main(args: DictConfig) -> None:
     args.model.model_config.azure_api.api_key = os.getenv("OPENAI_API_KEY")
     llm = AsyncAzureChatLLM(**args.model.model_config.azure_api)
     model = GPT4Agent(llm=llm, **args.model.run.completion_config)
-    # TODO: write prompt and format it
-    # message = GENERATION_PROMPTS[PROMPT_IDX].format()
-    
+
     
     expert_personas = json.load(open(EXPERT_DIR, 'r'))
     messages = []
-    
-    for i in range(args.model.run.completion_config.n):
+    for i in range(SHOT_GROUPS):
         message = GENERATION_PROMPTS[PROMPT_IDX] + '\n\n'
         few_shot_indices = random.sample(range(0, len(expert_personas)), 2)
         few_shots = '\n\n'.join([expert_personas[j] for j in few_shot_indices])
         message += few_shots + '\n\n'
         messages.append(message)
         
-    
     
     # completions is a list containing len(messages) lists, each of size args.model.run.completion_config.n
     completions = model.batch_prompt(
@@ -63,12 +59,9 @@ def main(args: DictConfig) -> None:
                 )
     flattened_completions = [item for sublist in completions for item in sublist]
     
-    with open(OUT_DIR.format(SYS_IDX, PROMPT_IDX, args.model.run.completion_config.temperature, args.model.run.completion_config.top_p, args.model.run.completion_config.n), 'w') as f:
+    
+    with open(OUT_DIR.format(SYS_IDX, PROMPT_IDX, args.model.run.completion_config.temperature, args.model.run.completion_config.top_p, args.model.run.completion_config.n, SHOT_GROUPS), 'w') as f:
         json.dump(flattened_completions, f)
-    
-    
-    
-    
 
 
 if __name__ == '__main__':
