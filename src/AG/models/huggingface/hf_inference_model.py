@@ -4,7 +4,7 @@ from typing import Optional, List, Dict
 import os
 
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, set_seed
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, StoppingCriteria, StoppingCriteriaList, set_seed
 import accelerate
 import bitsandbytes
 
@@ -120,6 +120,7 @@ class HFInferenceModel():
             return_tensors="pt", 
             padding=True,
         ).to(self.model.device)
+        
         
         # SAMPLE NUM_RETURN_SEQUENCES FOR EACH BATCH
         with torch.backends.cuda.sdp_kernel(enable_flash=True, enable_math=False, enable_mem_efficient=False):

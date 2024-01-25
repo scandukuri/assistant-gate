@@ -22,7 +22,7 @@ def main(args: DictConfig) -> None:
     def extract_initial_prompt(
         conversation: str
         ) -> str:
-        return conversation[:conversation.find('Assistant: ')].strip()
+        return conversation[:conversation.find('Assistant: ')].strip()[len('Human: '):]
         
 
     full_dataset = load_dataset("Dahoas/instruct-human-assistant-prompt", split='train').to_pandas()
