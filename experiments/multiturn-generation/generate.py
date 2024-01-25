@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import GENERATION_PROMPTS, PROMPT_IDX, PERSONAS_DIR
+from utils import GENERATION_PROMPTS, PROMPT_IDX, PERSONAS_DIR, PROMPTS_DIR
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -53,7 +53,7 @@ def main(args: DictConfig) -> None:
         
     
     # Load prompts
-    with open("instruct-questions/first-50-prompts.json", "r") as f:
+    with open(PROMPTS_DIR, "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     BOS_TOKEN, EOS_TOKEN, B_INST, E_INST = '<s>', '</s>', '[INST]', '[/INST]'
@@ -62,13 +62,12 @@ def main(args: DictConfig) -> None:
     with open(PERSONAS_DIR, 'r') as f:
         personas = json.load(f)
         
-    test_prompt = f"{BOS_TOKEN}{B_INST} {GENERATION_PROMPTS[PROMPT_IDX]}\n\n{personas[0]}\n\n{prompts[0]} {E_INST}"
+    test_prompt = f"{BOS_TOKEN}{B_INST} {GENERATION_PROMPTS[PROMPT_IDX]}\n\n{personas[7]}\n\n{prompts[11]} {E_INST}"
     breakpoint()
     completions = qa_model.batch_prompt([test_prompt], **args.qa_model.run.completion_config)
     
-    # for prompt in prompts:
-    #     for i in range(5):
-    #         completions = qa_model.batch_prompt([prompt], **args.qa_model.run.completion_config)
+    # test_prompt = test_prompt + '\n' + completions[0] + EOS_TOKEN + '\n' + B_INST + " A: Something that people don't usually do for dates in Kyoto would be nice. What do you think? " + E_INST
+    
     
         
 
