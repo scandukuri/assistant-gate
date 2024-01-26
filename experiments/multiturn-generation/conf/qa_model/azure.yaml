@@ -12,7 +12,7 @@ model_config:
     api_version: "2023-05-15"
 
 run:
-  batch_size: 25
+  batch_size: 1
   verbose: false
   completion_config:
     model: "gpt-4"

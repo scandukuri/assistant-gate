@@ -1,0 +1,45 @@
+qa_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: hf
+  name: mistral-7b-instruct-v02-hf
+  model_config:
+    pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
+    model_id: null
+    load_in_8bit: false
+    device_map: auto
+    torch_dtype: float16
+    model_cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    tokenizer_cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    seed: 1
+  run:
+    batch_size: 1
+    verbose: false
+    completion_config:
+      do_sample: true
+      temperature: 0.7
+      top_p: 0.9
+      max_new_tokens: 300
+      num_return_sequences: 1
+human_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: openai
+  name: gpt4
+  model_config:
+    azure_api:
+      api_key: ''
+      azure_endpoint: https://philipp.openai.azure.com/
+      api_version: '2023-05-15'
+    seed: 1
+  run:
+    batch_size: 10
+    verbose: false
+    completion_config:
+      model: gpt-4
+      max_tokens: 300
+      temperature: 0.7
+      top_p: 0.9
+      'n': 5

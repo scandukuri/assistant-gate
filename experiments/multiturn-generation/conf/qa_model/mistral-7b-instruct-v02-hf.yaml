@@ -18,9 +18,15 @@ model_config:
 run:
   batch_size: 1
   verbose: false
+  initial_completion_config:
+    do_sample: true
+    temperature: 0.9
+    top_p: 0.9
+    max_new_tokens: 300
+    num_return_sequences: 1
   completion_config:
     do_sample: true
-    temperature: 0.7
+    temperature: 0.9
     top_p: 0.9
     max_new_tokens: 300
     num_return_sequences: 1

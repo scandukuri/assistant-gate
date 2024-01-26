@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import GENERATION_PROMPTS, PROMPT_IDX, PERSONAS_DIR, PROMPTS_DIR
+from utils import QA_PROMPTS, QA_PROMPT_IDX, HUMAN_PROMPTS, HUMAN_PROMPT_IDX, HUMAN_SYS_MSGS, HUMAN_SYS_PROMPT_IDX, PERSONAS_DIR, PROMPTS_DIR, MAX_TURNS, filter_completed_conversations, flatten_list
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -62,15 +62,38 @@ def main(args: DictConfig) -> None:
     with open(PERSONAS_DIR, 'r') as f:
         personas = json.load(f)
         
-    test_prompt = f"{BOS_TOKEN}{B_INST} {GENERATION_PROMPTS[PROMPT_IDX]}\n\n{personas[7]}\n\n{prompts[11]} {E_INST}"
-    breakpoint()
-    completions = qa_model.batch_prompt([test_prompt], **args.qa_model.run.completion_config)
-    
-    # test_prompt = test_prompt + '\n' + completions[0] + EOS_TOKEN + '\n' + B_INST + " A: Something that people don't usually do for dates in Kyoto would be nice. What do you think? " + E_INST
-    
-    
-        
 
+    final_conversations = defaultdict(list)
+    for i, prompt in enumerate(prompts):
+        for j, persona in enumerate(personas):
+            completed_conversations = []
+            initial_prompt = f"{BOS_TOKEN}{B_INST} {QA_PROMPTS[QA_PROMPT_IDX]}\n\n{persona}\n\n{prompt} {E_INST}"
+            qa_responses = qa_model.batch_prompt([initial_prompt], **args.qa_model.run.initial_completion_config)
+            
+            unfinished_conversations = [initial_prompt + '\n' + qa_response + EOS_TOKEN for qa_response in qa_responses]
+            unfinished_conversations, newly_completed_conversations = filter_completed_conversations(unfinished_conversations)
+            completed_conversations.extend(newly_completed_conversations)
+            turns = 1
+            
+            while len(unfinished_conversations) > 0 and turns < MAX_TURNS:
+                human_responses = human_model.batch_prompt(system_message=HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDX], messages=[HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) for qa_response in qa_responses],)
+                human_responses = flatten_list(human_responses)
+                unfinished_conversations = [unfinished_conversation + '\n' + B_INST + f" A: {human_response} " + E_INST for unfinished_conversation, human_response in zip(unfinished_conversations, human_responses)]
+
+
+                qa_responses = qa_model.batch_prompt(unfinished_conversations, **args.qa_model.run.completion_config)
+                unfinished_conversations = [unfinished_conversation + '\n' + qa_response + EOS_TOKEN for unfinished_conversation, qa_response in zip(unfinished_conversations, qa_responses)]
+
+                
+                unfinished_conversations, newly_completed_conversations = filter_completed_conversations(unfinished_conversations)
+                completed_conversations.extend(newly_completed_conversations)
+                turns += 1
+
+            
+            final_conversations[f"prompt-{i} persona-{j}"] = completed_conversations
+    
+    with open(f"simulated-conversations/qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
+        json.dump(final_conversations, f)
 
 
 if __name__ == '__main__':

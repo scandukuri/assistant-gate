@@ -9,7 +9,7 @@ import datasets
 from datasets import load_dataset
 
 
-N_ROWS = 50
+N_ROWS = 10
 
 
 logging.basicConfig(level=logging.INFO)
