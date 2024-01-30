@@ -11,8 +11,8 @@ model_config:
   load_in_8bit: false
   device_map: auto
   torch_dtype: float16
-  model_cache_dir: /scr/jphilipp/printllama-hgx/pretrained_models/
-  tokenizer_cache_dir: /scr/jphilipp/prinllama-hfx/pretrained_models/
+  model_cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+  tokenizer_cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
   seed: 1
 
 run:

@@ -17,3 +17,5 @@ sentencepiece
 trl
 vllm
 langchain
+matplotlib
+seaborn

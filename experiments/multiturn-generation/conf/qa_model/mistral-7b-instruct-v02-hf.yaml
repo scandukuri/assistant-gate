@@ -20,13 +20,13 @@ run:
   verbose: false
   initial_completion_config:
     do_sample: true
-    temperature: 0.9
+    temperature: 0.95
     top_p: 0.9
     max_new_tokens: 300
-    num_return_sequences: 1
+    num_return_sequences: 5
   completion_config:
     do_sample: true
-    temperature: 0.9
+    temperature: 0.95
     top_p: 0.9
     max_new_tokens: 300
     num_return_sequences: 1
