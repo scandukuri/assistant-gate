@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import SYSTEM_PROMPTS, SYSTEM_PROMPT_IDX, RATING_PROMPTS, RATING_PROMPT_IDX, CONVERSATIONS_DIR
+from utils import SYSTEM_PROMPTS, SYSTEM_PROMPT_IDX, RATING_PROMPTS, RATING_PROMPT_IDX, CONVERSATIONS_DIR, record_score
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -32,7 +32,7 @@ logging.basicConfig(level=logging.INFO)
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
     logging.info("Loading model for conversation rating...")
-    random.seed(1)
+    random.seed(0)
     
     
     # Load human_model
@@ -54,20 +54,24 @@ def main(args: DictConfig) -> None:
     with open(CONVERSATIONS_DIR, "r") as f:
         conversations = json.load(f)
         
-
+    final_judgements = defaultdict(list)
     final_ratings = defaultdict(list)
-    for key in list(conversations.keys()):
+    print('Total (prompt, persona) pairs to rate: ', len(list(conversations.keys())))
+    for i, key in enumerate(list(conversations.keys())):
+        if i % 10 == 0:
+            with open(f"conversation-ratings/rating-model-{args.rating_model.name}_system-{SYSTEM_PROMPT_IDX}_rating-{RATING_PROMPT_IDX}_conversations-{CONVERSATIONS_DIR[CONVERSATIONS_DIR.rfind('/') + 1:-5]}.json", 'w') as f:
+                json.dump(final_ratings, f)
         ratings = []
         if is_openai:
             responses = rating_model.batch_prompt(system_message=SYSTEM_PROMPTS[SYSTEM_PROMPT_IDX], messages=[f"{RATING_PROMPTS[RATING_PROMPT_IDX]}\n\n{conversation}" for conversation in conversations[key]],)
-            ratings = [int(response[0]) for response in responses]
+            ratings = [record_score(response[0]) for response in responses]
         elif is_vllm:
-            responses = rating_model.batch_prompt([f"{BOS_TOKEN}{B_INST} {SYSTEM_PROMPTS[SYSTEM_PROMPT_IDX]}\n\n{RATING_PROMPTS[RATING_PROMPT_IDX]}\n\n{conversation} {E_INST}" for conversation in conversations[key]], **args.rating_model.run.completion_config)
-            ratings = [int(response[0]) for response in responses]
-
+            responses = rating_model.batch_prompt([f"{BOS_TOKEN}{B_INST} {SYSTEM_PROMPTS[SYSTEM_PROMPT_IDX]}\n\n{conversation}\n\n{RATING_PROMPTS[RATING_PROMPT_IDX]} {E_INST}" for conversation in conversations[key]], **args.rating_model.run.completion_config)
+            ratings = [record_score(response) for response in responses]
+        print(key, ' ', ratings)
         final_ratings[key] = ratings
     
-    with open(f"conversation-ratings/system-{SYSTEM_PROMPT_IDX}_rating-{RATING_PROMPT_IDX}_conversations-{CONVERSATIONS_DIR[CONVERSATIONS_DIR.rfind('/') + 1:-5]}.json", 'w') as f:
+    with open(f"conversation-ratings/rating-model-{args.rating_model.name}_system-{SYSTEM_PROMPT_IDX}_rating-{RATING_PROMPT_IDX}_conversations-{CONVERSATIONS_DIR[CONVERSATIONS_DIR.rfind('/') + 1:-5]}.json", 'w') as f:
         json.dump(final_ratings, f)
 
 
