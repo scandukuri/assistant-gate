@@ -72,7 +72,9 @@ def main(args: DictConfig) -> None:
         for i, prompt in enumerate(prompts):
             if is_vllm:
                 if is_mistral:
-                    log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}"], answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}A: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
+                    log_probs = model.batch_log_probs(
+                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}\n\nA: "], 
+                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}\n\nA: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
 
     

@@ -31,7 +31,7 @@ logging.basicConfig(level=logging.INFO)
 
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
-    logging.info("Loading model for negative control likelihood generation...")
+    logging.info("Loading model for experimental group likelihood generation...")
     random.seed(1)
     
     # Load model
@@ -64,7 +64,7 @@ def main(args: DictConfig) -> None:
     # Load conversations
     with open(CONVERSATIONS_DIR, 'r') as f:
         conversations = json.load(f)
-    # s, e = conversations['prompt-1 persona-8'][0].find('[/INST]') + 7, conversations['prompt-1 persona-8'][0].rfind('[/INST]') + 7
+    
     # Load gold answers
     with open(GOLD_DIR, 'r') as f:
         gold_responses = json.load(f)
@@ -77,7 +77,9 @@ def main(args: DictConfig) -> None:
             if is_vllm:
                 if is_mistral:
                     s, e = conversation.find(EOS_TOKEN) + 7, conversation.rfind(EOS_TOKEN) + 7
-                    log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. {prompt}{E_INST}{conversation[s:e]}"], answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. {prompt}{E_INST}{conversation[s:e]}\n{gold_responses[f'prompt-{i} persona-{j}'][0]}"])
+                    log_probs = model.batch_log_probs(
+                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. {prompt}{E_INST}{conversation[s:e]}\n\nA: "], 
+                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. {prompt}{E_INST}{conversation[s:e]}\n\nA: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
 
     

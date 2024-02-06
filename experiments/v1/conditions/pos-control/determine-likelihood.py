@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import NAMES_DIR, PERSONAS_DIR, PROMPTS_DIR, GOLD_DIR, flatten_list
+from utils import CONVERSATIONS_DIR, NAMES_DIR, PERSONAS_DIR, PROMPTS_DIR, GOLD_DIR, flatten_list
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -61,7 +61,10 @@ def main(args: DictConfig) -> None:
     with open(NAMES_DIR, 'r') as f:
         names = json.load(f)
         
-        
+     # Load conversations
+    with open(CONVERSATIONS_DIR, 'r') as f:
+        conversations = json.load(f)
+    
     # Load gold answers
     with open(GOLD_DIR, 'r') as f:
         gold_responses = json.load(f)
@@ -70,9 +73,13 @@ def main(args: DictConfig) -> None:
     final_log_probs = defaultdict(list)
     for j, persona in enumerate(personas):
         for i, prompt in enumerate(prompts):
+            conversation = conversations[f"prompt-{i} persona-{j}"][0]
             if is_vllm:
                 if is_mistral:
-                    log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nHere is some information about me:\n\n{persona}\n\nQ: {prompt}{E_INST}"], answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nHere is some information about me:\n\n{persona}\n\nQ: {prompt}{E_INST}A: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
+                    s, e = conversation.find(EOS_TOKEN) + 7, conversation.rfind(EOS_TOKEN) + 7
+                    log_probs = model.batch_log_probs(
+                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[s:e]}\n\nA: "], 
+                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[s:e]}\n\nA: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
 
     
