@@ -15,13 +15,13 @@ model_config:
 run:
   verbose: false
   initial_completion_config:
-    temperature: 0.7
+    temperature: 0
     top_p: 0.9
     max_new_tokens: 300
-    num_return_sequences: 5
+    num_return_sequences: 1
   completion_config:
     do_sample: true
-    temperature: 0.7
+    temperature: 0
     top_p: 0.9
     max_new_tokens: 300
     num_return_sequences: 1

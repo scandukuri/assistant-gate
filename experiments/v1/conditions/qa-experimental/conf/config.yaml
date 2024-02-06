@@ -1,3 +1,4 @@
 defaults:
-  - qa_model: mistral-7b-instruct-v02-hf
-  - human_model: gpt4
+  - qa_model: mixtral-8x7b-instruct-vllm
+  - human_model: mixtral-8x7b-instruct-vllm
+  - model: mixtral-8x7b-instruct-vllm

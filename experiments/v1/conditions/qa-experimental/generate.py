@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import QA_PROMPTS, QA_PROMPT_IDX, HUMAN_PROMPTS, HUMAN_PROMPT_IDX, HUMAN_SYS_MSGS, HUMAN_SYS_PROMPT_IDX, PERSONAS_DIR, PROMPTS_DIR, MAX_TURNS, filter_completed_conversations, flatten_list
+from utils import QA_PROMPTS, QA_PROMPT_IDX, HUMAN_PROMPTS, HUMAN_PROMPT_IDX, HUMAN_SYS_MSGS, HUMAN_SYS_PROMPT_IDX, NAMES_DIR, PERSONAS_DIR, PROMPTS_DIR, MAX_TURNS, filter_completed_conversations, flatten_list
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -32,7 +32,7 @@ logging.basicConfig(level=logging.INFO)
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
     logging.info("Loading models for multi-turn dialogue...")
-    random.seed(43728)
+    random.seed(1)
     
     
     # Load qa_model
@@ -75,42 +75,37 @@ def main(args: DictConfig) -> None:
     # Load personas
     with open(PERSONAS_DIR, 'r') as f:
         personas = json.load(f)
-        
+    # Load names
+    with open(NAMES_DIR, 'r') as f:
+        names = json.load(f)
         
 
     final_conversations = defaultdict(list)
     for i, prompt in enumerate(prompts):
-        if i % 10 == 0:
+        logging.info(f"Beginning simulations for prompt {i}...")
+        if i % 2 == 0:
             with open(f"simulated-conversations/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
                 json.dump(final_conversations, f)
         for j, persona in enumerate(personas):
-            completed_conversations = []
-            initial_prompt = f"{BOS_TOKEN}{B_INST} {QA_PROMPTS[QA_PROMPT_IDX]}\n\n{persona}\n\n{prompt} {E_INST}"
+            initial_prompt = f"{BOS_TOKEN}{B_INST}{QA_PROMPTS[QA_PROMPT_IDX].format(names[j], prompt)}{E_INST}"
             qa_responses = qa_model.batch_prompt([initial_prompt], **args.qa_model.run.initial_completion_config)
             
-            unfinished_conversations = [initial_prompt + '\n' + qa_response + EOS_TOKEN for qa_response in qa_responses]
-            unfinished_conversations, newly_completed_conversations = filter_completed_conversations(QA_PROMPTS[QA_PROMPT_IDX], unfinished_conversations)
-            completed_conversations.extend(newly_completed_conversations)
+            conversations = [initial_prompt + '\n' + qa_response + EOS_TOKEN for qa_response in qa_responses]
             turns = 1
             
-            while len(unfinished_conversations) > 0 and turns < MAX_TURNS:
+            while turns < MAX_TURNS:
                 if is_openai:
                     human_responses = human_model.batch_prompt(system_message=HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDX], messages=[HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) for qa_response in qa_responses],)
                     human_responses = flatten_list(human_responses)
                 elif is_vllm:
                     human_responses = human_model.batch_prompt([f"{BOS_TOKEN}{B_INST} {HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDX]}\n\n{HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) }{E_INST}" for qa_response in qa_responses], **args.human_model.run.completion_config)
-                unfinished_conversations = [unfinished_conversation + '\n' + B_INST + f" A: {human_response} " + E_INST for unfinished_conversation, human_response in zip(unfinished_conversations, human_responses)]
+                conversations = [unfinished_conversation + '\n' + B_INST + f" A: {human_response} " + E_INST for unfinished_conversation, human_response in zip(conversations, human_responses)]
 
-
-                qa_responses = qa_model.batch_prompt(unfinished_conversations, **args.qa_model.run.completion_config)
-                unfinished_conversations = [unfinished_conversation + '\n' + qa_response + EOS_TOKEN for unfinished_conversation, qa_response in zip(unfinished_conversations, qa_responses)]
-
-                
-                unfinished_conversations, newly_completed_conversations = filter_completed_conversations(QA_PROMPTS[QA_PROMPT_IDX], unfinished_conversations)
-                completed_conversations.extend(newly_completed_conversations)
+                qa_responses = qa_model.batch_prompt(conversations, **args.qa_model.run.completion_config)
+                conversations = [unfinished_conversation + '\n' + qa_response + EOS_TOKEN for unfinished_conversation, qa_response in zip(conversations, qa_responses)]
                 turns += 1
 
-            final_conversations[f"prompt-{i} persona-{j}"] = completed_conversations
+            final_conversations[f"prompt-{i} persona-{j}"] = conversations
     
     with open(f"simulated-conversations/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
         json.dump(final_conversations, f)

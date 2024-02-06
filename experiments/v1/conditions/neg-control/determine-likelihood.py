@@ -16,7 +16,7 @@ import signal
 from collections import defaultdict
 from datasets import load_dataset, Dataset
 
-from utils import PERSONAS_DIR, PROMPTS_DIR, GOLD_DIR, flatten_list
+from utils import NAMES_DIR, PERSONAS_DIR, PROMPTS_DIR, GOLD_DIR, flatten_list
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -57,6 +57,10 @@ def main(args: DictConfig) -> None:
     with open(PERSONAS_DIR, 'r') as f:
         personas = json.load(f)
         
+    # Load names
+    with open(NAMES_DIR, 'r') as f:
+        names = json.load(f)
+        
         
     # Load gold answers
     with open(GOLD_DIR, 'r') as f:
@@ -68,7 +72,7 @@ def main(args: DictConfig) -> None:
         for i, prompt in enumerate(prompts):
             if is_vllm:
                 if is_mistral:
-                    log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}\n\nQ: {prompt}{E_INST}"], answers=[f"{BOS_TOKEN}{B_INST}\n\nQ: {prompt}{E_INST}A: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
+                    log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}"], answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}A: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
 
     
