@@ -1,0 +1,3 @@
+defaults:
+  - qa_model: mistral-7b-instruct-v02-hf
+  - human_model: gpt4

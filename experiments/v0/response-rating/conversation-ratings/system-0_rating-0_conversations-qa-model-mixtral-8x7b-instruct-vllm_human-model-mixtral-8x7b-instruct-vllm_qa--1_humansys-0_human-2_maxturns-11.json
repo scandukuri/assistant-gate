@@ -1,0 +1,350 @@
+{
+    "prompt-0 persona-0": [
+        9,
+        1,
+        8,
+        8,
+        9
+    ],
+    "prompt-0 persona-1": [
+        8,
+        9,
+        8,
+        8,
+        9
+    ],
+    "prompt-0 persona-2": [
+        9,
+        9,
+        10,
+        9,
+        10
+    ],
+    "prompt-0 persona-3": [
+        1,
+        9,
+        8,
+        8,
+        7
+    ],
+    "prompt-0 persona-4": [
+        8,
+        7,
+        8,
+        10,
+        8
+    ],
+    "prompt-1 persona-0": [
+        9,
+        10,
+        8,
+        7,
+        4
+    ],
+    "prompt-1 persona-1": [
+        9,
+        10,
+        9,
+        10,
+        8
+    ],
+    "prompt-1 persona-2": [
+        7,
+        8,
+        10,
+        8,
+        10
+    ],
+    "prompt-1 persona-3": [
+        10,
+        10,
+        10,
+        8,
+        10
+    ],
+    "prompt-1 persona-4": [
+        10,
+        10,
+        9,
+        10,
+        10
+    ],
+    "prompt-2 persona-0": [
+        10,
+        10,
+        10,
+        10,
+        10
+    ],
+    "prompt-2 persona-1": [
+        10,
+        10,
+        10,
+        9,
+        9
+    ],
+    "prompt-2 persona-2": [
+        10,
+        10,
+        10,
+        10,
+        10
+    ],
+    "prompt-2 persona-3": [
+        7,
+        10,
+        10,
+        9,
+        7
+    ],
+    "prompt-2 persona-4": [
+        9,
+        10,
+        9,
+        10,
+        9
+    ],
+    "prompt-3 persona-0": [
+        10,
+        9,
+        9,
+        10,
+        10
+    ],
+    "prompt-3 persona-1": [
+        9,
+        10,
+        8,
+        10
+    ],
+    "prompt-3 persona-2": [
+        9,
+        9,
+        8,
+        9,
+        8
+    ],
+    "prompt-3 persona-3": [
+        10,
+        10,
+        8,
+        7,
+        8
+    ],
+    "prompt-3 persona-4": [
+        9,
+        9,
+        9,
+        8,
+        9
+    ],
+    "prompt-4 persona-0": [
+        9,
+        9,
+        9,
+        8,
+        10
+    ],
+    "prompt-4 persona-1": [
+        10,
+        10,
+        10,
+        9,
+        8
+    ],
+    "prompt-4 persona-2": [
+        10,
+        9,
+        10,
+        1,
+        10
+    ],
+    "prompt-4 persona-3": [
+        9,
+        10,
+        7,
+        9,
+        10
+    ],
+    "prompt-4 persona-4": [
+        10,
+        9,
+        9,
+        9,
+        9
+    ],
+    "prompt-5 persona-0": [
+        10,
+        10,
+        10,
+        9,
+        10
+    ],
+    "prompt-5 persona-1": [
+        8,
+        9,
+        9,
+        10,
+        9
+    ],
+    "prompt-5 persona-2": [
+        9,
+        10,
+        9,
+        10,
+        9
+    ],
+    "prompt-5 persona-3": [
+        8,
+        9,
+        7,
+        10,
+        9
+    ],
+    "prompt-5 persona-4": [
+        1,
+        10,
+        9,
+        9,
+        8
+    ],
+    "prompt-6 persona-0": [
+        10,
+        10,
+        10,
+        10,
+        10
+    ],
+    "prompt-6 persona-1": [
+        10,
+        9,
+        10,
+        10,
+        9
+    ],
+    "prompt-6 persona-2": [
+        10,
+        9,
+        10,
+        7,
+        10
+    ],
+    "prompt-6 persona-3": [
+        10,
+        8,
+        10,
+        10,
+        10
+    ],
+    "prompt-6 persona-4": [
+        9,
+        10,
+        10,
+        10,
+        8
+    ],
+    "prompt-7 persona-0": [
+        10,
+        10,
+        10,
+        9,
+        10
+    ],
+    "prompt-7 persona-1": [
+        9,
+        9,
+        9,
+        10,
+        9
+    ],
+    "prompt-7 persona-2": [
+        10,
+        10,
+        9,
+        10,
+        10
+    ],
+    "prompt-7 persona-3": [
+        10,
+        8,
+        10,
+        9,
+        9
+    ],
+    "prompt-7 persona-4": [
+        1,
+        9,
+        9,
+        10,
+        9
+    ],
+    "prompt-8 persona-0": [
+        7,
+        10,
+        10,
+        10,
+        10
+    ],
+    "prompt-8 persona-1": [
+        10,
+        10,
+        10,
+        7,
+        8
+    ],
+    "prompt-8 persona-2": [
+        8,
+        10,
+        10,
+        9,
+        10
+    ],
+    "prompt-8 persona-3": [
+        9,
+        9,
+        10,
+        10,
+        10
+    ],
+    "prompt-8 persona-4": [
+        8,
+        10,
+        10,
+        9,
+        8
+    ],
+    "prompt-9 persona-0": [
+        8,
+        8,
+        9,
+        10,
+        9
+    ],
+    "prompt-9 persona-1": [
+        10,
+        8,
+        10,
+        10,
+        10
+    ],
+    "prompt-9 persona-2": [
+        7,
+        10,
+        7,
+        9,
+        10
+    ],
+    "prompt-9 persona-3": [
+        9,
+        1,
+        8,
+        10,
+        8
+    ],
+    "prompt-9 persona-4": [
+        10,
+        10,
+        9,
+        9
+    ]
+}
