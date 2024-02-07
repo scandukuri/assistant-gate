@@ -35,20 +35,6 @@ def main(args: DictConfig) -> None:
     random.seed(1)
     
     
-    # Load qa_model
-    is_hf = "hf" in args.qa_model.model_type.lower()
-    is_vllm = "vllm" in args.qa_model.model_type.lower()
-    if not (is_hf or is_vllm):
-        logging.info("Model type not yet supported.")
-        return -1
-    
-    if is_hf:
-        qa_model = HFInferenceModel(**args.qa_model.model_config)
-    elif is_vllm:
-        qa_model = VLLMInferenceModel(**args.qa_model.model_config)
-        #q a_model = 
-    
-    
     # Load human_model
     is_openai = "openai" in args.human_model.model_type.lower()
     is_vllm = "vllm" in args.human_model.model_type.lower()
@@ -63,53 +49,56 @@ def main(args: DictConfig) -> None:
     elif is_vllm:
         # can't load two mixtral instances.. assume that if is_vllm, then qa_model is also mixtral
         # just point to qa_model
-        human_model = qa_model
+        human_model = VLLMInferenceModel(**args.human_model.model_config)
         
     
     # Load prompts
     with open(PROMPTS_DIR, "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
+        prompts = [prompts[6], prompts[8]]
     BOS_TOKEN, EOS_TOKEN, B_INST, E_INST = '<s>', '</s>', '[INST]', '[/INST]'
     
     # Load personas
     with open(PERSONAS_DIR, 'r') as f:
         personas = json.load(f)
+        personas = personas[1:3] + personas[6:9]
     # Load names
     with open(NAMES_DIR, 'r') as f:
         names = json.load(f)
+        names = names[1:3] + names[6:9]
         
 
     final_conversations = defaultdict(list)
     for i, prompt in enumerate(prompts):
         logging.info(f"Beginning simulations for prompt {i}...")
         if i % 2 == 0:
-            with open(f"simulated-conversations/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
+            with open(f"simulated-conversations/expertqa_humanmodel-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
                 json.dump(final_conversations, f)
         for j, persona in enumerate(personas):
             initial_prompt = f"{BOS_TOKEN}{B_INST}{QA_PROMPTS[QA_PROMPT_IDX].format(names[j], prompt)}{E_INST}"
-            qa_responses = qa_model.batch_prompt([initial_prompt], **args.qa_model.run.initial_completion_config)
+            print(initial_prompt)
+            qa_responses = [input('Enter your first open-ended question to the user: ')]
             
             conversations = [initial_prompt + '\n' + qa_response + EOS_TOKEN for qa_response in qa_responses]
             turns = 1
             
-            while turns < MAX_TURNS:           
+            while turns < MAX_TURNS:
                 if is_openai:
-                    human_responses = human_model.batch_prompt(system_message=HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDX], messages=[HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) for qa_response in qa_responses],)
+                    human_responses = human_model.batch_prompt(system_message=HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDXp], messages=[HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) for qa_response in qa_responses],)
                     human_responses = flatten_list(human_responses)
                 elif is_vllm:
                     human_responses = human_model.batch_prompt([f"{BOS_TOKEN}{B_INST} {HUMAN_SYS_MSGS[HUMAN_SYS_PROMPT_IDX]}\n\n{HUMAN_PROMPTS[HUMAN_PROMPT_IDX].format(persona, prompt, qa_response[2:]) }{E_INST}" for qa_response in qa_responses], **args.human_model.run.completion_config)
                 conversations = [unfinished_conversation + '\n' + B_INST + f" A: {human_response} " + E_INST for unfinished_conversation, human_response in zip(conversations, human_responses)]
-
-                qa_responses = qa_model.batch_prompt(conversations, **args.qa_model.run.completion_config)
+                print(conversations[0])
+                qa_responses = [input('Enter your next open-ended question to the user, given the above conversation history: ')]
                 conversations = [unfinished_conversation + '\n' + qa_response + EOS_TOKEN for unfinished_conversation, qa_response in zip(conversations, qa_responses)]
                 turns += 1
 
             final_conversations[f"prompt-{i} persona-{j}"] = conversations
     
-    with open(f"simulated-conversations/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
+    with open(f"simulated-conversations/expertqa_humanmodel-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
         json.dump(final_conversations, f)
-
 
 if __name__ == '__main__':
     try:
