@@ -6,7 +6,7 @@ model:
   name: mixtral_7b_instruct
   model_config:
     model: mistralai/Mixtral-8x7B-Instruct-v0.1
-    download_dir: /scr/andukuri/printllama/Mixtral-8x7B-Instruct-v0.1
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mixtral-8x7B-Instruct-v0.1
     dtype: auto
     tensor_parallel_size: 2
     seed: 1

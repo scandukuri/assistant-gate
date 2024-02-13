@@ -6,7 +6,7 @@ GOLD_DIR = "/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/b
 NAMES_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/persona-generation/new-personas/SYS-0_PROMPT-1_temp-0.7_topP-0.9_n-2_shotgroups-5_NAMES.json'
 PROMPTS_DIR = "/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/instruct-questions/first-10-prompts.json"
 PERSONAS_DIR = "/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/persona-generation/new-personas/SYS-0_PROMPT-1_temp-0.7_topP-0.9_n-2_shotgroups-5.json"
-CONVERSATIONS_DIR = "/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/conditions/qa-experimental/simulated-conversations/qa-model-mixtral-8x7b-instruct-vllm_human-model-mixtral-8x7b-instruct-vllm_qa-5_humansys-0_human-2_maxturns-5.json"
+CONVERSATIONS_DIR = "/sailhome/andukuri/research_projects/assistant-gate/experiments/v1/conditions/qa-experimental/simulated-conversations/qa-model-mistral-7b-instruct-v02-vllm_human-model-mistral-7b-instruct-v02-vllm_qa-6_humansys-0_human-3_maxturns-5.json"
 
 
 
@@ -29,9 +29,12 @@ QA_PROMPTS = [
     
     # 5
     """A user named {} has approached you with a request for help. The user's preferences, background and identity are unknown to you, so your job is to ask a question to elicit more information about the user. Generate the most informative open-ended question that, when answered, will reveal the most about the desired behavior beyond what has already been queried for above. Make sure your question addresses different aspects of the user's request than any questions that may have already been asked above. At the same time however, the question should be bite-sized, and not ask for too much at once. Finally, the open-ended question should attempt to elicit information about the user's background, preferences, likes and dislikes, interests, social life and more that would reveal the most about the desired behavior. Generate the open-ended question beginning with 'Q: ' and nothing else. The initial request is as follows: {}""",
+    
+        # 6
+    """A user named {} has approached you with a request for help. The user's preferences, background and identity are unknown to you, so your job is to ask a question to elicit more information about the user. Generate the most informative open-ended question that, when answered, will reveal the most about the desired behavior beyond what has already been queried for above. Make sure your question addresses different aspects of the user's request than any questions that may have already been asked above. At the same time however, the question should be bite-sized, and not ask for too much at once. The question should take no more than 3 sentences to ask. Finally, the open-ended question should attempt to elicit information about the user's background, preferences, likes and dislikes, interests, social life and more that would reveal the most about the desired behavior. Generate the open-ended question beginning with 'Q: ' and nothing else. Crucially, NEVER answer the initial request directly. Simply ask a short, useful question to the user to elicit information that would reveal the most about the desired behavior the user is looking for. The initial request is as follows: {}""",
 ]
 
-QA_PROMPT_IDX = 5
+QA_PROMPT_IDX = 6
 
 
 
@@ -44,6 +47,7 @@ HUMAN_SYS_MSGS = [
 HUMAN_SYS_PROMPT_IDX = 0
 
 HUMAN_PROMPTS = [
+    # 0
     """You are roleplaying a person with the following characteristics:
 
 {}
@@ -55,6 +59,7 @@ A helpful AI assistant wants to ask a clarifying question to help ultimately pro
 Assistant: {}
 You: """,
 
+    # 1
     """You are roleplaying a person with the following characteristics:
 
 {}
@@ -66,6 +71,7 @@ A helpful AI assistant wants to ask a clarifying question to help ultimately pro
 Assistant: {}
 You: """,
 
+    # 2
     """You are roleplaying a person with the following characteristics:
 
 {}
@@ -75,10 +81,21 @@ You are asking the following question: {}
 A helpful AI assistant wants to ask a clarifying question to help ultimately provide you a good answer. This question may make some assumptions about your preferences or things you've told it in the past; this is normal. Please answer the following question from the perspective of the character you are roleplaying, using "I" pronouns. Make your response sound natural. Crucially, you should never provide an answer to the question. You should always remember that you are roleplaying a human who does not know the answer to the question, and should reiterate that you are looking for the assistant's help answering the question, NOT the other way around.
 
 Assistant: {}
+You: """,
+    # 3
+    """You are roleplaying a person with the following characteristics:
+
+{}
+
+You are asking the following question: {}
+
+A helpful AI assistant wants to ask a clarifying question to help ultimately provide you a good answer. This question may make some assumptions about your preferences or things you've told it in the past; this is normal. Please answer the following question from the perspective of the character you are roleplaying, using "I" pronouns. Make your response sound natural. Crucially, you should never provide an answer to the question. You should always remember that you are roleplaying a human who does not know the answer to the question, and should reiterate that you are looking for the assistant's help answering the question, NOT the other way around. Importantly, keep your answers to their intermediate questions concise, under 3 sentences. Your answers to their intermediate questions will be tantamount in helping them eventually construct a perfect answer to your question.
+
+Assistant: {}
 You: """
 ]
 
-HUMAN_PROMPT_IDX = 2
+HUMAN_PROMPT_IDX = 3
 
 
 

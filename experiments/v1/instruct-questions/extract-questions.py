@@ -15,7 +15,7 @@ N_ROWS = 5
 logging.basicConfig(level=logging.INFO)
 
 
-@hydra.main(version_base=None, config_path="../conf", config_name='config')
+@hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
     logging.info("Extracting initial prompts...")
     

@@ -104,7 +104,7 @@ def main(args: DictConfig) -> None:
                 qa_responses = qa_model.batch_prompt(conversations, **args.qa_model.run.completion_config)
                 conversations = [unfinished_conversation + '\n' + qa_response + EOS_TOKEN for unfinished_conversation, qa_response in zip(conversations, qa_responses)]
                 turns += 1
-
+            print(conversations[0])
             final_conversations[f"prompt-{i} persona-{j}"] = conversations
     
     with open(f"simulated-conversations/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:

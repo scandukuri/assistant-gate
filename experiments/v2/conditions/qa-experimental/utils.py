@@ -7,6 +7,7 @@ NAMES_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v2/
 PROMPTS_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v2/instruct-questions/public/prompts.json'
 PERSONAS_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v2/persona-generation/new-personas/EDITED_SYS-0_PROMPT-1_temp-1.1_topP-0.9_n-1_shotgroups-20.json'
 CONVERSATIONS_DIR = ''
+SPLIT = 'public'
 
 
 QA_PROMPTS = [
@@ -33,10 +34,13 @@ QA_PROMPTS = [
 
         # 7
     """A user named {} has approached you with a request for help. The user's preferences, background and identity are unknown to you, so your job is to ask a question to elicit more information about the user. Generate the most informative open-ended question that, when answered, will reveal the most about the desired behavior beyond what has already been queried for above. Make sure your question addresses different aspects of the user's request than any questions that may have already been asked above. At the same time however, the question should be bite-sized, and not ask for too much at once. The question should take no more than 3 sentences to ask. Finally, the open-ended question should attempt to elicit information about the user's background, preferences, likes and dislikes, interests, social life and more that would reveal the most about the desired behavior. Generate the open-ended question beginning and nothing else. Crucially, NEVER answer the initial request directly. Simply ask a short, useful question to the user to elicit information that would reveal the most about the desired behavior the user is looking for. The initial request is as follows: {}""",
+    
+         # 8
+    """A user named {} has approached you with a request for help. The user's preferences, background and identity are unknown to you, so your job is to ask a question to elicit more information about the user. Generate the most informative open-ended question that, when answered, will reveal the most about the desired behavior beyond what has already been queried for above. Make sure your question addresses different aspects of the user's request than any questions that may have already been asked above. At the same time however, the question should be bite-sized, and not ask for too much at once. The question should take no more than 3 sentences to ask. Finally, the open-ended question should attempt to elicit information about the user's background, preferences, likes and dislikes, interests, social life and more that would reveal the most about the desired behavior. Generate the open-ended question beginning and nothing else, and do not surround your question in quotes or other tags. Crucially, NEVER answer the initial request directly. Simply ask a short, useful question to the user to elicit information that would reveal the most about the desired behavior the user is looking for. The initial request is as follows: {}""",
 
 ]
 
-QA_PROMPT_IDX = 7
+QA_PROMPT_IDX = 8
 
 
 
@@ -44,9 +48,15 @@ QA_PROMPT_IDX = 7
 
 
 HUMAN_SYS_MSGS = [
-    """You are a helpful AI assistant, particularly skilled at roleplaying as a human. Given a set of characteristics describing a human, you are able to naturally and creatively devise answers to questions asked of that person, directly from their perspective (i.e., using 'I', 'my', 'me', 'our' and other first-person prounouns)."""
+    # 0
+    """You are a helpful AI assistant, particularly skilled at roleplaying as a human. Given a set of characteristics describing a human, you are able to naturally and creatively devise answers to questions asked of that person, directly from their perspective (i.e., using 'I', 'my', 'me', 'our' and other first-person prounouns).""",
+
+    # 1
+     """You are particularly skilled at roleplaying as a human. Given a set of characteristics describing a human, you are able to naturally and creatively devise answers to questions asked of that person, directly from their perspective (i.e., using 'I', 'my', 'me', 'our' and other first-person prounouns).""",
 ]
-HUMAN_SYS_PROMPT_IDX = 0
+HUMAN_SYS_PROMPT_IDX = 1
+
+
 
 HUMAN_PROMPTS = [
     # 0
@@ -94,28 +104,24 @@ You are asking the following question: {}
 A helpful AI assistant wants to ask a clarifying question to help ultimately provide you a good answer. This question may make some assumptions about your preferences or things you've told it in the past; this is normal. Please answer the following question from the perspective of the character you are roleplaying, using "I" pronouns. Make your response sound natural. Crucially, you should never provide an answer to the question. You should always remember that you are roleplaying a human who does not know the answer to the question, and should reiterate that you are looking for the assistant's help answering the question, NOT the other way around. Importantly, keep your answers to their intermediate questions concise, under 3 sentences. Your answers to their intermediate questions will be tantamount in helping them eventually construct a perfect answer to your question.
 
 Assistant: {}
+You: """,
+
+    # 4
+    """You are roleplaying a person with the following characteristics:
+
+{}
+
+You are asking the following question: {}
+
+A helpful AI assistant wants to ask a clarifying question to help ultimately provide you a good answer. Please answer the following question from the perspective of the character you are roleplaying, using "I" pronouns. Make your response sound natural. Crucially, you should never provide an answer to the question. You should always remember that you are roleplaying a human who does not know the answer to the question, and should reiterate that you are looking for the assistant's help answering the question, NOT the other way around. Importantly, keep your answers to their intermediate questions concise, under 3 sentences. Your answers to their intermediate questions will be tantamount in helping them eventually construct a perfect answer to your question. Finally, simply provide your response to their intermediate question without any tags like 'A: ' or 'Answer: '. Below is your conversation history with the assistant.
+
+{}
 You: """
+
 ]
 
-HUMAN_PROMPT_IDX = 3
+HUMAN_PROMPT_IDX = 4
 
-
-
-
-
-
-
-def filter_completed_conversations(
-    prompt: str,
-    conversations: str
-    ):
-    unfinished_conversations, finished_conversations = list(), list()
-    for conversation in conversations:
-        if 'FINAL ANSWER: ' in conversation and conversation.count('FINAL ANSWER:' ) > prompt.count('FINAL ANSWER: '):
-            finished_conversations.append(conversation)
-        else:
-            unfinished_conversations.append(conversation)
-    return unfinished_conversations, finished_conversations
 
 
 def flatten_list(lists):
@@ -138,3 +144,14 @@ def chunk_list(
     ) -> List[List]:
     """Splits lst into sublists of size k."""
     return [lst[i:i + k] for i in range(0, len(lst), k)]
+
+
+# Extract conversation history without instruction tags
+def extract_history(
+    conversation: str
+) -> str:
+    conversation = conversation[conversation.find('[/INST]'):].strip()
+    conversation = conversation.replace('</s>', '')
+    conversation = conversation.replace('[/INST]\n', '\nAI Assistant: ')
+    conversation = conversation.replace('[INST]', 'You: ')
+    return conversation.strip()
