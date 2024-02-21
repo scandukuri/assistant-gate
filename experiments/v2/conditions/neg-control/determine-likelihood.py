@@ -70,13 +70,17 @@ def main(args: DictConfig) -> None:
     final_log_probs = defaultdict(list)
     for j, persona in enumerate(personas):
         for i, prompt in enumerate(prompts):
+            if i % 100 == 0:
+                logging.info(f'CHECKPOINT: Computing batched log probabilities for prompt-{i} persona-{j}...')
             if is_vllm:
                 if is_mistral:
                     log_probs = model.batch_log_probs(
-                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}\n\nA: "], 
-                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\nQ: {prompt}{E_INST}\n\nA: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
+                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\n{prompt}{E_INST}\nFINAL ANSWER: "], 
+                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}.\n\n{prompt}{E_INST}\nFINAL ANSWER: {gold_responses[f'prompt-{i} persona-{j}'][0]}"]
+                        ).to('cpu')
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
 
+    
     
     with open(f'log-probs/model-{args.model.name}.json', 'w') as f:
         json.dump(final_log_probs, f)

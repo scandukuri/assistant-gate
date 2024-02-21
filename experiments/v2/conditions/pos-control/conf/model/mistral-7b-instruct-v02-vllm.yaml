@@ -9,7 +9,7 @@ model_config:
   model: mistralai/Mistral-7B-Instruct-v0.2
   download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
   dtype: auto
-  tensor_parallel_size: 1
+  tensor_parallel_size: 2
   seed: 1
 
 run:

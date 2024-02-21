@@ -1,5 +1,6 @@
 accelerate
 datasets
+deepspeed
 hydra-core
 omegaconf
 openai==1.3.5

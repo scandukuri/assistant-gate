@@ -129,8 +129,6 @@ def main(args: DictConfig) -> None:
                 pair_key = f"prompt-{prompt_index} persona-{j}"
                 final_conversations[pair_key].extend(sublist)
             
-            
-            final_conversations[f"prompt-{i} persona-{j}"] = conversations
             with open(f"simulated-conversations/{SPLIT}/qa-model-{args.qa_model.name}_human-model-{args.human_model.name}_qa-{QA_PROMPT_IDX}_humansys-{HUMAN_SYS_PROMPT_IDX}_human-{HUMAN_PROMPT_IDX}_maxturns-{MAX_TURNS}.json", 'w') as f:
                 json.dump(final_conversations, f)
     

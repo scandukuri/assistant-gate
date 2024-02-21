@@ -63,7 +63,7 @@ def main(args: DictConfig) -> None:
         
      # Load conversations
     with open(CONVERSATIONS_DIR, 'r') as f:
-        conversations = json.load(f)
+        all_conversations = json.load(f)
     
     # Load gold answers
     with open(GOLD_DIR, 'r') as f:
@@ -73,20 +73,24 @@ def main(args: DictConfig) -> None:
     final_log_probs = defaultdict(list)
     for j, persona in enumerate(personas):
         for i, prompt in enumerate(prompts):
-            conversation = conversations[f"prompt-{i} persona-{j}"][0]
+            if i % 100 == 0:
+                logging.info(f'CHECKPOINT: Computing batched log probabilities for prompt-{i} persona-{j}...')
+            conversations = all_conversations[f"prompt-{i} persona-{j}"]
+            first, second = conversations[:len(conversations)//2], conversations[len(conversations)//2:]
             if is_vllm:
                 if is_mistral:
-                    s, e = conversation.find(EOS_TOKEN) + 7, conversation.rfind(EOS_TOKEN) + 7
-                    log_probs = model.batch_log_probs(
-                        prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[s:e]}\n\nA: "], 
-                        answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[s:e]}\n\nA: {gold_responses[f'prompt-{i} persona-{j}'][0]}"])
-                    final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
-
+                    for k,lst in enumerate([first, second]):
+                    
+                        log_probs = model.batch_log_probs(
+                            prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST) + 7]}\nFINAL ANSWER: " for conversation in lst], 
+                            answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST) + 7]}\nFINAL ANSWER: {gold_responses[f'prompt-{i} persona-{j}'][0]}" for conversation in lst]
+                            ).to('cpu')
+                        final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
     
-    with open(f'log-probs/model-{args.model.name}.json', 'w') as f:
+    with open(f"log-probs/logprobs-poscontrol-{CONVERSATIONS_DIR[CONVERSATIONS_DIR.rfind('/') + 1:]}", 'w') as f:
         json.dump(final_log_probs, f)
     
-
+#log_probs = model.batch_log_probs(prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST) + 7]}\nFINAL ANSWER: " for conversation in lst], answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST) + 7]}\nFINAL ANSWER: {gold_responses[f'prompt-{i} persona-{j}'][0]}" for conversation in lst]).to('cpu')
 
 if __name__ == '__main__':
     try:

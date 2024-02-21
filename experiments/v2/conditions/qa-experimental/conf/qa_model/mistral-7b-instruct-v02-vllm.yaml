@@ -13,7 +13,7 @@ model_config:
   seed: 1
 
 run:
-  batch_size: 100
+  batch_size: 200
   verbose: false
   initial_completion_config:
     do_sample: true
