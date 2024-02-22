@@ -1,0 +1,3 @@
+- qa_model=m1-hf
+- human_model=m0-hf
+- split=test

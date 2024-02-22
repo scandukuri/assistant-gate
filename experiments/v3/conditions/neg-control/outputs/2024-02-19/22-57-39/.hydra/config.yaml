@@ -1,0 +1,19 @@
+model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m1-vllm
+  model_config:
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/final_checkpoint
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/final_checkpoint
+    dtype: auto
+    tensor_parallel_size: 2
+    seed: 1
+  run:
+    verbose: false
+    completion_config:
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1

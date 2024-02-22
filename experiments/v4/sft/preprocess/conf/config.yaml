@@ -1,0 +1,8 @@
+defaults:
+  - tokenizer: mistral-7b-instruct-v02-vllm
+  - iteration: 0
+
+
+ROLES:
+  - user
+  - assistant

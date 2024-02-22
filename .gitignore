@@ -173,8 +173,3 @@ cython_debug/
 ./experiments/v3/conditions/qa-experimental/simulated-conversations/public/split-A_qa-12_humansys-1_human-4_maxturns-4.json
 ./experiments/v4/simulate-conversations/simulated-conversations/m0_A.json
 ./experiments/v2/conditions/qa-experimental/simulated-conversations/public/qa-model-mistral-7b-instruct-v02-vllm_human-model-mistral-7b-instruct-v02-vllm_qa-12_humansys-1_human-4_maxturns-4.json
-./.git/objects/pack/pack-b271328577b6384b515b7298727f36676f32f5f8.pack
-./experiments/v3/conditions/qa-experimental/simulated-conversations/public/original/qa-model-mistral-7b-instruct-v02-vllm_human-model-mistral-7b-instruct-v02-vllm_qa-12_humansys-1_human-4_maxturns-4.json
-./experiments/v3/conditions/qa-experimental/simulated-conversations/public/split-A_qa-12_humansys-1_human-4_maxturns-4.json
-./experiments/v4/simulate-conversations/simulated-conversations/m0_A.json
-./experiments/v2/conditions/qa-experimental/simulated-conversations/public/qa-model-mistral-7b-instruct-v02-vllm_human-model-mistral-7b-instruct-v02-vllm_qa-12_humansys-1_human-4_maxturns-4.json
