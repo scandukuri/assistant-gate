@@ -1,0 +1,10 @@
+defaults:
+  - qa_model: m0
+  - human_model: m0
+  - split: A # A, B, or test
+
+
+MAX_TURNS: 4
+QA_PROMPT_IDX: 12
+HUMAN_SYS_PROMPT_IDX: 1
+HUMAN_PROMPT_IDX: 4

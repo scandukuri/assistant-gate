@@ -7,9 +7,14 @@ from utils import *
 with open(M0_NEG_CONTROL_DIR, 'r') as f:
     neg_control = json.load(f)
 
+with open(M0_POS_CONTROL_DIR, 'r') as f:
+    pos_control = json.load(f)
 
 with open(M0_TOPK_POS_CONTROL_DIR, 'r') as f:
     pos_control_topk = json.load(f)
+    
+with open(M0_EXPERIMENTAL_DIR, 'r') as f:
+    experimental = json.load(f)
 
 with open(M0_TOPK_EXPERIMENTAL_DIR, 'r') as f:
     experimental_topk = json.load(f)
@@ -18,27 +23,44 @@ with open(M0_TOPK_EXPERIMENTAL_DIR, 'r') as f:
 with open(M1_NEG_CONTROL_DIR, 'r') as f:
     m1_neg_control = json.load(f)
 
+with open(M1_POS_CONTROL_DIR, 'r') as f:
+    m1_pos_control = json.load(f)
+
 with open(M1_TOPK_POS_CONTROL_DIR, 'r') as f:
     m1_pos_control_topk = json.load(f)
     
+with open(M1_EXPERIMENTAL_DIR, 'r') as f:
+    m1_experimental = json.load(f)
 
 with open(M1_TOPK_EXPERIMENTAL_DIR, 'r') as f:
     m1_experimental_topk = json.load(f)
 
 log_probabilities = {}
 
+# Now calculate means and SEMs instead of just means
+# Calculate means and SEMs
 
-neg_control_mean = sum([sum(lst) for key, lst in neg_control.items()]) / sum([len(lst) for key, lst in neg_control.items()])
-
-pos_control_topk_mean = sum([sum(lst) for key, lst in pos_control_topk.items()]) / sum([len(lst) for key, lst in pos_control_topk.items()])
-experimental_topk_mean = sum([sum(lst) for key, lst in experimental_topk.items()]) / sum([len(lst) for key, lst in experimental_topk.items()])
+neg_control_mean, neg_control_sem = calculate_mean_and_sem([lst for key, lst in neg_control.items()])
+print(f"Negative Control Mean: {neg_control_mean}, SEM: {neg_control_sem}")
 
 
-m1_neg_control_mean = sum([sum(lst) for key, lst in m1_neg_control.items()]) / sum([len(lst) for key, lst in m1_neg_control.items()])
+pos_control_topk_mean, pos_control_topk_sem = calculate_mean_and_sem([lst for key, lst in pos_control_topk.items()])
+print(f"Positive Control Top-K Mean: {pos_control_topk_mean}, SEM: {pos_control_topk_sem}")
 
-m1_pos_control_topk_mean = sum([sum(lst) for key, lst in m1_pos_control_topk.items()]) / sum([len(lst) for key, lst in m1_pos_control_topk.items()])
-m1_experimental_topk_mean = sum([sum(lst) for key, lst in m1_experimental_topk.items()]) / sum([len(lst) for key, lst in m1_experimental_topk.items()])
+experimental_topk_mean, experimental_topk_sem = calculate_mean_and_sem([lst for key, lst in experimental_topk.items()])
+print(f"Experimental Top-K Mean: {experimental_topk_mean}, SEM: {experimental_topk_sem}")
 
+
+m1_neg_control_mean, m1_neg_control_sem = calculate_mean_and_sem([lst for key, lst in m1_neg_control.items()])
+print(f"M1 Negative Control Mean: {m1_neg_control_mean}, SEM: {m1_neg_control_sem}")
+
+
+m1_pos_control_topk_mean, m1_pos_control_topk_sem = calculate_mean_and_sem([lst for key, lst in m1_pos_control_topk.items()])
+print(f"M1 Positive Control Top-K Mean: {m1_pos_control_topk_mean}, SEM: {m1_pos_control_topk_sem}")
+
+m1_experimental_topk_mean, m1_experimental_topk_sem = calculate_mean_and_sem([lst for key, lst in m1_experimental_topk.items()])
+print(f"M1 Experimental Top-K Mean: {m1_experimental_topk_mean}, SEM: {m1_experimental_topk_sem}")
+# The rest of your plotting code remains the same
 
 # Adjusting the provided code to use plot() instead of scatter(), and making the background grid light gray
 iterations=[0, 1]
@@ -61,17 +83,28 @@ log_probabilities = {
 }
 
 # Set up the plot with larger figure size for better visibility of larger markers
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 9))
 ax = plt.axes()
 ax.set_facecolor("whitesmoke")
 
 # Plot each category with a larger marker using plot()
 plt.plot(iterations, log_probabilities['neg-control'], label='neg-control', 
-         marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='')
+         marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', zorder=z_order/100)
 plt.plot(iterations, log_probabilities[f'qa-experimental-top-{k}'], label=f'qa-experimental-top-{k}', 
-         marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', alpha=0.4)
+         marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', alpha=0.4, zorder=z_order/100)
 plt.plot(iterations, log_probabilities[f'pos-control-top-{k}'], label=f'pos-control-top-{k}', 
-         marker='^', markersize=marker_size, color=color_map['pos-control'], linestyle='', alpha=0.4)
+         marker='^', markersize=marker_size, color=color_map['pos-control'], linestyle='', alpha=0.4, zorder=z_order/100)
+
+# # Adjust the plotting code to include error bars
+# # Plot each category with error bars
+plt.errorbar(iterations, [neg_control_mean, m1_neg_control_mean], yerr=[neg_control_sem, m1_neg_control_sem], marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+
+# If the top-k categories also need error bars, adjust similarly
+# For example:
+plt.errorbar(iterations, [pos_control_topk_mean, m1_pos_control_topk_mean], yerr=[pos_control_topk_sem, m1_pos_control_topk_sem], marker='^', markersize=marker_size, color=color_map['pos-control'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+plt.errorbar(iterations, [experimental_topk_mean, m1_experimental_topk_mean], yerr=[experimental_topk_sem, m1_experimental_topk_sem], marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+
+
 
 # Set the x-axis to show the range up to iteration 5
 plt.xticks(range(4))  # This will show ticks from 0 to 5

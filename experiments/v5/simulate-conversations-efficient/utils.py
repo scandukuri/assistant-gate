@@ -181,3 +181,37 @@ def shuffle_dict_values(d):
     new_dict = dict(zip(keys, new_values))
     
     return new_dict
+
+
+def shuffle_dict_values(d):
+    random.seed(1)
+    keys = list(d.keys())
+    rotation = random.randint(1, len(grouped_keys) - 1)
+    
+    
+    keys = list(d.keys())
+    values = list(d.values())
+    rotation = random.randint(1, len(keys) - 1)
+    
+    # Rotate values by one position to the right
+    new_values = values[-rotation:] + values[:-rotation]
+    
+    # Create a new dictionary by reassigning rotated values to original keys
+    new_dict = dict(zip(keys, new_values))
+    
+    return new_dict
+
+def shuffle_dict_values2(d):
+    random.seed(1)
+    keys = list(d.keys())
+    personas = [int(key[key.rfind('-') + 1:]) for key in keys]
+    rotation = random.randint(1, max(personas) - 1)
+    print(rotation)
+    new_personas = []
+    
+    for persona in personas:
+        new_personas.append((persona + rotation) % (max(personas) + 1))
+    new_keys = [key[:key.rfind('-') + 1] + str(new_personas[i]) for i, key in enumerate(keys)]
+
+    new_dict = dict(zip(new_keys, list(d.values())))
+    return new_dict

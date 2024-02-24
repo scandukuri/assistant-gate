@@ -40,9 +40,9 @@ def main(args: DictConfig) -> None:
     with open(f"simulated-conversations/{args.qa_model.shortname}_{args.split.name}.json", 'r') as f:
         conversations = json.load(f)
     
-    output_conversations = shuffle_dict_values(conversations)
+    output_conversations = shuffle_dict_values2(conversations)
     
-    with open(f"simulated-conversations/{args.qa_model.shortname}-confusion_{args.split.name}.json", 'w') as f:
+    with open(f"simulated-conversations/{args.qa_model.shortname}-confusion2_{args.split.name}.json", 'w') as f:
         json.dump(output_conversations, f)
 
 
