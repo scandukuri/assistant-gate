@@ -1,0 +1,63 @@
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+2024-02-25 21:25:59,664	INFO worker.py:1724 -- Started a local Ray instance.
+[W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+[36m(RayWorkerVllm pid=2831236)[0m [W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+ERROR: Cannot find key: qa_model=m0
+Usage: likelihood-neg-control.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | List |
+                         QA_PROMPTS | HUMAN_SYS_MSGS | HUMAN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset | flatten_list |
+                         batch_list | chunk_list | extract_history |
+                         HFInferenceModel | AsyncAzureChatLLM | GPT4Agent |
+                         VLLMInferenceModel | main
+  available values:      BOS_TOKEN | EOS_TOKEN | B_INST | E_INST |
+                         SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  likelihood-neg-control.py --help
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+2024-02-25 21:27:02,489	INFO worker.py:1724 -- Started a local Ray instance.
+[36m(RayWorkerVllm pid=2838896)[0m [W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+[W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+ERROR: Cannot find key: qa_model=m0
+Usage: likelihood-pos-control.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | List |
+                         QA_PROMPTS | HUMAN_SYS_MSGS | HUMAN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset | flatten_list |
+                         batch_list | chunk_list | extract_history |
+                         HFInferenceModel | AsyncAzureChatLLM | GPT4Agent |
+                         VLLMInferenceModel | main
+  available values:      BOS_TOKEN | EOS_TOKEN | B_INST | E_INST |
+                         SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  likelihood-pos-control.py --help
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+2024-02-25 21:31:22,436	INFO worker.py:1724 -- Started a local Ray instance.
+[36m(RayWorkerVllm pid=2847560)[0m [W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+[W CUDAGraph.cpp:145] Warning: Waiting for pending NCCL work to finish before starting graph capture. (function operator())
+ERROR: Cannot find key: qa_model=m0
+Usage: likelihood-qa-experimental.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | List |
+                         QA_PROMPTS | HUMAN_SYS_MSGS | HUMAN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset | flatten_list |
+                         batch_list | chunk_list | extract_history |
+                         HFInferenceModel | AsyncAzureChatLLM | GPT4Agent |
+                         VLLMInferenceModel | main
+  available values:      BOS_TOKEN | EOS_TOKEN | B_INST | E_INST |
+                         SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  likelihood-qa-experimental.py --help

@@ -1,0 +1,59 @@
+qa_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m1-vllm
+  shortname: m1
+  model_config:
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/
+    dtype: auto
+    tensor_parallel_size: 1
+    seed: 1
+  run:
+    batch_size: 100
+    verbose: false
+    initial_completion_config:
+      do_sample: true
+      temperature: 0.9
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 5
+    completion_config:
+      do_sample: true
+      temperature: 0.9
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+human_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m0-vllm
+  shortname: m0
+  model_config:
+    model: mistralai/Mistral-7B-Instruct-v0.2
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+    dtype: auto
+    tensor_parallel_size: 4
+    seed: 1
+  run:
+    batch_size: 1
+    verbose: false
+    completion_config:
+      do_sample: false
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+split:
+  name: test
+  PERSONA_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/persona-generation/new-personas/test.json
+  NAMES_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/persona-generation/new-personas/test_NAMES.json
+  PROMPT_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/instruct-questions/test.json
+MAX_TURNS: 4
+QA_PROMPT_IDX: 12
+HUMAN_SYS_PROMPT_IDX: 1
+HUMAN_PROMPT_IDX: 4
