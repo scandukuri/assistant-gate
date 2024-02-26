@@ -33,26 +33,31 @@ logging.basicConfig(level=logging.INFO)
 def main(args: DictConfig) -> None:
     logging.info("Loading raw simulated conversations for preprocessing...")
     
+    # TODO: fix directory
     
-    with open(args.iteration.CONVERSATIONS_DIR, 'r') as f:
+
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
         conversations = json.load(f)
+    ### THIS DIRECTORY IS WRONG FIX IT
+    with open(f"{GOLD_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
+        gold_responses = json.load(f)
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer.model_config.model)
 
     
-    sources, targets = list(), list()
+    targets = list()
     for key, lst in conversations.items():
+        gold = gold_responses[key]
         for conversation in lst:
             conversation = extract_history(conversation)
             turns = create_turns(conversation)
+            turns[-1] += f'\n\n{turns[0]}'  ## add the prompt to the end of the conversation again to prompt the model to answer
+            turns.append(gold)
             messages = [{"role": args.ROLES[i % 2], "content": turn} for i, turn in enumerate(turns)]
-            for i in range(1, len(messages), 2):
-                sources.append(tokenizer.decode(tokenizer.apply_chat_template(messages[:i])))
-                targets.append(tokenizer.decode(tokenizer.apply_chat_template(messages[:i + 1])))
+            targets.append(messages)
     
-    
-    with open(f"/sailhome/andukuri/research_projects/assistant-gate/experiments/v3/sft/data/sources.json", 'w') as f:
-        json.dump(sources, f)
-    with open(f"/sailhome/andukuri/research_projects/assistant-gate/experiments/v3/sft/data/targets.json", 'w') as f:
+    if not os.path.exists(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}"):
+        os.makedirs(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}")
+    with open(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}/{args.split.name}_targets.json", 'w') as f:
         json.dump(targets, f)
             
     

@@ -17,6 +17,7 @@ from collections import defaultdict
 from datasets import load_dataset, Dataset
 
 from utils import *
+from paths import *
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -39,17 +40,17 @@ def main(args: DictConfig) -> None:
     
     
     # Load conversations
-    with open(f'{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json', 'r') as f:
+    with open(f'{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json', 'r') as f:
         conversations = json.load(f)
     
     
     # Load corresponding logprobs
-    with open(f'{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}_{args.split.name}.json', 'r') as f:
+    with open(f'{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json', 'r') as f:
         logprobs = json.load(f)
     
     # Load top_k indices from qa-experimental
     # Load corresponding logprobs
-    with open(f'{LOGPROBS_PATH}/{VERSION}/qa-experimental/{args.qa_model.shortname}_{args.split.name}_top-k-{args.k}_indices.json', 'r') as f:
+    with open(f'{LOGPROBS_PATH}/{VERSION}/qa-experimental/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}_indices.json', 'r') as f:
         indices = json.load(f)
     
     filtered_conversations, filtered_indices, filtered_logprobs = defaultdict(list), defaultdict(list), defaultdict(list)
@@ -61,9 +62,11 @@ def main(args: DictConfig) -> None:
         
         # Filter indices and logprobs based on top k indices
         filtered_logprobs[key] = [logprobs[key][idx] for idx in max_indices]
+    
+    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}"):
+        os.makedirs(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}")
 
-
-    with open(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}_{args.split.name}_top-k-{args.k}.json", 'w') as f:
+    with open(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'w') as f:
         json.dump(filtered_logprobs, f)
     
 

@@ -19,6 +19,7 @@ from datasets import load_dataset, Dataset
 from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
 
 from utils import *
+from paths import *
 
 
 # import models
@@ -39,20 +40,23 @@ def main(args: DictConfig) -> None:
     
     
     # Load prompts
-    with open(args.split.PROMPT_DIR, "r") as f:
+    with open(f'{PROMPT_PATH}/{VERSION}/{args.split.name}.json', "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     # Load personas
-    with open(args.split.PERSONA_DIR, 'r') as f:
+    with open(f'{PERSONAS_PATH}/{VERSION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
     # Load names
-    with open(args.split.NAMES_DIR, 'r') as f:
+    with open(f'{PERSONAS_PATH}/{VERSION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
     
+    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}")
     
-    if os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json"):
+    
+    if os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json"):
         qa_model = VLLMInferenceModel(**args.qa_model.model_config)
-        pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'r'))
+        pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
         output_conversations = defaultdict(list)
         for j, persona in enumerate(personas):
             logging.info(f"Beginning simulations for persona {j}...")
@@ -73,7 +77,7 @@ def main(args: DictConfig) -> None:
                 output_conversations[pair_key].extend(sublist)
     
         
-        with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'w') as f:
+        with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
             json.dump(output_conversations, f)
 
     else:
@@ -102,7 +106,10 @@ def main(args: DictConfig) -> None:
                     prompt_index = batch_index * args.qa_model.run.batch_size + i
                     pair_key = f"prompt-{prompt_index} persona-{j}"
                     output_conversations[pair_key].extend(sublist)
-        with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'w') as f:
+                    
+        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}"):
+            os.makedirs(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}")
+        with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
             json.dump(output_conversations, f)
 
 

@@ -1,5 +1,1 @@
 name: test
-PERSONA_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v6/persona-generation/new-personas/test.json
-NAMES_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v6/persona-generation/new-personas/test_NAMES.json
-PROMPT_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v6/instruct-questions/test.json
-GOLD_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v6/build-gold-responses/gold-responses/test.json

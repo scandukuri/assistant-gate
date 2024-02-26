@@ -17,6 +17,15 @@ Answer the question below, tailoring your answer to the user and their character
 
 Answer the question below, tailoring your answer to the user and their characteristics. Answer directly to the user (i.e., 'you', 'your' pronouns). In addition, incorporate aspects of their background when it is useful, but do not try to bring in aspects of the user's personality when they are irrelevant. Make sure to keep your answer concise and organized, but thorough. Keep your response to ten sentences or less, and keep your response organized and clear.
 
+{}""",
+
+# 2
+    """You are answering questions for the following user:
+
+{}
+
+Answer the question below, tailoring your answer to the user and their characteristics. Answer directly to the user (i.e., 'you', 'your' pronouns). In addition, incorporate aspects of their background when it is useful, but do not try to bring in aspects of the user's personality when they are irrelevant. Make sure to keep your answer concise and organized, but thorough. Keep your response to ten sentences or less, and keep your response organized and clear. Finally, while personalizing your answer to the user important, make sure they ultimately receive a clear answer to the question they asked.
+
 {}"""
 ]
 

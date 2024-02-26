@@ -1,0 +1,59 @@
+[2024-02-25 14:43:20,477][root][INFO] - Extracting initial prompts...
+NAME
+    extract-questions.py
+
+SYNOPSIS
+    extract-questions.py GROUP | COMMAND | VALUE
+
+GROUPS
+    GROUP is one of the following:
+
+     pd
+       pandas - a powerful data analysis and manipulation library for Python =====================================================================
+
+     json
+       JSON (JavaScript Object Notation) <https://json.org> is a subset of JavaScript syntax (ECMA-262 3rd edition) used as a lightweight data interchange format.
+
+     os
+       OS routines for NT or Posix depending on what system we're on.
+
+     logging
+       Logging package for Python. Based on PEP 282 and comments thereto in comp.lang.python.
+
+     hydra
+
+     argparse
+       Command-line parsing library
+
+     fire
+       The Python Fire module.
+
+     datasets
+
+COMMANDS
+    COMMAND is one of the following:
+
+     DictConfig
+       Container tagging interface
+
+     load_dataset
+       Load a dataset from the Hugging Face Hub, or a local dataset.
+
+     main
+
+VALUES
+    VALUE is one of the following:
+
+     SIMULATION_PATH
+
+     LOGPROBS_PATH
+
+     PERSONAS_PATH
+
+     GOLD_PATH
+
+     PROMPT_PATH
+
+     SFT_DATA_PATH
+
+     VERSION

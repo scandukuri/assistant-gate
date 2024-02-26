@@ -23,6 +23,7 @@ from AG.models.huggingface.hf_inference_model import HFInferenceModel
 from AG.models.openai.azure import AsyncAzureChatLLM
 from AG.models.openai.gpt4 import GPT4Agent
 from AG.models.vllm_models.inference_model import VLLMInferenceModel
+from paths import *
 
 
 # logging
@@ -42,9 +43,8 @@ def main(args: DictConfig) -> None:
         return -1
     
     if is_openai:
-        args.model.model_config.azure_api.api_key = os.getenv("OPENAI_API_KEY")
-        human_llm = AsyncAzureChatLLM(**args.model.model_config.azure_api)
-        human_model = GPT4Agent(llm=human_llm, **args.model.run.completion_config)
+        llm = AsyncAzureChatLLM(**args.model.model_config.azure_api)
+        model = GPT4Agent(llm=llm, **args.model.run.completion_config)
     elif is_vllm:
         model = VLLMInferenceModel(**args.model.model_config)
         BOS_TOKEN, EOS_TOKEN, B_INST, E_INST = '<s>', '</s>', '[INST]', '[/INST]'
@@ -52,17 +52,17 @@ def main(args: DictConfig) -> None:
 
     
     # Load personas, prompts
-    with open(args.split.PERSONAS_DIR, 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
-    with open(args.split.PROMPTS_DIR, "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
-    
+
     logging.info(f"{len(personas)} total personas...")
     logging.info(f"{len(prompts)} total prompts...") 
 
-    
+
     
     
     random.seed(1)
@@ -85,7 +85,6 @@ def main(args: DictConfig) -> None:
                 # Adjust for batch processing
                 batched_prompt = [f"{BOS_TOKEN}{B_INST} {SYS_PROMPTS[args.SYS_PROMPT_IDX]}\n\n{prompt}{E_INST}" for prompt in formatted_prompts]
                 responses = model.batch_prompt(batched_prompt, **args.model.run.completion_config)
-            
             # Correctly indexing and storing responses for each prompt in the batch
             for i, response in enumerate(responses):
                 prompt_index = batch_index * args.model.run.batch_size + i
@@ -93,7 +92,9 @@ def main(args: DictConfig) -> None:
                 if gold_responses_key not in gold_responses:
                     gold_responses[gold_responses_key] = []
                 gold_responses[gold_responses_key].extend([response])
-    with open(f"gold-responses/{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{GOLD_PATH}/{VERSION}"):
+        os.makedirs(f"{GOLD_PATH}/{VERSION}")
+    with open(f"{GOLD_PATH}/{VERSION}/{args.split.name}.json", 'w') as f:
         json.dump(gold_responses, f)
             
     

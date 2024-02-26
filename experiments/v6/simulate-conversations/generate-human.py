@@ -34,7 +34,7 @@ from AG.models.huggingface.hf_inference_model import HFInferenceModel
 from AG.models.openai.azure import AsyncAzureChatLLM
 from AG.models.openai.gpt4 import GPT4Agent
 from AG.models.vllm_models.inference_model import VLLMInferenceModel
-
+from paths import *
 
 # logging
 logging.basicConfig(level=logging.INFO)
@@ -46,19 +46,20 @@ def main(args: DictConfig) -> None:
     random.seed(1)
     
     
-    # Load prompts
-    with open(args.split.PROMPT_DIR, "r") as f:
+    with open(f'{PROMPT_PATH}/{VERSION}/{args.split.name}.json', "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     # Load personas
-    with open(args.split.PERSONA_DIR, 'r') as f:
+    with open(f'{PERSONAS_PATH}/{VERSION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
     # Load names
-    with open(args.split.NAMES_DIR, 'r') as f:
+    with open(f'{PERSONAS_PATH}/{VERSION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
     
+    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}")
     
-    pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'r'))
+    pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
     output_conversations = defaultdict(list)
     human_model = VLLMInferenceModel(**args.human_model.model_config)
     for j, persona in enumerate(personas):
@@ -95,10 +96,13 @@ def main(args: DictConfig) -> None:
         for i, sublist in enumerate(final_conversations):
             pair_key = f"prompt-{i} persona-{j}"
             output_conversations[pair_key].extend(sublist)
+
             
-    
-    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}")
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
         json.dump(output_conversations, f)
+
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ import os
 import json
 import copy
 from dataclasses import dataclass
+from typing import Dict, List, Sequence
 
 import transformers
 from omegaconf import DictConfig
@@ -35,50 +36,50 @@ class DataCollatorForSupervisedDataset(object):
         
 
 def _tokenize_fn(
-    strings: Sequence[str], 
+    messages: Sequence[Dict], 
     tokenizer: transformers.PreTrainedTokenizer,
 ) -> Dict:
-    """Tokenize a list of strings. Copy-pasted from https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py."""
+    """Tokenize a list of strings. Edited from from https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py."""
+    
     tokenized_list = [
         tokenizer(
-            text,
+            dct['content'],
             return_tensors="pt",
             padding="longest",
             max_length=tokenizer.model_max_length,
             truncation=True,
             add_special_tokens=False,
         )
-        for text in strings
+        for dct in messages
     ]
-    input_ids = labels = [tokenized.input_ids[0] for tokenized in tokenized_list]
+    input_id_list = [tokenized.input_ids[0] for tokenized in tokenized_list]
+    label_list = [label.fill_(IGNORE_INDEX) if i % 2 == 0 else label for i, label in enumerate(input_id_list.deepcopy())]
+    # Assuming input_id_list and label_list are your lists of 1D tensors
+    input_ids = torch.cat(input_id_list, dim=0)
+    labels = torch.cat(label_list, dim=0)
     
-    input_ids_lens = labels_lens = [
-        tokenized.input_ids.ne(tokenizer.pad_token_id).sum().item() for tokenized in tokenized_list
-    ]
 
     return dict(
         input_ids=input_ids,
         labels=labels,
-        input_ids_lens=input_ids_lens,
-        labels_lens=labels_lens,
     )
 
 
 def preprocess(
-    sources: List[str],
     targets: List[str],
     tokenizer: transformers.PreTrainedTokenizer,
 ) -> Dataset:
     """Preprocess the data by tokenizing."""
+    # targets is a list of messages in the form of 'user's message', 'system's response', 'user's message', 'system's response', ...
+    # reference split-conversations.py in preprocessing
+    tokenized = [_tokenize_fn(messages, tokenizer) for messages in targets]
     
-    targets_tokenized, sources_tokenized = [_tokenize_fn(strings, tokenizer) for strings in (targets, sources)]
-    input_ids = targets_tokenized["input_ids"]
-    labels = copy.deepcopy(input_ids)
-
-    for label, source_len in zip(labels, sources_tokenized["input_ids_lens"]):
-        label[:source_len] = IGNORE_INDEX
+    
+    ### TODO: STILL NEED TO IMPLEMENT THE LOGIC FOR GETTING input_ids, labels into a single format for the Dataset
+    ### atm, targets_tokenized["input_ids"] and targets_tokenized["labels"] are dicts with a single tensor representing a single example
+    final_dict = {key: [d[key] for d in tokenized] for key in tokenized[0]}
         
-    train_dataset = Dataset.from_dict(dict(input_ids=input_ids, labels=labels))
+    train_dataset = Dataset.from_dict(final_dict)
     train_dataset.set_format('torch')
     return train_dataset
 

@@ -37,12 +37,12 @@ def main(args: DictConfig) -> None:
     logging.info(f"Loading models for shuffling from {args.split.name}...")
     random.seed(1)
     
-    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}_{args.split.name}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
         conversations = json.load(f)
     
     output_conversations = shuffle_dict_values(conversations)
     
-    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}-confusion_{args.split.name}.json", 'w') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/confusion_{args.split.name}.json", 'w') as f:
         json.dump(output_conversations, f)
 
 

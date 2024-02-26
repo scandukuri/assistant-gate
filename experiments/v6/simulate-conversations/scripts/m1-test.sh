@@ -23,7 +23,7 @@ n=3  # for example, replace 10 with the number of iterations you desire
 for ((i=1; i<=n; i++))
 do
     # Call generate-qa.py script
-    python generate-qa.py qa_model=m1 human_model=m0 split=test
+    python generate-qa.py qa_model=m1 human_model=M0 split=test
     # Call generate-human.py script
-    python generate-human.py qa_model=m1 human_model=m0 split=test
+    python generate-human.py qa_model=m1 human_model=M0 split=test
 done

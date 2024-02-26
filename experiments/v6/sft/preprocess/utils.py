@@ -30,9 +30,8 @@ def create_turns(
     pattern = f"{escaped_delim_1}|{escaped_delim_2}"
     turns = re.split(pattern, conversation)
     # Note that because of the final E_INST token, there is an additional empty stirng at the end of the list
-    # In addition, the last turn is always the human response to the qa model's last question (we don't need the human response either)
-    # As a result, we return everything before the last 2 elements
-    return turns[:-2]
+    # As a result, we return everything before the last 1 elements
+    return turns[:-1]
 
 
 

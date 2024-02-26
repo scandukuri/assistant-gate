@@ -18,4 +18,5 @@ source activate assistant-gate
 cd /sailhome/andukuri/research_projects/assistant-gate/experiments/v6/persona-generation
 
 python generate-prodigy-test.py model=gpt4 split=test
-python generate-prodigy.py model=gpt4 split=A
+#python generate-prodigy.py model=gpt4 split=A
+#python generate-prodigy.py model=gpt4 split=B

@@ -7,13 +7,12 @@ name: gpt4
 
 model_config:
   azure_api:
-    api_key: ""
     azure_endpoint: "https://philipp.openai.azure.com/"
     api_version: "2023-05-15"
   seed: 1
 
 run:
-  batch_size: 50
+  batch_size: 10
   verbose: false
   completion_config:
     model: "gpt-4"

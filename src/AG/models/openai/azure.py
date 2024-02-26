@@ -1,5 +1,7 @@
 from typing import List, Dict
 
+import os
+
 from openai import AsyncAzureOpenAI
 
 
@@ -9,7 +11,6 @@ class AsyncAzureChatLLM:
     """
     def __init__(
         self, 
-        api_key: str, 
         azure_endpoint: str, 
         api_version: str, 
         ):
@@ -18,7 +19,7 @@ class AsyncAzureChatLLM:
         """
         self.client = AsyncAzureOpenAI(
             api_version=api_version,
-            api_key=api_key,
+            api_key=os.getenv("OPENAI_API_KEY"),
             azure_endpoint=azure_endpoint,
         )
 
@@ -33,9 +34,6 @@ class AsyncAzureChatLLM:
         """
         Make an async API call.
         """
-        try:
-            return await self.client.chat.completions.create(
-                messages=messages, 
-                **kwargs)
-        except:
-            breakpoint()
+        return await self.client.chat.completions.create(
+            messages=messages, 
+            **kwargs)

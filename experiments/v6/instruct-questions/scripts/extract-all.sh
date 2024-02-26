@@ -3,9 +3,9 @@
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
 #SBATCH -w cocoflops-hgx-1
-#SBATCH --gres=gpu:0  # Requesting four GPUs
-#SBATCH --mem=32G 
-#SBATCH --cpus-per-task=16
+#SBATCH --gres=gpu:0  # Requesting no GPUs
+#SBATCH --mem=1G 
+#SBATCH --cpus-per-task=4
 #SBATCH --time=48:00:00
 #SBATCH --output=extract-prompts.out
 #SBATCH --error=extract-prompts.err

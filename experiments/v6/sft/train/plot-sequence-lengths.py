@@ -24,11 +24,11 @@ def main(args: DictConfig) -> None:
     
     # set padding
     tokenizer.pad_token, tokenizer.padding_side = tokenizer.eos_token, "right"
-    tokenizer.special
     
     
-    sources, targets = json.load(open(args.data_args.sources_dir, 'r')), json.load(open(args.data_args.targets_dir, 'r'))
-    dataset = preprocess(sources=sources, targets=targets, tokenizer=tokenizer)
+    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}/{args.split.name}_targets.json", 'r'))
+    
+    dataset = preprocess(targets=targets, tokenizer=tokenizer)
     lengths = [e['labels'].shape[0] for e in dataset]
     plt.hist(lengths, bins=50, color='#FFA500')
     plt.title('Training Dataset Sequence Lengths')

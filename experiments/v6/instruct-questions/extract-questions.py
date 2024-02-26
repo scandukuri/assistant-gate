@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import os
 import logging
 import hydra
 from omegaconf import DictConfig
@@ -8,7 +9,7 @@ import fire
 import datasets
 from datasets import load_dataset
 
-
+from paths import *
 
 
 logging.basicConfig(level=logging.INFO)
@@ -37,13 +38,16 @@ def main(args: DictConfig) -> None:
     private_exchanges = full_dataset.iloc[args.PUBLIC_ROWS * 2:args.PUBLIC_ROWS * 2 + args.PRIVATE_ROWS]['prompt'].tolist()
     private_initial_turns = [extract_initial_prompt(exchange) for exchange in private_exchanges]
     
-    with open(f'A.json', 'w') as f:
+    if not os.path.exists(f'{PROMPT_PATH}/{VERSION}'):
+        os.makedirs(f'{PROMPT_PATH}/{VERSION}')
+    
+    with open(f'{PROMPT_PATH}/{VERSION}/A.json', 'w') as f:
         json.dump(A_public_initial_turns, f)
     
-    with open(f'B.json', 'w') as f:
+    with open(f'{PROMPT_PATH}/{VERSION}/B.json', 'w') as f:
         json.dump(B_public_initial_turns, f)
     
-    with open(f'private/test.json', 'w') as f:
+    with open(f'{PROMPT_PATH}/{VERSION}/test.json', 'w') as f:
         json.dump(private_initial_turns, f)
     
     

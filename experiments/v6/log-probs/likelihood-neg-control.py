@@ -17,6 +17,7 @@ from collections import defaultdict
 from datasets import load_dataset, Dataset
 
 from utils import *
+from paths import *
 
 # import models
 from AG.models.huggingface.hf_inference_model import HFInferenceModel
@@ -49,23 +50,22 @@ def main(args: DictConfig) -> None:
         
     
     # Load prompts
-    with open(args.split.PROMPT_DIR, "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     
     # Load personas
-    with open(args.split.PERSONA_DIR, 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
     # Load names
-    with open(args.split.NAMES_DIR, 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION}/{args.split.name}_NAMES.json", 'r') as f:
         names = json.load(f)
     
-    # Load gold answers
-    with open(f'/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/build-gold-responses/gold-responses/{args.split.name}.json', 'r') as f:
+
+    with open(f'{GOLD_PATH}/{VERSION}/{args.split.name}.json', 'r') as f:
         gold_responses = json.load(f)
         
-    
     final_log_probs = defaultdict(list)
     for j, persona in enumerate(personas):
         for i, prompt in enumerate(prompts):
@@ -80,9 +80,9 @@ def main(args: DictConfig) -> None:
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
                     
 
-    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}_{args.split.name}.json"):
-        os.makedirs(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}_{args.split.name}.json")
-    with open(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}_{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}"):
+        os.makedirs(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}")
+    with open(f"{LOGPROBS_PATH}/{VERSION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
         json.dump(final_log_probs, f)
     
 

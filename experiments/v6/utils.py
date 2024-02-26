@@ -1,12 +1,13 @@
 import numpy as np
+from paths import *
 k = 1
 
 
-M0_POS_CONTROL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/pos-control/m0_test.json'
-M0_TOPK_POS_CONTROL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/pos-control/m0_test_top-k-1.json'
-M0_EXPERIMENTAL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/qa-experimental/m0_test.json'
-M0_TOPK_EXPERIMENTAL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/qa-experimental/m0_test_top-k-1.json'
-M0_NEG_CONTROL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/neg-control/m0_test.json'
+M0_POS_CONTROL_DIR = f'{LOGPROBS_PATH}/{VERSION}/pos-control/m0/test.json'
+M0_TOPK_POS_CONTROL_DIR =f'{LOGPROBS_PATH}/{VERSION}/pos-control/m0/test_top-k-1.json'
+M0_EXPERIMENTAL_DIR = f'{LOGPROBS_PATH}/{VERSION}/qa-experimental/m0/test.json'
+M0_TOPK_EXPERIMENTAL_DIR = f'{LOGPROBS_PATH}/{VERSION}/qa-experimental/m0/test_top-k-1.json'
+M0_NEG_CONTROL_DIR = f'{LOGPROBS_PATH}/{VERSION}/neg-control/m0/test.json'
 
 
 M0C_POS_CONTROL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/experiments/v6/log-probs/pos-control/m0-confusion_test.json'
@@ -30,11 +31,15 @@ M1C_NEG_CONTROL_DIR = '/sailhome/andukuri/research_projects/assistant-gate/exper
 
 
 
+
 ## FILEPATHS
 SIMULATION_PATH = '/scr/andukuri/assistant-gate-hgx/simulated-conversations'
 LOGPROBS_PATH = '/scr/andukuri/assistant-gate-hgx/log-probs'
+PERSONAS_PATH = '/scr/andukuri/assistant-gate-hgx/personas'
+GOLD_PATH = '/scr/andukuri/assistant-gate-hgx/gold-responses'
+PROMPT_PATH = '/scr/andukuri/assistant-gate-hgx/prompts'
+SFT_DATA_PATH = '/scr/andukuri/assistant-gate-hgx/sft-data'
 VERSION = 'v6'
-
 
 def flatten_list(lists):
     return [item for sublist in lists for item in sublist]
