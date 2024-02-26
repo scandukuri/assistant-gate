@@ -1,0 +1,13 @@
+hydra:
+  run:
+    dir: outputs
+
+defaults:
+  - model: gpt4
+  - split: test 
+
+
+PROMPT_IDX: 2
+SYS_IDX: 1
+SHOT_GROUPS: 10
+EXPERT_DIR: expert-personas/v2.json

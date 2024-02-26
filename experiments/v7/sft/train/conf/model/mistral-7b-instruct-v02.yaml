@@ -1,0 +1,42 @@
+hydra:
+  run:
+    dir: outputs
+
+name: mistral-7b-instruct-v02
+shortname: m0
+
+wandb:
+  project: assistant-gate
+  log_model: checkpoint
+  name: train-0
+
+model_config:
+  pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+
+tokenizer_config:
+  pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+  model_max_length: 1024
+
+
+
+training_args:
+  output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/m1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 8
+  learning_rate: 2.0e-05
+  num_train_epochs: 1
+  save_total_limit: 4
+  eval_steps: 400
+  evaluation_strategy: steps
+  seed: 42
+  save_strategy: epoch
+  report_to: wandb
+  bf16: true
+  lr_scheduler_type: cosine
+  warmup_ratio: 0.1
+  do_eval: true
+  logging_steps: 5  
+  logging_strategy: steps

@@ -1,0 +1,14 @@
+hydra:
+  run:
+    dir: outputs
+
+name: tiny-mistral
+
+model_config:
+  pretrained_model_name_or_path: openaccess-ai-collective/tiny-mistral
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/tiny-mistral
+
+tokenizer_config:
+  pretrained_model_name_or_path: openaccess-ai-collective/tiny-mistral
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/tiny-mistral
+  model_max_length: 1024

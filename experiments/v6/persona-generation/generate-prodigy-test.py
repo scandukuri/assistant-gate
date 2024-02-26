@@ -60,7 +60,7 @@ def main(args: DictConfig) -> None:
         data = json.loads(data)
     else:
         print("Failed to retrieve the JSON file.")
-        
+        yaml
         
         
     # Preprocess
