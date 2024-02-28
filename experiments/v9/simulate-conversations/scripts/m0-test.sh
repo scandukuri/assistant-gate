@@ -18,12 +18,12 @@ source activate assistant-gate
 cd ~/research_projects/assistant-gate/experiments/v9/simulate-conversations/
 
 # Assuming n is the number of times you want to loop
-n=3  # for example, replace 10 with the number of iterations you desire
+n=3  # for example, replace n with the number of iterations you desire
 
 for ((i=1; i<=n; i++))
 do
     # Call generate-qa.py script
     python generate-qa.py qa_model=m0 human_model=M0 split=test
     # Call generate-human.py script
-    python generate-human.py qa_model=m0 human_model=M0 split=test
+    python generate-human.py qa_model=m0 human_model=M0 split=test turn="t$i"
 done

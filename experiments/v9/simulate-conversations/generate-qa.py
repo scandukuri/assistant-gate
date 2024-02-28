@@ -114,9 +114,8 @@ def main(args: DictConfig) -> None:
                 for i, sublist in enumerate(chunk_list(qa_responses, args.qa_model.run.initial_completion_config.num_return_sequences)):
                     conversations.extend([initial_prompts[i] + '\n' + qa_response + EOS_TOKEN for qa_response in sublist])
                 conversations = chunk_list(conversations, args.qa_model.run.initial_completion_config.num_return_sequences)
-                for i, sublist in enumerate(conversations):
-                    prompt_index = batch_index * args.qa_model.run.batch_size + i
-                    pair_key = f"prompt-{prompt_index} persona-{j}"
+                for i, sublist in enumerate(final_conversations):
+                    pair_key = f"prompt-{prompt_keys[i]} persona-{j}"
                     output_conversations[pair_key].extend(sublist)
                     
         if not os.path.exists(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}"):
