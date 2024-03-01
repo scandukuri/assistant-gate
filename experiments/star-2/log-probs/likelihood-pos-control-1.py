@@ -85,8 +85,8 @@ def main(args: DictConfig) -> None:
                     for lst in [first, second]:
                         if len(lst) == 0: continue
                         log_probs = model.batch_log_probs(
-                            prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST)]}{prompts[i]}{E_INST}\n" for conversation in lst], 
-                            answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompt}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST)]}{prompts[i]}{E_INST}\n{gold_responses[f'prompt-{i} persona-{j}']}" for conversation in lst]
+                            prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompts[i]}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST)]}\n\n{prompts[i]}{E_INST}\n" for conversation in lst], 
+                            answers=[f"{BOS_TOKEN}{B_INST}My name is {names[j]}. Here is some information about me:\n\n{persona}\n\n{prompts[i]}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST)]}\n\n{prompts[i]}{E_INST}\n{gold_responses[f'prompt-{i} persona-{j}']}" for conversation in lst]
                         ).to('cpu')
                         # rewrite as a single line
                         final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())

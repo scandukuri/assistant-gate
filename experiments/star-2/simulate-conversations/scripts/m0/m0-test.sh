@@ -3,9 +3,9 @@
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
 #SBATCH -w cocoflops-hgx-1
-#SBATCH --gres=gpu:1  # Requesting four GPUs
-#SBATCH --mem=64G 
-#SBATCH --cpus-per-task=16
+#SBATCH --gres=gpu:4  # Requesting four GPUs
+#SBATCH --mem=512G 
+#SBATCH --cpus-per-task=64
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-2/m0-test.out
 #SBATCH --error=script-logs-2/m0-test.err

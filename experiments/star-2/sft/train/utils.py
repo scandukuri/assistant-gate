@@ -1,6 +1,7 @@
 from typing import Dict, Sequence, List, Tuple
 import torch
 import io
+import logging
 import os
 import json
 import copy
@@ -35,30 +36,60 @@ class DataCollatorForSupervisedDataset(object):
         )
         
 
+# Function to find sequence in tensor
+def find_sequence(tensor, sequence):
+    seq_len = sequence.size(0)
+    indices = []
+
+    for i in range(tensor.size(0) - seq_len + 1):
+        if torch.equal(tensor[i:i+seq_len], sequence):
+            indices.append(i)
+
+    return indices
+
+# Function to create a mask for L, masking out occurrences between and including sequences a and b
+def create_mask(L, a, b):
+    # Initial mask with all True
+    mask = torch.ones(L.size(0), dtype=torch.bool)
+    
+    # Find start indices of sequence a
+    start_indices_a = find_sequence(L, a)
+    
+    for start_index_a in start_indices_a:
+        # For each start of a, find the start of b after a
+        start_index_b = find_sequence(L[start_index_a:], b)
+        
+        if start_index_b:
+            # Assuming we mask from the first occurrence of b after a
+            start_index_b = start_index_b[0] + start_index_a  # Adjust index relative to the whole tensor
+            end_index_b = start_index_b + b.size(0)  # End index of b
+            
+            # Set mask to False from start of a to end of b
+            mask[start_index_a:end_index_b] = False
+    
+    return mask
+
 def _tokenize_fn(
     messages: Sequence[Dict], 
     tokenizer: transformers.PreTrainedTokenizer,
 ) -> Dict:
     """Tokenize a list of strings. Edited from from https://github.com/tatsu-lab/stanford_alpaca/blob/main/train.py."""
     
-    tokenized_list = [
-        tokenizer(
-            dct['content'],
-            return_tensors="pt",
-            padding="longest",
-            max_length=tokenizer.model_max_length,
-            truncation=True,
-            add_special_tokens=False,
-        )
-        for dct in messages
-    ]
-    input_id_list = [tokenized.input_ids[0] for tokenized in tokenized_list]
-    label_list = [label.fill_(IGNORE_INDEX) if i % 2 == 0 else label for i, label in enumerate(input_id_list.deepcopy())]
-    # Assuming input_id_list and label_list are your lists of 1D tensors
-    input_ids = torch.cat(input_id_list, dim=0)
-    labels = torch.cat(label_list, dim=0)
+    enumerated = list()
+    for i in range(len(messages) + 1):
+        enumerated.append(tokenizer.apply_chat_template(messages[:i], return_tensors='pt', padding='longest', max_length=tokenizer.model_max_length, truncation=True))
+    enumerated = [e[0] for e in enumerated][1:]
+    input_ids = copy.deepcopy(enumerated[-1])
     
-
+    
+    # Mask user interactions
+    for i in range(1, len(enumerated), 2):
+        if i == 1:
+            enumerated[-1][0 : len(enumerated[i - 1])] = IGNORE_INDEX
+        else:
+            enumerated[-1][len(enumerated[i - 2]): len(enumerated[i - 1])] = IGNORE_INDEX
+    labels = copy.deepcopy(enumerated[-1])
+    
     return dict(
         input_ids=input_ids,
         labels=labels,
@@ -72,13 +103,16 @@ def preprocess(
     """Preprocess the data by tokenizing."""
     # targets is a list of messages in the form of 'user's message', 'system's response', 'user's message', 'system's response', ...
     # reference split-conversations.py in preprocessing
-    tokenized = [_tokenize_fn(messages, tokenizer) for messages in targets]
+    tokenized = list()
+    for i, messages in enumerate(targets):
+        if i % 500 == 0: logging.info(f'Processed {i} targets out of {len(targets)}')
+        tokenized.append(_tokenize_fn(messages, tokenizer))
     
     
     ### TODO: STILL NEED TO IMPLEMENT THE LOGIC FOR GETTING input_ids, labels into a single format for the Dataset
     ### atm, targets_tokenized["input_ids"] and targets_tokenized["labels"] are dicts with a single tensor representing a single example
     final_dict = {key: [d[key] for d in tokenized] for key in tokenized[0]}
-        
+    
     train_dataset = Dataset.from_dict(final_dict)
     train_dataset.set_format('torch')
     return train_dataset

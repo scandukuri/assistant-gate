@@ -23,6 +23,7 @@ from AG.models.huggingface.hf_inference_model import HFInferenceModel
 from AG.models.openai.azure import AsyncAzureChatLLM
 from AG.models.openai.gpt4 import GPT4Agent
 from AG.models.vllm_models.inference_model import VLLMInferenceModel
+from paths import *
 
 
 # logging
@@ -36,17 +37,18 @@ def main(args: DictConfig) -> None:
     # TODO: fix directory
     
 
-    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
         conversations = json.load(f)
     ### THIS DIRECTORY IS WRONG FIX IT
-    with open(f"{GOLD_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
+    with open(f"{GOLD_PATH}/{VERSION}/{args.split.name}.json", 'r') as f:
         gold_responses = json.load(f)
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer.model_config.model)
 
     
     targets = list()
     for key, lst in conversations.items():
-        gold = gold_responses[key]
+        logging.info(f"Processing {key}...")
+        gold = gold_responses[key][0]
         for conversation in lst:
             conversation = extract_history(conversation)
             turns = create_turns(conversation)
@@ -56,6 +58,7 @@ def main(args: DictConfig) -> None:
             turns.append(gold)
             
             messages = [{"role": args.ROLES[i % 2], "content": turn} for i, turn in enumerate(turns)]
+            
             targets.append(messages)
     
     if not os.path.exists(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}"):

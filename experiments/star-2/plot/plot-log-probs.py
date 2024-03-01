@@ -14,6 +14,7 @@ import json
 import logging
 import torch
 import random
+import logging
 import re
 import time
 import os
@@ -40,7 +41,7 @@ logging.basicConfig(level=logging.INFO)
 
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
-    
+    print(f"args N_ITER {args.N_ITER}")
     
     POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
     TOPK_POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
@@ -60,7 +61,7 @@ def main(args: DictConfig) -> None:
     topk_experimental = [load_file(pth) for pth in TOPK_EXPERIMENTAL]
 
 
-    # Now calculate means and SEMs instead of just means
+#     # Now calculate means and SEMs instead of just means
     pos_control_1_means, pos_control_1_sems = zip(*[calculate_mean_and_sem([lst for key, lst in logprobs.items()]) for logprobs in pos_control_1])
     pos_control_2_means, pos_control_2_sems = zip(*[calculate_mean_and_sem([lst for key, lst in logprobs.items()]) for logprobs in pos_control_2])
     pos_control_1_topk_means, pos_control_1_topk_sems = zip(*[calculate_mean_and_sem([lst for key, lst in logprobs.items()]) for logprobs in topk_pos_control_1])
@@ -78,8 +79,8 @@ def main(args: DictConfig) -> None:
 
     # Define custom colors to match the provided image as closely as possible
     color_map = {
-        'pos-control-1': '#FFA500',  # yellow color for positive control,
-        'pos-control-2' : 'aqua',
+        'pos-control-1': '#FFA500',  # yellow color for positive control 1,
+        'pos-control-2' : '#1fb37eff', # green color for positive control 2
         'neg-control': '#1F77B4',  # Muted blue color for negative control
         'qa-experimental': '#FF7F0E' # Safety orange for QA experimental
     }
@@ -101,7 +102,7 @@ def main(args: DictConfig) -> None:
     ax = plt.axes()
     ax.set_facecolor("whitesmoke")
 
-    # Plot each category with a larger marker using plot()
+#     # Plot each category with a larger marker using plot()
     plt.plot(iterations, log_probabilities['pos-control-1'], label='pos-control-1', 
             marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'pos-control-1-top-{args.k}'], label=f'pos-control-1-top-{args.k}', 
@@ -117,7 +118,6 @@ def main(args: DictConfig) -> None:
     plt.plot(iterations, log_probabilities[f'qa-experimental-top-{args.k}'], label=f'qa-experimental-top-{args.k}', 
             marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', alpha=0.4, zorder=z_order/100)
     
-  
 
     # # Plot each category with error bars
     plt.errorbar(iterations, pos_control_1_means, yerr=pos_control_1_sems, marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', capsize=5, ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
@@ -136,7 +136,7 @@ def main(args: DictConfig) -> None:
     plt.xlim(-0.5, 3.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
 
     # Set x-axis range
-    ax.set_ylim([-400, -250])
+    ax.set_ylim([-370, -150])
 
     # Set the labels for x and y axes
     plt.xlabel('Iterations')
@@ -145,17 +145,17 @@ def main(args: DictConfig) -> None:
     # Add the legend to the plot
     plt.legend(borderpad=1, fontsize='large')
 
-    # Show grid with light gray color
+# Show grid with light gray color
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
-    plt.title(f'Average Log-Probability of Desired Responses in {args.split.name} Split\n[n = 5000 simulations]')
-    #len(experimental[0].keys())*len(experimental[0]['prompt-0 persona-0'])
-    # Remove top and right spines
+    plt.title(f'Average Log-Probability of Desired Responses in {args.split.name} Split\n[n = {5000} simulations]')
+
+# Remove top and right spines
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     plt.tight_layout()
 
-    # Show the plot
-    if not os.exists(f'{FIGURES_PATH}/{VERSION_2}'):
+# Show the plot
+    if not os.path.exists(f'{FIGURES_PATH}/{VERSION_2}'):
         os.makedirs(f'{FIGURES_PATH}/{VERSION_2}')
     plt.savefig(f'{FIGURES_PATH}/{VERSION_2}/{args.split.name}_top-{args.k}.png')
 

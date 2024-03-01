@@ -7,8 +7,8 @@
 #SBATCH --mem=256G 
 #SBATCH --cpus-per-task=32
 #SBATCH --time=48:00:00
-#SBATCH --output=~/script-logs/m0-test-confusion-log-probs.out
-#SBATCH --error=~/script-logs/m0-test-confusion-log-probs.err
+#SBATCH --output=script-logs/m0-test-confusion-log-probs.out
+#SBATCH --error=script-logs/m0-test-confusion-log-probs.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh

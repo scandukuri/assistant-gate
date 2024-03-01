@@ -23,7 +23,7 @@ def calculate_mean_and_sem(values):
 
 error_color = 'black'
 z_order = 1000
-marker_size = 16  # Adjust this value as needed for larger markers with plot()
+marker_size = 11  # Adjust this value as needed for larger markers with plot()
 
 
 def load_file(file):

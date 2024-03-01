@@ -10,13 +10,15 @@ from omegaconf import DictConfig, OmegaConf
 from transformers import TrainingArguments, Trainer, AutoModelForCausalLM, AutoTokenizer
 
 from utils import *
+from paths import *
 
 logging.basicConfig(level=logging.INFO)
 
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(args: DictConfig) -> None:
-    logging.info(f"Writing checkpoints to: {args.training_args.output_dir}")
+    logging.info(f"Training {args.model.shortname} on {args.split.name} split...")
+    logging.info(f"Writing checkpoints to: {args.model.training_args.output_dir}")
     logging.info(f"Wandb name: {args.model.wandb.name}")
     logging.info(f"Max seq length: {args.model.tokenizer_config.model_max_length}")
     logging.info(f"Devices: {torch.cuda.device_count()}")
@@ -49,6 +51,7 @@ def main(args: DictConfig) -> None:
     targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.model.shortname}/{args.split.name}.json", 'r'))
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     dataset = dataset.shuffle(seed=42)
+    
 
     dataset = dataset.train_test_split(test_size=args.validation_split_size)
     logging.info(dataset)

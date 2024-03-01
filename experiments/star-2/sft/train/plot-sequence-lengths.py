@@ -11,6 +11,7 @@ from omegaconf import DictConfig, OmegaConf
 from transformers import TrainingArguments, Trainer, AutoModelForCausalLM, AutoTokenizer
 
 from utils import *
+from paths import *
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,15 +27,26 @@ def main(args: DictConfig) -> None:
     tokenizer.pad_token, tokenizer.padding_side = tokenizer.eos_token, "right"
     
     
-    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION_2}/{args.model.shortname}/{args.split.name}_targets.json", 'r'))
+    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION_2}/{args.model.shortname}/{args.split.name}.json", 'r'))
     
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     lengths = [e['labels'].shape[0] for e in dataset]
-    plt.hist(lengths, bins=50, color='#FFA500')
-    plt.title('Training Dataset Sequence Lengths')
+    
+    
+    plt.figure(figsize=(12, 6))
+    ax = plt.axes()
+    ax.set_facecolor("whitesmoke")
+    
+    plt.hist(lengths, bins=50, color='#1fb37eff')
+    plt.title(f'Sequence Lengths for {VERSION_2} {args.model.shortname} Simulated Conversations on {args.split.name} split')
     plt.xlabel('# Tokens')
     plt.ylabel('Frequency')
-    plt.savefig(f'{args.model.shortname}-{args.split.name}-sequence-lengths.png')
+    plt.tight_layout()
+    plt.margins(0.3)
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    plt.grid(True, color='white', linestyle='-', linewidth=0.1)
+    plt.savefig(f'seq-length-plots/{VERSION_2} {args.model.shortname}-{args.split.name}-sequence-lengths.png')
     
     
     

@@ -3,8 +3,8 @@
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
 #SBATCH -w cocoflops-hgx-1
-#SBATCH --gres=gpu:0  # Requesting four GPUs
-#SBATCH --mem=96G 
+#SBATCH --gres=gpu:0  # Requesting 0 GPUs
+#SBATCH --mem=32G 
 #SBATCH --cpus-per-task=20
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-2/m0-A-filter.out
@@ -18,5 +18,5 @@ source activate assistant-gate
 cd ~/research_projects/assistant-gate/experiments/star-2/log-probs/
 
 python filter.py qa_model=m0 condition=qa-experimental split=A
-python filter-pos-control.py qa_model=m0 condition=pos-control-1 split=A
-python filter-pos-control.py qa_model=m0 condition=pos-control-2 split=A
+#python filter-pos-control.py qa_model=m0 condition=pos-control-1 split=A
+#python filter-pos-control.py qa_model=m0 condition=pos-control-2 split=A

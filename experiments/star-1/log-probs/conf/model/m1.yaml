@@ -7,8 +7,8 @@ name: mistral-m1-vllm
 shortname: m1
 
 model_config:
-  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/
-  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/
+  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1/m1/final
+  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1/m1/final
   dtype: auto
   tensor_parallel_size: 2
   seed: 1

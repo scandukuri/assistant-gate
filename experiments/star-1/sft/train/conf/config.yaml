@@ -5,6 +5,8 @@ hydra:
 defaults:
   - model: m0
   - split: A
+  - iteration: i0
+  - tokenizer: m0
 
 
 validation_split_size: 0.05
