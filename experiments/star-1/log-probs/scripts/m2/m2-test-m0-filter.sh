@@ -7,8 +7,8 @@
 #SBATCH --mem=36G 
 #SBATCH --cpus-per-task=20
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs/m2-test-filter.out
-#SBATCH --error=script-logs/m2-test-filter.err
+#SBATCH --output=script-logs/m2-test-m0-filter.out
+#SBATCH --error=script-logs/m2-test-m0-filter.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
@@ -17,6 +17,6 @@ source activate assistant-gate
 # navigate to python script parent directory
 cd ~/research_projects/assistant-gate/experiments/star-1/log-probs/
 
-python model-0-log-probs/filter-m0-lp.py model=m0 qa_model=m2 condition=qa-experimental split=test
+#python model-0-log-probs/filter-m0-lp.py model=m0 qa_model=m2 condition=qa-experimental split=test
 python model-0-log-probs/filter-pos-control-m0-lp.py model=m0 qa_model=m2 condition=pos-control-1 split=test
 python model-0-log-probs/filter-pos-control-m0-lp.py model=m0 qa_model=m2 condition=pos-control-2 split=test

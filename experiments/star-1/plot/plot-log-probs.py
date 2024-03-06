@@ -104,33 +104,33 @@ def main(args: DictConfig) -> None:
 
 #     # Plot each category with a larger marker using plot()
     plt.plot(iterations, log_probabilities['pos-control-1'], label='pos-control-1', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'pos-control-1-top-{args.k}'], label=f'pos-control-1-top-{args.k}', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle=':', alpha=0.4, zorder=z_order/100)
     plt.plot(iterations, log_probabilities['pos-control-2'], label='pos-control-2', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'pos-control-2-top-{args.k}'], label=f'pos-control-2-top-{args.k}', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle=':', alpha=0.4, zorder=z_order/100)
     plt.plot(iterations, log_probabilities['neg-control'], label='neg-control', 
-            marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', zorder=z_order/100)
+            marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities['qa-experimental'], label='qa-experimental', 
-            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', zorder=z_order/100)
+            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'qa-experimental-top-{args.k}'], label=f'qa-experimental-top-{args.k}', 
-            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle=':', alpha=0.4, zorder=z_order/100)
     
 
 
     # # Plot each category with error bars
-    plt.errorbar(iterations, pos_control_1_means, yerr=pos_control_1_sems, marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', capsize=5, ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
-    plt.errorbar(iterations, pos_control_2_means, yerr=pos_control_2_sems, marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', capsize=5, ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
-    plt.errorbar(iterations, neg_control_means, yerr=neg_control_sems, marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+    plt.errorbar(iterations, pos_control_1_means, yerr=pos_control_1_sems, marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', capsize=0, ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+    plt.errorbar(iterations, pos_control_2_means, yerr=pos_control_2_sems, marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', capsize=0, ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+    plt.errorbar(iterations, neg_control_means, yerr=neg_control_sems, marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
     plt.errorbar(iterations, experimental_means, yerr=experimental_sems, marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='',  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
     
     # If the top-k categories also need error bars, adjust similarly
     # For example:
-    plt.errorbar(iterations, pos_control_1_topk_means, yerr=pos_control_1_topk_sems, marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
-    plt.errorbar(iterations, pos_control_2_topk_means, yerr=pos_control_2_topk_sems, marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)    
-    plt.errorbar(iterations, experimental_topk_means, yerr=experimental_topk_sems, marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', capsize=5,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+    plt.errorbar(iterations, pos_control_1_topk_means, yerr=pos_control_1_topk_sems, marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
+    plt.errorbar(iterations, pos_control_2_topk_means, yerr=pos_control_2_topk_sems, marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)    
+    plt.errorbar(iterations, experimental_topk_means, yerr=experimental_topk_sems, marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
 
     # Set the x-axis to show the range up to iteration 5
     plt.xticks(range(4))  # This will show ticks from 0 to 5

@@ -105,17 +105,36 @@ class VLLMInferenceModel():
         max_new_tokens: Optional[int] = 500,
         do_sample: Optional[bool] = True,
         top_p: Optional[float] = 0.9,
+        top_k: Optional[int] = -1,
         temperature: Optional[float] = 0.1,
         num_return_sequences: Optional[int] = 1,
+        best_of: Optional[int] = 1,
+        use_beam_search: Optional[bool] = False,
+        presence_penalty: Optional[float] = 0.0,
+        frequency_penalty: Optional[float] = 0.0
+        
     ) -> List[str]:
         """Batched text generation."""       
         # sampling params
-        sampling_params = SamplingParams(
-            temperature=temperature,
-            top_p=top_p,
-            max_tokens=max_new_tokens,
-            n=num_return_sequences,
-        )
+        if temperature == 0.0:
+            sampling_params = SamplingParams(
+                temperature=temperature,
+                top_p=top_p,
+                top_k=top_k,
+                max_tokens=max_new_tokens,
+                n=num_return_sequences,
+                best_of=1,
+                use_beam_search=use_beam_search,
+                presence_penalty=presence_penalty,
+                frequency_penalty=frequency_penalty,
+            )
+        else:
+            sampling_params = SamplingParams(
+                temperature=temperature,
+                top_p=top_p,
+                max_tokens=max_new_tokens,
+                n=num_return_sequences,
+            )
         
         # sample
         outputs = self.model.generate(

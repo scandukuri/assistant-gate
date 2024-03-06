@@ -43,22 +43,13 @@ logging.basicConfig(level=logging.INFO)
 def main(args: DictConfig) -> None:
     print(f"args N_ITER {args.N_ITER}")
     
-    POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
-    TOPK_POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
-    POS_CONTROL_2 = [f'{PREFIX}/pos-control-2/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
-    TOPK_POS_CONTROL_2 = [f'{PREFIX}/pos-control-2/m{i}/{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
-    EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
-    TOPK_EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
-    NEG_CONTROL = [f'{PREFIX}/neg-control/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
-    if args.m0_probs:
-        POS_CONTROL_1 = [POS_CONTROL_1[0]] + [f'{PREFIX}/pos-control-1/m{i}/m0_{args.split.name}.json' for i in range(1, args.N_ITER)]
-        TOPK_POS_CONTROL_1 = [TOPK_POS_CONTROL_1[0]] + [f'{PREFIX}/pos-control-1/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(1, args.N_ITER)]
-        POS_CONTROL_2 = [POS_CONTROL_2[0]] + [f'{PREFIX}/pos-control-2/m{i}/m0_{args.split.name}.json' for i in range(1, args.N_ITER)]
-        TOPK_POS_CONTROL_2 = [TOPK_POS_CONTROL_2[0]] + [f'{PREFIX}/pos-control-2/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(1, args.N_ITER)]
-        EXPERIMENTAL = [EXPERIMENTAL[0]] + [f'{PREFIX}/qa-experimental/m{i}/m0_{args.split.name}.json' for i in range(1, args.N_ITER)]
-        TOPK_EXPERIMENTAL = [TOPK_EXPERIMENTAL[0]] + [f'{PREFIX}/qa-experimental/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(1, args.N_ITER)]
-        NEG_CONTROL = [NEG_CONTROL[0]] + [f'{PREFIX}/neg-control/m{i}/m0_{args.split.name}.json' for i in range(1, args.N_ITER)]
-        
+    POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/m0_{args.split.name}.json' for i in range(args.N_ITER)]
+    TOPK_POS_CONTROL_1 = [f'{PREFIX}/pos-control-1/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
+    POS_CONTROL_2 = [f'{PREFIX}/pos-control-2/m{i}/m0_{args.split.name}.json' for i in range(args.N_ITER)]
+    TOPK_POS_CONTROL_2 = [f'{PREFIX}/pos-control-2/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
+    EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/m0_{args.split.name}.json' for i in range(args.N_ITER)]
+    TOPK_EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/m0_{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
+    NEG_CONTROL = [f'{PREFIX}/neg-control/m{i}/m0_{args.split.name}.json' for i in range(args.N_ITER)]
     iterations = list(range(args.N_ITER))
 
     pos_control_1 = [load_file(pth) for pth in POS_CONTROL_1]
@@ -113,19 +104,19 @@ def main(args: DictConfig) -> None:
 
 #     # Plot each category with a larger marker using plot()
     plt.plot(iterations, log_probabilities['pos-control-1'], label='pos-control-1', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'pos-control-1-top-{args.k}'], label=f'pos-control-1-top-{args.k}', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle=':', alpha=0.4, zorder=z_order/100)
     plt.plot(iterations, log_probabilities['pos-control-2'], label='pos-control-2', 
             marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'pos-control-2-top-{args.k}'], label=f'pos-control-2-top-{args.k}', 
-            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle=':', alpha=0.4, zorder=z_order/100)
     plt.plot(iterations, log_probabilities['neg-control'], label='neg-control', 
-            marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='', zorder=z_order/100)
+            marker='s', markersize=marker_size, color=color_map['neg-control'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities['qa-experimental'], label='qa-experimental', 
-            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', zorder=z_order/100)
+            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='--', zorder=z_order/100)
     plt.plot(iterations, log_probabilities[f'qa-experimental-top-{args.k}'], label=f'qa-experimental-top-{args.k}', 
-            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', alpha=0.4, zorder=z_order/100)
+            marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle=':', alpha=0.4, zorder=z_order/100)
     
 
 
@@ -167,7 +158,7 @@ def main(args: DictConfig) -> None:
 # Show the plot
     if not os.path.exists(f'{FIGURES_PATH}/{VERSION}'):
         os.makedirs(f'{FIGURES_PATH}/{VERSION}')
-    plt.savefig(f'{FIGURES_PATH}/{VERSION}/m0_log_probs_always_{args.split.name}_top-{args.k}.png')
+    plt.savefig(f'{FIGURES_PATH}/{VERSION}/m0_log_probs_{args.split.name}_top-{args.k}.png')
 
 
 

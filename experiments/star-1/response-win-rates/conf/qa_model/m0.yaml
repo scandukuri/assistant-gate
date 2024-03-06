@@ -16,15 +16,14 @@ model_config:
 run:
   batch_size: 750
   verbose: false
-  initial_completion_config:
-    do_sample: true
-    temperature: 0.9
-    top_p: 0.9
-    max_new_tokens: 700
-    num_return_sequences: 10
   completion_config:
-    do_sample: true
-    temperature: 0.9
-    top_p: 0.9
+    do_sample: false
+    best_of: 1
+    temperature: 0.0
+    top_p: 1
+    top_k: -1
     max_new_tokens: 700
+    use_beam_search: false
+    presence_penalty: 0
+    frequency_penalty: 0
     num_return_sequences: 1

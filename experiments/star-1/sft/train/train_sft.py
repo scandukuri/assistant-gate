@@ -2,6 +2,7 @@ import os
 import logging 
 from tqdm import tqdm
 
+import random
 import fire
 import hydra
 import torch
@@ -17,15 +18,16 @@ logging.basicConfig(level=logging.INFO)
 
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(args: DictConfig) -> None:
-    logging.info(f"Training {args.model.shortname} on {args.split.name} split...")
-    logging.info(f"Writing checkpoints to: {args.model.training_args.output_dir}")
-    logging.info(f"Wandb name: {args.model.wandb.name}")
-    logging.info(f"Max seq length: {args.model.tokenizer_config.model_max_length}")
+    random.seed(1)
+    logging.info(f"Training {args.qa_model.shortname} on {args.split.name} split...")
+    logging.info(f"Writing checkpoints to: {args.qa_model.training_args.output_dir}")
+    logging.info(f"Wandb name: {args.qa_model.wandb.name}")
+    logging.info(f"Max seq length: {args.qa_model.tokenizer_config.model_max_length}")
     logging.info(f"Devices: {torch.cuda.device_count()}")
     
     # wandb
     args_dict = OmegaConf.to_container(args, resolve=True)
-    wandb.init(project=args.model.wandb.project, name=args.model.wandb.name, config=args_dict)
+    wandb.init(project=args.qa_model.wandb.project, name=args.qa_model.wandb.name, config=args_dict)
 
     # get tokenizer 
     tokenizer = AutoTokenizer.from_pretrained(**args.model.tokenizer_config)
@@ -41,14 +43,14 @@ def main(args: DictConfig) -> None:
     )
     
     # training args
-    training_args_dict = OmegaConf.to_container(args.model.training_args, resolve=True)
+    training_args_dict = OmegaConf.to_container(args.qa_model.training_args, resolve=True)
     training_args = TrainingArguments(**training_args_dict)
     if not os.path.exists(training_args.output_dir):
         os.makedirs(training_args.output_dir)
     if not os.path.exists(f'{training_args.output_dir}/final'):
         os.makedirs(f'{training_args.output_dir}/final')
 
-    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.model.shortname}/{args.split.name}.json", 'r'))
+    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.qa_model.shortname}/m0_{args.split.name}.json", 'r'))
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     dataset = dataset.shuffle(seed=42)
     

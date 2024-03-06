@@ -17,6 +17,6 @@ source activate assistant-gate
 # navigate to python script parent directory
 cd ~/research_projects/assistant-gate/experiments/star-1/log-probs/
 
-python filter.py model=m2 qa_model=m2 condition=qa-experimental split=test
-python filter-pos-control.py model=m2 qa_model=m2 condition=pos-control-1 split=test
-python filter-pos-control.py model=m2 qa_model=m2 condition=pos-control-2 split=test
+python model-t-log-probs/filter.py model=m2 qa_model=m2 condition=qa-experimental split=test
+python model-t-log-probs/filter-pos-control.py model=m2 qa_model=m2 condition=pos-control-1 split=test
+python model-t-log-probs/filter-pos-control.py model=m2 qa_model=m2 condition=pos-control-2 split=test

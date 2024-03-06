@@ -36,7 +36,7 @@ class HFInferenceModel():
         )
         
         # check which model we are using
-        is_mistral = "mistral" in pretrained_model_name_or_path.lower()
+        is_mistral = "mistral" in pretrained_model_name_or_path.lower() or "m0" in pretrained_model_name_or_path.lower() or "m1" in pretrained_model_name_or_path.lower()
         is_llama_2 = "llama-2" in pretrained_model_name_or_path.lower() or "llama" in pretrained_model_name_or_path.lower() 
         is_zephyr = "zephyr" in pretrained_model_name_or_path.lower()
         is_starcoder = "starcoder" in pretrained_model_name_or_path.lower()

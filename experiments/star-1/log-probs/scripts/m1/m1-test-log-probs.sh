@@ -17,7 +17,7 @@ source activate assistant-gate
 # navigate to python script parent directory
 cd ~/research_projects/assistant-gate/experiments/star-1/log-probs/
 
-python likelihood-neg-control.py model=m1 qa_model=m1 condition=neg-control split=test
-python likelihood-pos-control-1.py model=m1 qa_model=m1 condition=pos-control-1 split=test
-python likelihood-pos-control-2.py model=m1 qa_model=m1 condition=pos-control-2 split=test
-python likelihood-qa-experimental.py model=m1 qa_model=m1 condition=qa-experimental split=test
+python model-t-log-probs/likelihood-neg-control.py model=m1 qa_model=m1 condition=neg-control split=test
+python model-t-log-probs/likelihood-pos-control-1.py model=m1 qa_model=m1 condition=pos-control-1 split=test
+python model-t-log-probs/likelihood-pos-control-2.py model=m1 qa_model=m1 condition=pos-control-2 split=test
+python model-t-log-probs/likelihood-qa-experimental.py model=m1 qa_model=m1 condition=qa-experimental split=test

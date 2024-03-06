@@ -7,8 +7,8 @@
 #SBATCH --mem=512G 
 #SBATCH --cpus-per-task=64
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs/m2-A.out
-#SBATCH --error=script-logs/m2-A.err
+#SBATCH --output=script-logs/m2-A-continued.out
+#SBATCH --error=script-logs/m2-A-continued.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
@@ -21,7 +21,8 @@ cd ~/research_projects/assistant-gate/experiments/star-1/simulate-conversations/
 # n MUST be the same as args.MAX_TURNS
 n=3  # for example, replace 10 with the number of iterations you desire
 
-for ((i=1; i<=n; i++))
+python generate-human.py qa_model=m2 human_model=M0 split=A turn="t1"
+for ((i=2; i<=n; i++))
 do
     # Call generate-qa.py script
     python generate-qa.py qa_model=m2 human_model=M0 split=A turn="t$i"

@@ -30,7 +30,7 @@ from AG.models.vllm_models.inference_model import VLLMInferenceModel
 logging.basicConfig(level=logging.INFO)
 
 
-@hydra.main(version_base=None, config_path="conf", config_name='config')
+@hydra.main(version_base=None, config_path="../conf", config_name='config')
 def main(args: DictConfig) -> None:
     random.seed(1)
     logging.info(f"Preparing logprobs for filtering top {args.k} conversations per prompt-persona pair...")

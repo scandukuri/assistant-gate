@@ -30,7 +30,7 @@ from AG.models.vllm_models.inference_model import VLLMInferenceModel
 logging.basicConfig(level=logging.INFO)
 
 
-@hydra.main(version_base=None, config_path="conf", config_name='config')
+@hydra.main(version_base=None, config_path="../conf", config_name='config')
 def main(args: DictConfig) -> None:
     logging.info(f"Loading model for {args.condition.name} group likelihood generation...")
     random.seed(1)

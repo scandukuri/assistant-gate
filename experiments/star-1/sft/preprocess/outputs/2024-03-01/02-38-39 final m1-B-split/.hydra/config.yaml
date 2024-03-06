@@ -1,0 +1,24 @@
+tokenizer:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-7b-instruct-v02-vllm
+  shortname: m0
+  model_config:
+    model: mistralai/Mistral-7B-Instruct-v0.2
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+iteration:
+  index: 1
+  shortname: m1
+split:
+  name: B
+qa_model:
+  model_type: vllm
+  name: mistral-m1-vllm
+  shortname: m1
+k: 1
+logprobs: m0
+ROLES:
+- user
+- assistant

@@ -27,7 +27,7 @@ def main(args: DictConfig) -> None:
     tokenizer.pad_token, tokenizer.padding_side = tokenizer.eos_token, "right"
     
     
-    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.model.shortname}/{args.split.name}.json", 'r'))
+    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION}/{args.model.shortname}/m0_{args.split.name}.json", 'r'))
     
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     lengths = [e['labels'].shape[0] for e in dataset]
@@ -38,7 +38,7 @@ def main(args: DictConfig) -> None:
     ax.set_facecolor("whitesmoke")
     
     plt.hist(lengths, bins=50, color='#1fb37eff')
-    plt.title(f'Sequence Lengths for {VERSION} {args.model.shortname} Simulated Conversations on {args.split.name} split')
+    plt.title(f'Sequence Lengths for m0_{VERSION} Split {args.model.shortname} Simulated Conversations on {args.split.name} split')
     plt.xlabel('# Tokens')
     plt.ylabel('Frequency')
     plt.tight_layout()
@@ -46,7 +46,7 @@ def main(args: DictConfig) -> None:
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     plt.grid(True, color='white', linestyle='-', linewidth=0.1)
-    plt.savefig(f'seq-length-plots/{VERSION} {args.model.shortname}-{args.split.name}-sequence-lengths.png')
+    plt.savefig(f'seq-length-plots/{VERSION} {args.model.shortname}-m0_{args.split.name}-sequence-lengths.png')
     
     
     

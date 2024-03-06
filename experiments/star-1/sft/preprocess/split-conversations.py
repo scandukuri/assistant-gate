@@ -37,12 +37,12 @@ def main(args: DictConfig) -> None:
     # TODO: fix directory
     
 
-    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION}/{args.qa_model.shortname}/{'m0_' if args.logprobs == 'm0' else ''}{args.split.name}_top-k-{args.k}.json", 'r') as f:
         conversations = json.load(f)
     ### THIS DIRECTORY IS WRONG FIX IT
     with open(f"{GOLD_PATH}/{VERSION}/{args.split.name}.json", 'r') as f:
         gold_responses = json.load(f)
-    tokenizer = AutoTokenizer.from_pretrained(args.tokenizer.model_config.model)
+    
 
     
     targets = list()
@@ -63,7 +63,7 @@ def main(args: DictConfig) -> None:
     
     if not os.path.exists(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}"):
         os.makedirs(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}")
-    with open(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}/{args.split.name}.json", 'w') as f:
+    with open(f"{SFT_DATA_PATH}/{VERSION}/{args.iteration.shortname}/{'m0_' if args.logprobs == 'm0' else ''}{args.split.name}.json", 'w') as f:
         json.dump(targets, f)
             
     

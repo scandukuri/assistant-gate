@@ -20,4 +20,4 @@ cd ~/research_projects/assistant-gate/experiments/star-1/log-probs/
 python model-0-log-probs/likelihood-neg-control-m0-lp.py model=m0 qa_model=m2 condition=neg-control split=test
 python model-0-log-probs/likelihood-pos-control-1-m0-lp.py model=m0 qa_model=m2 condition=pos-control-1 split=test
 python model-0-log-probs/likelihood-pos-control-2-m0-lp.py model=m0 qa_model=m2 condition=pos-control-2 split=test
-python model-0-log-probs/likelihood-qa-experimental-m0-lp.py model=m0 qa_model=m2 condition=qa-experimental split=test
+#python model-0-log-probs/likelihood-qa-experimental-m0-lp.py model=m0 qa_model=m2 condition=qa-experimental split=test
