@@ -41,23 +41,23 @@ def main(args: DictConfig) -> None:
     random.seed(1)
     
     t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
-    for i in range(1, args.N_ITER):
+    for i in range(args.N_ITER):
         overall_n, overall_d = 0, 0
-        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/m0_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/baseline_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
             t1_winrates.append(wins['b']/(wins['a'] + wins['b']))
             overall_n += wins['b']
             overall_d += wins['a'] + wins['b']
-        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/m0_m{i}/{args.split.name}_turn-2_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/baseline_m{i}/{args.split.name}_turn-2_win-rates.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
             t2_winrates.append(wins['b']/(wins['a'] + wins['b']))
             overall_n += wins['b']
             overall_d += wins['a'] + wins['b']
-        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/m0_m{i}/{args.split.name}_turn-3_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/baseline_m{i}/{args.split.name}_turn-3_win-rates.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
@@ -68,10 +68,15 @@ def main(args: DictConfig) -> None:
         overall_winrates.append(overall_n/overall_d)
     
     # Assuming the x-axis represents the iteration number
-    iterations = list(range(1, len(t1_winrates) + 1))
+    iterations = list(range(len(t1_winrates)))
 
+
+    
     # Plotting the win rates
     plt.figure(figsize=(10, 5))
+    ax = plt.axes()
+    ax.set_facecolor("whitesmoke")
+    plt.grid(True, color='white', linestyle='-', linewidth=0.9)
 
     # Plot each set of win rates
     plt.plot(iterations, t1_winrates, marker='o', label='Turn 1 Win Rates')
@@ -80,7 +85,7 @@ def main(args: DictConfig) -> None:
     plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates')
 
     # Adding titles and labels
-    plt.title('m_t Win Rates over m_0 model')
+    plt.title('m_t Win Rates over baseline model')
     plt.xlabel('Iteration Number')
     plt.ylabel('Win Rate')
     plt.xticks(iterations)  # Set x-ticks to be iteration numbers
@@ -93,7 +98,7 @@ def main(args: DictConfig) -> None:
     plt.grid(True)
 
     # Display the plot
-    plt.savefig('testwinrates.png')
+    plt.savefig(f'{WINRATE_PATH}/{VERSION_2_BSFT}/winrates-temp-{args.answer_model.run.completion_config.temperature}.png')
     
         
         

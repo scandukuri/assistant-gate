@@ -414,7 +414,7 @@ log_on_each_node:
   value: true
 logging_dir:
   desc: null
-  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-bsft/m1/runs/Feb28_20-27-43_cocoflops-hgx-1
+  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-bsft/m1/runs/Feb28_20-27-43_cocoflops2
 logging_strategy:
   desc: null
   value: steps

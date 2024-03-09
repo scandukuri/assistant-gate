@@ -28,7 +28,6 @@ def main(args: DictConfig) -> None:
     
     
     targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
-    breakpoint()
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     lengths = [e['labels'].shape[0] for e in dataset]
     

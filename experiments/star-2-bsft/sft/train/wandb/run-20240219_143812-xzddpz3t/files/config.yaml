@@ -400,7 +400,7 @@ log_on_each_node:
   value: true
 logging_dir:
   desc: null
-  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/runs/Feb19_14-38-17_cocoflops-hgx-1
+  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/checkpoints/runs/Feb19_14-38-17_cocoflops2
 logging_strategy:
   desc: null
   value: steps

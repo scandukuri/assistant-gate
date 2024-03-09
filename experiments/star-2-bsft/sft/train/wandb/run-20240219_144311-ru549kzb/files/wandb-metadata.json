@@ -18,7 +18,7 @@
     },
     "email": "andukuri@stanford.edu",
     "root": "/sailhome/andukuri/research_projects/assistant-gate",
-    "host": "cocoflops-hgx-1",
+    "host": "cocoflops2",
     "username": "andukuri",
     "executable": "/scr/andukuri/miniconda3/envs/assistant-gate/bin/python",
     "cpu_count": 64,

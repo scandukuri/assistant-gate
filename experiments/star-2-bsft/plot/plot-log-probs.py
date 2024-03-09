@@ -102,6 +102,7 @@ def main(args: DictConfig) -> None:
     ax = plt.axes()
     ax.set_facecolor("whitesmoke")
 
+
 #     # Plot each category with a larger marker using plot()
     plt.plot(iterations, log_probabilities['pos-control-1'], label='pos-control-1', 
             marker='^', markersize=marker_size, color=color_map['pos-control-1'], linestyle='--', zorder=z_order/100)

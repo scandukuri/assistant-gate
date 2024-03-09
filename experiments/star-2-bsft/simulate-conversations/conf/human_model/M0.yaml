@@ -15,11 +15,11 @@ model_config:
 
 
 run:
-  batch_size: 1250
+  batch_size: 750
   verbose: false
   completion_config:
     do_sample: false
-    temperature: 0
+    temperature: 0.0
     top_p: 0.9
     max_new_tokens: 700
     num_return_sequences: 1

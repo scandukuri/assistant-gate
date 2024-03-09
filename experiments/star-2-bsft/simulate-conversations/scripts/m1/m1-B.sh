@@ -2,7 +2,7 @@
 
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops-hgx-1
+#SBATCH -w cocoflops2
 #SBATCH --gres=gpu:4  # Requesting four GPUs
 #SBATCH --mem=468G 
 #SBATCH --cpus-per-task=64
@@ -21,12 +21,11 @@ cd ~/research_projects/assistant-gate/experiments/star-2-bsft/simulate-conversat
 # n MUST be the same as args.MAX_TURNS
 n=3  # for example, replace 10 with the number of iterations you desire
 
-python generate-human.py qa_model=m1 human_model=M0 split=B turn="t3"
-# for ((i=1; i<=n; i++))
-# do
-#     # Call generate-qa.py script
-#     python generate-qa.py qa_model=m1 human_model=M0 split=B turn="t$i"
-#     # Call generate-human.py script
-#     python generate-human.py qa_model=m1 human_model=M0 split=B turn="t$i"
-# done
+for ((i=1; i<=n; i++))
+do
+    # Call generate-qa.py script
+    python generate-qa.py qa_model=m1 human_model=M0 split=B turn="t$i"
+    # Call generate-human.py script
+    python generate-human.py qa_model=m1 human_model=M0 split=B turn="t$i"
+done
 

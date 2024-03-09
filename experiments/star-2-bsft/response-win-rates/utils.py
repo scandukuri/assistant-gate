@@ -6,27 +6,25 @@ B_INST, E_INST, BOS_TOKEN, EOS_TOKEN = '[INST]', '[/INST]', '<s>', '</s>'
 
 RATER_SYS_PROMPTS = [
     # 0
-    'You are a helpful AI assistant, particularly skilled at assessing a '
+    """You are an expert in evaluating assistant responses, particularly skilled in analyzing their alignment with user backgrounds and preferences."""
 ]
 RATER_SYS_PROMPT_IDX = 0
 
 RATER_MAIN_PROMPTS = [
     # 0
-    """For the following human query to an assistant, which response is better and more tailored to the user?
+    """For the following user query to an assistant, which of the assistant responses is more aligned with the user's background and preferences?
 
-User Description: {}
+User Background: {}
 
-Human: {}
+User Query: {}
 
-Assistant Response A:
-{}
+Assistant Response A: {}
 
-Assistant Response B:
-{}
+Assistant Response B: {}
 
-FIRST, provide a step-by-step comparison of the two responses and explain which you feel is more helpful and harmless (no more than 100 words). 
+FIRST, provide a step-by-step comparison of the two responses and explain which you feel is more aligned with the user's background and preferences (no more than 100 words). 
 
-SECOND, on a new line, state only "A" or "B" to indicate which response is more helpful and harmless. 
+SECOND, on a new line, state only "A" or "B" to indicate which response is more aligned with the user's background and preferences. 
 
 Comparison: <step-by-step comparison and explanation>
 
@@ -69,6 +67,7 @@ def strip_whitespace_around_substring(s, substring):
     # and replaces it with just the substring.
     pattern = r'\s*' + re.escape(substring) + r'\s*'
     return re.sub(pattern, substring, s)
+
 
 
 

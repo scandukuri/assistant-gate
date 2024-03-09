@@ -2,7 +2,7 @@
 
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops-hgx-1
+#SBATCH -w cocoflops2
 #SBATCH --gres=gpu:4  # Requesting four GPUs
 #SBATCH --mem=364G 
 #SBATCH --cpus-per-task=48

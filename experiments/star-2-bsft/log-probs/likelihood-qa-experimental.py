@@ -79,10 +79,10 @@ def main(args: DictConfig) -> None:
             conversations = all_conversations[f"prompt-{i} persona-{j}"]
             
             # split conversations in half not to overload GPU memory
-            first, second = conversations[:len(conversations)//2], conversations[len(conversations)//2:]
+            first, second, third, fourth = conversations[:len(conversations)//4], conversations[len(conversations)//4:2 * len(conversations)//4], conversations[2 * len(conversations)//4:3 * len(conversations)//4], conversations[3 * len(conversations)//4:]
             if is_vllm:
                 if is_mistral:
-                    for lst in [first, second]:
+                    for lst in [first, second, third]:
                         if len(lst) == 0: continue
                         log_probs = model.batch_log_probs(
                             prompts=[f"{BOS_TOKEN}{B_INST}My name is {names[j].strip()}.\n\n{prompt.strip()}{E_INST}{conversation[conversation.find(E_INST) + 7 : conversation.rfind(E_INST)].strip()}\n\n{prompt.strip()}{E_INST}" for conversation in lst], 

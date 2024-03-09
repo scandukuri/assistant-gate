@@ -63,7 +63,7 @@ def main(args: DictConfig) -> None:
     pooled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}{f'_top-k-{args.k}' if args.k > 0 else ''}.json", "r"))
     
     
-    tokenizer = AutoTokenizer.from_pretrained(args.qa_model.tokenizer_config)
+    tokenizer = AutoTokenizer.from_pretrained(**args.qa_model.tokenizer_config)
     turns_1, turns_2, turns_3 = random.sample(list(turns_conversations[0].keys()), args.n//3), random.sample(list(turns_conversations[1].keys()), args.n//3), random.sample(list(turns_conversations[2].keys()), args.n//3)
     all_qa_responses = list()
     for t_num, group in enumerate([turns_1, turns_2, turns_3]):
@@ -78,7 +78,7 @@ def main(args: DictConfig) -> None:
             
             turns = create_turns(conversation)
             turns[-1] += f'\n\n{turns[0]}'  ## add the prompt to the end of the conversation again to prompt the model to answer, rather than ask another elicitation question
-            turns[0] = f"{turns[0]}"
+            turns[0] = f"My name is {names[group_persona_indices[c_idx]]}.\n\n{turns[0]}"
             messages = [{"role": args.ROLES[i % 2], "content": turn} for i, turn in enumerate(turns)]
             
             group_answer_prompts.append(tokenizer.decode(tokenizer.apply_chat_template(messages)))

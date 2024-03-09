@@ -54,7 +54,7 @@ def main(args: DictConfig) -> None:
             
             conversation = extract_history(conversation)
             turns = create_turns(conversation)
-            # These two lines specifically for SFT target including gold response
+            # These two lines specifically for SFT target including model response
             turns[-1] += f'\n\n{turns[0].strip()}'  ## add the prompt to the end of the conversation again to prompt the model to answer
             turns[0] = f"My name is {names[p_idx].strip()}.\n\n{turns[0].strip()}"
             turns.append(bsft_responses[c_idx])  ## add the model response to the end of the conversation
