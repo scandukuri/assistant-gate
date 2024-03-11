@@ -4,8 +4,8 @@
 #SBATCH --partition=cocoflops
 #SBATCH -w cocoflops2
 #SBATCH --gres=gpu:4  # Requesting four GPUs
-#SBATCH --mem=420G 
-#SBATCH --cpus-per-task=84
+#SBATCH --mem=400G 
+#SBATCH --cpus-per-task=80
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-1-esft/m2-A.out
 #SBATCH --error=script-logs-1-esft/m2-A.err
