@@ -1,0 +1,4 @@
+split:
+  name: test
+k: 1
+N_ITER: 4

@@ -87,7 +87,7 @@ def main(args: DictConfig) -> None:
     ax.set_facecolor("whitesmoke")
 
     plt.xticks(range(3))  # This will show ticks from 0 to 5
-    plt.xlim(-0.5, 2.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
+    plt.xlim(-0.5, 3.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
 
     # Error bars
     ax.errorbar(iterations, experimental_general_means, yerr=experimental_general_sems, fmt='o', color='#e86464', label='General', markersize=marker_size, linestyle='--')

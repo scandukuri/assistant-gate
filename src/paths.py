@@ -14,4 +14,4 @@ VERSION = 'star-1'
 VERSION_2 = 'star-2'
 VERSION_AG = 'star-1-ag'
 VERSION_2_BSFT = 'star-2-bsft'
-
+VERSION_1_ESFT = 'star-1-esft'

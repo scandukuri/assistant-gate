@@ -98,7 +98,7 @@ def main(args: DictConfig) -> None:
     plt.grid(True)
 
     # Display the plot
-    plt.savefig(f'{WINRATE_PATH}/{VERSION_2_BSFT}/winrates-temp-{args.answer_model.run.completion_config.temperature}.png')
+    plt.savefig(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{VERSION_2_BSFT}_winrates-temp-{args.answer_model.run.completion_config.temperature}.png')
     
         
         
