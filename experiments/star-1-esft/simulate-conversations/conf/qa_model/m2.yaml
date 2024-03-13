@@ -15,7 +15,7 @@ model_config:
 
 
 run:
-  batch_size: 750
+  batch_size: 2000
   verbose: false
   initial_completion_config:
     do_sample: true

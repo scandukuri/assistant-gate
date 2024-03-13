@@ -71,26 +71,26 @@ def main(args: DictConfig) -> None:
     iterations = list(range(len(t1_winrates)))
 
 
-    
+
     # Plotting the win rates
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 8))
     ax = plt.axes()
     ax.set_facecolor("whitesmoke")
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
 
     # Plot each set of win rates
-    plt.plot(iterations, t1_winrates, marker='o', label='Turn 1 Win Rates')
-    plt.plot(iterations, t2_winrates, marker='s', label='Turn 2 Win Rates')
-    plt.plot(iterations, t3_winrates, marker='^', label='Turn 3 Win Rates')
-    plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates')
+    plt.plot(iterations[1:], t1_winrates[1:], marker='o', label='Turn 1 Win Rates', color='#00A86B')
+    plt.plot(iterations[1:], t2_winrates[1:], marker='s', label='Turn 2 Win Rates', color='#65cbe9')
+    plt.plot(iterations[1:], t3_winrates[1:], marker='^', label='Turn 3 Win Rates', color='#6c8dfa')
+    plt.plot(iterations[1:], overall_winrates[1:], marker='*', label='Overall Win Rates', color='#ff6242')
 
     # Adding titles and labels
     plt.title('m_t Win Rates over baseline model')
     plt.xlabel('Iteration Number')
     plt.ylabel('Win Rate')
     plt.xticks(iterations)  # Set x-ticks to be iteration numbers
-    plt.yticks([i/10 for i in range(1,10)])  # Assuming the win rate ranges from 0.1 to 0.9
-
+    plt.yticks([i/10 for i in range(5,10)])  # Assuming the win rate ranges from 0.1 to 0.9
+    plt.xlim(0.5, 3.5)  # Set x-axis limits
     # Adding a legend
     plt.legend()
 
@@ -109,3 +109,4 @@ if __name__ == '__main__':
         fire.Fire(main())
     except:
         pass
+

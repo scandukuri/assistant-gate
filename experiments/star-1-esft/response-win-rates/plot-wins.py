@@ -41,7 +41,7 @@ def main(args: DictConfig) -> None:
     random.seed(1)
     
     t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
-    for i in range(args.N_ITER):
+    for i in range(1, args.N_ITER):
         overall_n, overall_d = 0, 0
         with open(f"{WINRATE_PATH}/{VERSION_1_ESFT}/baseline_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
             dct = json.load(f)
@@ -68,29 +68,29 @@ def main(args: DictConfig) -> None:
         overall_winrates.append(overall_n/overall_d)
     
     # Assuming the x-axis represents the iteration number
-    iterations = list(range(len(t1_winrates)))
+    iterations = list(range(1, len(t1_winrates) + 1))
 
 
-    
+
     # Plotting the win rates
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 8))
     ax = plt.axes()
     ax.set_facecolor("whitesmoke")
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
 
     # Plot each set of win rates
-    plt.plot(iterations, t1_winrates, marker='o', label='Turn 1 Win Rates')
-    plt.plot(iterations, t2_winrates, marker='s', label='Turn 2 Win Rates')
-    plt.plot(iterations, t3_winrates, marker='^', label='Turn 3 Win Rates')
-    plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates')
+    plt.plot(iterations, t1_winrates, marker='o', label='Turn 1 Win Rates', color='#00A86B')
+    plt.plot(iterations, t2_winrates, marker='s', label='Turn 2 Win Rates', color='#65cbe9')
+    plt.plot(iterations, t3_winrates, marker='^', label='Turn 3 Win Rates', color='#6c8dfa')
+    plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates', color='#ff6242')
 
     # Adding titles and labels
     plt.title('m_t Win Rates over baseline model')
     plt.xlabel('Iteration Number')
     plt.ylabel('Win Rate')
     plt.xticks(iterations)  # Set x-ticks to be iteration numbers
-    plt.yticks([i/10 for i in range(1,10)])  # Assuming the win rate ranges from 0.1 to 0.9
-
+    plt.yticks([i/10 for i in range(5,10)])  # Assuming the win rate ranges from 0.1 to 0.9
+    plt.xlim(0.5, 3.5)  # Set x-axis limits
     # Adding a legend
     plt.legend()
 
@@ -98,7 +98,7 @@ def main(args: DictConfig) -> None:
     plt.grid(True)
 
     # Display the plot
-    plt.savefig(f'{WINRATE_PATH}/{VERSION_1_ESFT}/winrates-temp-{args.answer_model.run.completion_config.temperature}.png')
+    plt.savefig(f'{WINRATE_PATH}/{VERSION_1_ESFT}/{VERSION_1_ESFT}_winrates-temp-{args.answer_model.run.completion_config.temperature}.png')
     
         
         
@@ -109,3 +109,5 @@ if __name__ == '__main__':
         fire.Fire(main())
     except:
         pass
+
+
