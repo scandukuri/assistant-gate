@@ -2,10 +2,10 @@
 
 #SBATCH --account=cocoflops                 # Specify the account
 #SBATCH --partition=cocoflops               # Specify the partition
-#SBATCH --nodelist=cocoflops2          # Request the specific node
-#SBATCH --gres=gpu:4                     # Request GPUs
-#SBATCH --mem=400GB                         # Memory request
-#SBATCH --cpus-per-task=80                 # Number of CPUs per task
+#SBATCH --nodelist=cocoflops-hgx-1     # Request the specific node
+#SBATCH --gres=gpu:2                     # Request GPUs
+#SBATCH --mem=256GB                         # Memory request
+#SBATCH --cpus-per-task=32                 # Number of CPUs per task
 #SBATCH --time=256:00:00                    # Time limit
 #SBATCH --output=script-logs-1-esft/m1-B-sft.out
 #SBATCH --error=script-logs-1-esft/m1-B-sft.err

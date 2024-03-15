@@ -18,5 +18,5 @@ source activate assistant-gate
 cd ~/research_projects/assistant-gate/experiments/star-2-bsft/log-probs/
 
 python filter.py qa_model=m0 condition=qa-experimental split=test
-python filter-pos-control.py qa_model=m0 condition=pos-control-1 split=test
-python filter-pos-control.py qa_model=m0 condition=pos-control-2 split=test
+# python filter-pos-control.py qa_model=m0 condition=pos-control-1 split=test
+# python filter-pos-control.py qa_model=m0 condition=pos-control-2 split=test

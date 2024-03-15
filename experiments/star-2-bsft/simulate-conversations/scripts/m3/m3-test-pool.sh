@@ -2,10 +2,10 @@
 
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops2
+#SBATCH -w cocoflops-hgx-1
 #SBATCH --gres=gpu:0  # Requesting one GPUs
 #SBATCH --mem=64G 
-#SBATCH --cpus-per-task=32
+#SBATCH --cpus-per-task=20
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-2-bsft/m3-test-pool.out
 #SBATCH --error=script-logs-2-bsft/m3-test-pool.err

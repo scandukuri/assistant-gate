@@ -1,0 +1,9 @@
+defaults:
+  - split: test
+  - rating_model: gpt4
+
+k: 1
+N_ITER: 3
+
+RATING_SYS_PROMPT_IDX: 0
+RATING_PROMPT_IDX: 0

@@ -18,8 +18,8 @@ source activate assistant-gate
 cd ~/research_projects/assistant-gate/experiments/star-2-bsft/response-win-rates/
 
 # python get-ratings.py qa_model=baseline qa_model_2=m0 split=test
-python get-ratings.py qa_model=baseline qa_model_2=m1 split=test
-python get-ratings.py qa_model=baseline qa_model_2=m2 split=test
+# python get-ratings.py qa_model=baseline qa_model_2=m1 split=test
+# python get-ratings.py qa_model=baseline qa_model_2=m2 split=test
 python get-ratings.py qa_model=baseline qa_model_2=m3 split=test
 # python get-ratings.py qa_model=m0 qa_model_2=baseline split=test
 # python get-ratings.py qa_model=m1 qa_model_2=baseline split=test

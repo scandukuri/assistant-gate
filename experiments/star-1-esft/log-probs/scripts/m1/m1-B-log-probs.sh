@@ -2,10 +2,10 @@
 
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops2
-#SBATCH --gres=gpu:4  # Requesting four GPUs
-#SBATCH --mem=256GB 
-#SBATCH --cpus-per-task=64
+#SBATCH -w cocoflops-hgx-1
+#SBATCH --gres=gpu:2  # Requesting four GPUs
+#SBATCH --mem=256G 
+#SBATCH --cpus-per-task=32
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-1-esft/m1-B-log-probs.out
 #SBATCH --error=script-logs-1-esft/m1-B-log-probs.err

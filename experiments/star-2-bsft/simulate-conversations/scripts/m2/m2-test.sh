@@ -1,11 +1,10 @@
 #!/bin/bash
-CUDA_VISIBLE_DEVICES=”1,2,3,4”
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops2
+#SBATCH -w cocoflops-hgx-1
 #SBATCH --gres=gpu:4  # Requesting four GPUs
-#SBATCH --mem=412G 
-#SBATCH --cpus-per-task=86
+#SBATCH --mem=468G 
+#SBATCH --cpus-per-task=64
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-2-bsft/m2-test.out
 #SBATCH --error=script-logs-2-bsft/m2-test.err

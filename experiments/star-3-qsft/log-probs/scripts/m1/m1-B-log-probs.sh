@@ -5,7 +5,7 @@
 #SBATCH -w cocoflops2
 #SBATCH --gres=gpu:4  # Requesting four GPUs
 #SBATCH --mem=256GB 
-#SBATCH --cpus-per-task=64
+#SBATCH --cpus-per-task=80
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-3-qsft/m1-B-log-probs.out
 #SBATCH --error=script-logs-3-qsft/m1-B-log-probs.err
