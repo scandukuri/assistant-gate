@@ -1,0 +1,5 @@
+split:
+  name: test
+k: 1
+N_ITER: 2
+m0_probs: true

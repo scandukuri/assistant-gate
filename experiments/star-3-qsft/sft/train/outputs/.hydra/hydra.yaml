@@ -112,13 +112,13 @@ hydra:
     hydra:
     - hydra.mode=RUN
     task:
-    - qa_model=m1
-    - split=B
+    - qa_model=m2
+    - split=A
     - model=m0
   job:
     name: train_sft
     chdir: null
-    override_dirname: model=m0,qa_model=m1,split=B
+    override_dirname: model=m0,qa_model=m2,split=A
     id: ???
     num: ???
     config_name: config
@@ -145,8 +145,8 @@ hydra:
       provider: schema
     output_dir: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-3-qsft/sft/train/outputs
     choices:
-      split: B
-      qa_model: m1
+      split: A
+      qa_model: m2
       model: m0
       hydra/env: default
       hydra/callbacks: null

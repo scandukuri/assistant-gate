@@ -9,7 +9,7 @@ rating_model:
   model_config:
     azure_api:
       azure_endpoint: https://philipp.openai.azure.com/
-      api_version: '2023-05-15'
+      api_version: '2024-02-01'
     seed: 1
   run:
     verbose: false

@@ -135,7 +135,7 @@ def main(args: DictConfig) -> None:
 
     # Set the x-axis to show the range up to iteration 5
     plt.xticks(range(4))  # This will show ticks from 0 to 5
-    plt.xlim(-0.5, 3.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
+    plt.xlim(-0.5, 5.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
 
     # Set x-axis range
     ax.set_ylim([-375, -250])
@@ -146,6 +146,7 @@ def main(args: DictConfig) -> None:
 
     # Add the legend to the plot
     plt.legend(borderpad=1, fontsize='large')
+    
 
 # Show grid with light gray color
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
@@ -154,6 +155,7 @@ def main(args: DictConfig) -> None:
 # Remove top and right spines
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    
     plt.tight_layout()
 
 # Show the plot

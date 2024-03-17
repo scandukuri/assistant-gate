@@ -6,6 +6,7 @@ from typing import (
 
 import asyncio
 import time
+import openai
 
 import logging 
 

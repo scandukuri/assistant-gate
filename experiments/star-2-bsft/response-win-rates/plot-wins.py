@@ -37,7 +37,7 @@ logging.basicConfig(level=logging.INFO)
 
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
-    logging.info(f"Loading model {args.qa_model.shortname} for response generation and win-rate computation for {args.split.name}...")
+    logging.info(f"Plotting win rates for {args.split.name}...")
     random.seed(1)
     
     t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
