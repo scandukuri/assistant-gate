@@ -1,0 +1,20 @@
+model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-7b-instruct-v02-vllm
+  model_config:
+    model: mistralai/Mistral-7B-Instruct-v0.2
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+    dtype: auto
+    tensor_parallel_size: 4
+    seed: 1
+  run:
+    batch_size: 500
+    verbose: false
+    completion_config:
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1

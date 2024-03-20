@@ -1,0 +1,22 @@
+hydra:
+  run:
+    dir: outputs
+
+model_type: vllm
+name: mistral-m3-vllm
+shortname: m3
+
+model_config:
+  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-bsft/m3/final
+  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-bsft/m3/final
+  dtype: auto
+  tensor_parallel_size: 4
+  seed: 1
+
+run:
+  verbose: false
+  completion_config:
+    temperature: 0
+    top_p: 0.9
+    max_new_tokens: 700
+    num_return_sequences: 1

@@ -1,0 +1,4 @@
+name: test
+PERSONA_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/persona-generation/new-personas/test.json
+NAMES_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/persona-generation/new-personas/test_NAMES.json
+PROMPT_DIR: /sailhome/andukuri/research_projects/assistant-gate/experiments/v4/instruct-questions/test.json

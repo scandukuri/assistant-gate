@@ -1,0 +1,4 @@
+- qa_model=m1
+- rating_model=gpt4
+- split=test
+- tokenizer=m0

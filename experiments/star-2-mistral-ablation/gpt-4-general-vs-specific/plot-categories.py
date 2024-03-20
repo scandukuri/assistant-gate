@@ -64,7 +64,7 @@ def main(args: DictConfig) -> None:
 
     # Iterate through the list and populate the index lists
     for index, value in enumerate(ratings):
-        if value <= 3:
+        if value <= 4:
             SPECIFIC_PROMPTS.append(index)
         else:
             GENERAL_PROMPTS.append(index)
@@ -89,7 +89,22 @@ def main(args: DictConfig) -> None:
     experimental_topk_specific_means, experimental_topk_specific_sems = zip(*[calculate_mean_and_sem([lst for key, lst in logprobs.items()]) for logprobs in topk_experimental_specific])
     
     
-
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_means.json', 'w') as f:
+        json.dump(experimental_general_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_means.json', 'w') as f:
+        json.dump(experimental_specific_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_general_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_specific_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_sems.json', 'w') as f:
+        json.dump(experimental_general_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_sems.json', 'w') as f:
+        json.dump(experimental_specific_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_general_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_specific_sems, f)
     # Adjusting the provided code to use plot() instead of scatter(), and making the background grid light gray
     
     # Adjust marker sizes for better visibility with plot()

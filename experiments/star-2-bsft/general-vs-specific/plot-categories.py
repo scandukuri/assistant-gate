@@ -89,6 +89,22 @@ def main(args: DictConfig) -> None:
     plt.xticks(range(3))  # This will show ticks from 0 to 5
     plt.xlim(-0.5, 3.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5
 
+    with open('star-2-bsft-qa-experimental-general_means.json', 'w') as f:
+        json.dump(experimental_general_means, f)
+    with open('star-2-bsft-qa-experimental-specific_means.json', 'w') as f:
+        json.dump(experimental_specific_means, f)
+    with open('star-2-bsft-qa-experimental-general_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_general_means, f)
+    with open('star-2-bsft-qa-experimental-specific_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_specific_means, f)
+    with open('star-2-bsft-qa-experimental-general_sems.json', 'w') as f:
+        json.dump(experimental_general_sems, f)
+    with open('star-2-bsft-qa-experimental-specific_sems.json', 'w') as f:
+        json.dump(experimental_specific_sems, f)
+    with open('star-2-bsft-qa-experimental-general_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_general_sems, f)
+    with open('star-2-bsft-qa-experimental-specific_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_specific_sems, f)
     # Error bars
     ax.errorbar(iterations, experimental_general_means, yerr=experimental_general_sems, fmt='o', color='#e86464', label='General', markersize=marker_size, linestyle='--')
     ax.errorbar(iterations, experimental_specific_means, yerr=experimental_specific_sems, fmt='o', color='#4285f4', label='Specific', markersize=marker_size, linestyle='--')

@@ -1,0 +1,2 @@
+defaults:
+  - tokenizer: mistral-7b-instruct-v02-vllm

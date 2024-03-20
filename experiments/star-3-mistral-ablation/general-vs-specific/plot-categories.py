@@ -95,6 +95,22 @@ def main(args: DictConfig) -> None:
     ax.errorbar(iterations, experimental_topk_general_means, yerr=experimental_topk_general_sems, fmt='o', color='#e86464', label=f'General Top-{args.k}', markersize=marker_size, alpha=0.4, linestyle=':')
     ax.errorbar(iterations, experimental_topk_specific_means, yerr=experimental_topk_specific_sems, fmt='o', color='#4285f4', label=f'Specific Top-{args.k}', markersize=marker_size, alpha=0.4, linestyle=':')
 
+    with open('star-3-mistral-ablation-qa-experimental-general_means.json', 'w') as f:
+        json.dump(experimental_general_means, f)
+    with open('star-3-mistral-ablation-qa-experimental-specific_means.json', 'w') as f:
+        json.dump(experimental_specific_means, f)
+    with open('star-3-mistral-ablation-qa-experimental-general_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_general_means, f)
+    with open('star-3-mistral-ablation-qa-experimental-specific_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_specific_means, f)
+    with open('star-3-mistral-ablation-qa-experimental-general_sems.json', 'w') as f:
+        json.dump(experimental_general_sems, f)
+    with open('star-3-mistral-ablation-qa-experimental-specific_sems.json', 'w') as f:
+        json.dump(experimental_specific_sems, f)
+    with open('star-3-mistral-ablation-qa-experimental-general_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_general_sems, f)
+    with open('star-3-mistral-ablation-qa-experimental-specific_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_specific_sems, f)
     # Title and labels
     ax.set_title(f'{VERSION_3_MISTRAL_ABLATION}\nLog-Probability of Desired Results by Category')
     ax.set_xlabel('Iterations')

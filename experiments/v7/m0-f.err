@@ -1,0 +1,40 @@
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/bitsandbytes/cextension.py:34: UserWarning: The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+  warn("The installed version of bitsandbytes was compiled without GPU support. "
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+ERROR: Cannot find key: qa_model=m0
+Usage: filter.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | List |
+                         QA_PROMPTS | HUMAN_SYS_MSGS | HUMAN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset | flatten_list |
+                         batch_list | chunk_list | extract_history |
+                         HFInferenceModel | AsyncAzureChatLLM | GPT4Agent |
+                         VLLMInferenceModel | main
+  available values:      BOS_TOKEN | EOS_TOKEN | B_INST | E_INST |
+                         SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  filter.py --help
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/bitsandbytes/cextension.py:34: UserWarning: The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+  warn("The installed version of bitsandbytes was compiled without GPU support. "
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+ERROR: Cannot find key: qa_model=m0
+Usage: filter-pos-control.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | List |
+                         QA_PROMPTS | HUMAN_SYS_MSGS | HUMAN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset | flatten_list |
+                         batch_list | chunk_list | extract_history |
+                         HFInferenceModel | AsyncAzureChatLLM | GPT4Agent |
+                         VLLMInferenceModel | main
+  available values:      BOS_TOKEN | EOS_TOKEN | B_INST | E_INST |
+                         SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  filter-pos-control.py --help

@@ -1,0 +1,17 @@
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/bitsandbytes/cextension.py:34: UserWarning: The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+  warn("The installed version of bitsandbytes was compiled without GPU support. "
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'test-split-config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+ERROR: Cannot find key: model=gpt4
+Usage: generate-prodigy-test.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | signal | requests |
+                         GENERATION_PROMPTS | SYS_MSGS
+  available commands:    DictConfig | tqdm | defaultdict | load_dataset |
+                         Dataset | HFInferenceModel | AsyncAzureChatLLM |
+                         GPT4Agent | VLLMInferenceModel | main
+  available values:      SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH | VERSION
+
+For detailed information on this command, run:
+  generate-prodigy-test.py --help

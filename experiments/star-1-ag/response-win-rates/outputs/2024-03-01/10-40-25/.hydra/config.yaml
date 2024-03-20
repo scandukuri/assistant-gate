@@ -1,0 +1,61 @@
+rating_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: openai
+  name: gpt4
+  model_config:
+    azure_api:
+      azure_endpoint: https://philipp.openai.azure.com/
+      api_version: '2023-05-15'
+    seed: 1
+  run:
+    verbose: false
+    completion_config:
+      model: gpt-4
+      max_tokens: 300
+      temperature: 0
+      top_p: 0.9
+      'n': 1
+qa_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m0-vllm
+  shortname: m0
+  model_config:
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-ag/m1/final
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-ag/m1/final
+    dtype: auto
+    tensor_parallel_size: 2
+    seed: 1
+  run:
+    batch_size: 750
+    verbose: false
+    completion_config:
+      do_sample: false
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+tokenizer:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-7b-instruct-v02-vllm
+  shortname: m0
+  model_config:
+    model: mistralai/Mistral-7B-Instruct-v0.2
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+split:
+  name: test
+ROLES:
+- user
+- assistant
+MAX_TURNS: 3
+k: 1
+'n': 30
+RATER_SYS_PROMPT_IDX: 0
+RATER_MAIN_PROMPT_IDX: 0

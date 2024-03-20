@@ -1,0 +1,4 @@
+split:
+  name: test-mixtral
+k: 1
+N_ITER: 1

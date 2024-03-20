@@ -70,6 +70,8 @@ def main(args: DictConfig) -> None:
     # Assuming the x-axis represents the iteration number
     iterations = list(range(len(t1_winrates) + 1))
 
+    with open('star-2-mistral-ablation-overall-winrates.json', 'w') as f:
+        json.dump(overall_winrates, f)
 
 
     # Plotting the win rates

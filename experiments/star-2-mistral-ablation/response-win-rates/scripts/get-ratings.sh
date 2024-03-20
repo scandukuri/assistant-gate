@@ -2,10 +2,10 @@
 
 #SBATCH --account=cocoflops
 #SBATCH --partition=cocoflops
-#SBATCH -w cocoflops2
+#SBATCH -w cocoflops-hgx-1
 #SBATCH --gres=gpu:0  # Requesting four GPUs
-#SBATCH --mem=256G 
-#SBATCH --cpus-per-task=90
+#SBATCH --mem=32G 
+#SBATCH --cpus-per-task=32
 #SBATCH --time=48:00:00
 #SBATCH --output=script-logs-2-mistral-ablation/get-ratings.out
 #SBATCH --error=script-logs-2-mistral-ablation/get-ratings.err

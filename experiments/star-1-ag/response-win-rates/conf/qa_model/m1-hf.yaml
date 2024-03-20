@@ -1,0 +1,27 @@
+hydra:
+  run:
+    dir: outputs
+
+model_type: hf
+name: mistral-m1-hf
+shortname: m1
+
+model_config:
+  pretrained_model_name_or_path: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-ag/m1/final
+  model_id: # unique identifier for accessing conversation buffer
+  load_in_8bit: false
+  device_map: auto
+  torch_dtype: float16
+  model_cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-ag/m1/final
+  tokenizer_cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-ag/m1/final
+  seed: 1
+
+run:
+  batch_size: 200
+  verbose: false
+  completion_config:
+    do_sample: False
+    temperature: 0
+    top_p: 0.9
+    max_new_tokens: 700
+    num_return_sequences: 1

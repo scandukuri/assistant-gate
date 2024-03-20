@@ -18,8 +18,7 @@ from collections import defaultdict
 from datasets import load_dataset, Dataset
 from vllm.model_executor.parallel_utils.parallel_state import destroy_model_parallel
 from transformers import AutoTokenizer
-import openai
-from unittest.mock import patch
+
 from paths import *
 from utils import *
 
@@ -59,15 +58,14 @@ def main(args: DictConfig) -> None:
         
     qa_responses_1 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_1.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{f'0{int(args.qa_model.run.completion_config.temperature * 10)}_' if args.qa_model.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
+        qa_responses_1.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}_turn-{i}_responses.json', 'r')))
     
     qa_responses_2 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_2.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model_2.shortname}/{f'0{int(args.qa_model_2.run.completion_config.temperature * 10)}_' if args.qa_model_2.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
-
+        qa_responses_2.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model_2.shortname}/{args.split.name}_turn-{i}_responses.json', 'r')))
+    
     turns_1, turns_2, turns_3 = random.sample(list(qa_responses_1[0].keys()), args.n//3), random.sample(list(qa_responses_1[1].keys()), args.n//3), random.sample(list(qa_responses_1[2].keys()), args.n//3)
     for t_num, group in enumerate([turns_1, turns_2, turns_3]):
-        if args.qa_model_2.shortname == 'm1' and t_num == 0: continue
         group_prompt_indices = [int(key[key.find('prompt-') + len('prompt-'):key.find('persona-')].strip()) for key in group]
         group_persona_indices = [int(key[key.find('persona-') + len('persona-'):].strip()) for key in group]
         
@@ -75,37 +73,20 @@ def main(args: DictConfig) -> None:
         group_personas = [personas[idx] for idx in group_persona_indices]
         group_qa_responses_1 = [qa_responses_1[t_num][key] for key in group]
         group_qa_responses_2 = [qa_responses_2[t_num][key] for key in group]
-
-        rating_prompts = [RATER_MAIN_PROMPTS[args.RATER_MAIN_PROMPT_IDX].format(persona, prompt, qa_response_1, qa_response_2) for persona, prompt, qa_response_1, qa_response_2 in zip(group_personas, group_prompts, group_qa_responses_1, group_qa_responses_2)]
-        final_group_keys = list()
-        rating_messages = list()
         
-        logger = logging.getLogger('model_error callback handler')  # Adjust as needed
-        callback_handler = CallbackHandler(callback=log_callback)
-        logger.addHandler(callback_handler)
-        for idx, rating_prompt in enumerate(rating_prompts):
-            if idx < 90: continue
-            with patch('logging.Logger.error') as mock_logger_error:
-                try:
-                    breakpoint()
-                    curr_rating_messages = rating_model.batch_prompt(system_message=RATER_SYS_PROMPTS[args.RATER_SYS_PROMPT_IDX], messages=[rating_prompt])
-                    assert any("model_error" not in args[0] for args in mock_logger_error.call_args_list), "'model_error' found in log messages."
-                    rating_messages.extend(curr_rating_messages[0])
-                    final_group_keys.append(group[idx])
-                except AssertionError:
-                    print('model_error issue - example skipped.')
-                    continue
-
+        
+        rating_prompts = [RATER_MAIN_PROMPTS[args.RATER_MAIN_PROMPT_IDX].format(persona, prompt, qa_response_1, qa_response_2) for persona, prompt, qa_response_1, qa_response_2 in zip(group_personas, group_prompts, group_qa_responses_1, group_qa_responses_2)]
+        rating_messages = rating_model.batch_prompt(system_message=RATER_SYS_PROMPTS[args.RATER_SYS_PROMPT_IDX], messages=rating_prompts)
+        rating_messages = [msg[0] for msg in rating_messages]
         logging.info(f"Turns {t_num + 1}:")
         logging.info(f"Rating messages: ")
         logging.info(rating_messages)
-
-        if args.answer_model.run.completion_config.temperature > 0.0:
-            with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/0{int(args.qa_model.run.completion_config.temperature * 10)}_{args.split.name}_turn-{t_num + 1}_win-rates.json', 'w') as f:
-                json.dump(dict(zip(final_group_keys, rating_messages)), f)
-        elif args.answer_model.run.completion_config.temperature == 0.0:
-            with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates.json', 'w') as f:
-                json.dump(dict(zip(final_group_keys, rating_messages)), f)
+        
+        with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates.json', 'w') as f:
+            json.dump(dict(zip(group, rating_messages)), f)
+        
+        
+    
     
 if __name__ == '__main__':
     try:

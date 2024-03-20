@@ -103,6 +103,22 @@ def main(args: DictConfig) -> None:
     # Legend
     ax.legend()
 
+    with open('star-2-mistral-ablation-qa-experimental-general_means.json', 'w') as f:
+        json.dump(experimental_general_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-specific_means.json', 'w') as f:
+        json.dump(experimental_specific_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-general_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_general_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-specific_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_specific_means, f)
+    with open('star-2-mistral-ablation-qa-experimental-general_sems.json', 'w') as f:
+        json.dump(experimental_general_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-specific_sems.json', 'w') as f:
+        json.dump(experimental_specific_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-general_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_general_sems, f)
+    with open('star-2-mistral-ablation-qa-experimental-specific_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_specific_sems, f)
     # Show plot
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
     plt.tight_layout()

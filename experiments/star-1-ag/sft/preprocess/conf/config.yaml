@@ -1,0 +1,12 @@
+defaults:
+  - tokenizer: m0
+  - iteration: i0
+  - split: A
+  - qa_model: m0
+
+k: 1
+logprobs: m0
+
+ROLES:
+  - user
+  - assistant

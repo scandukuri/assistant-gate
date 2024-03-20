@@ -133,6 +133,36 @@ def main(args: DictConfig) -> None:
     plt.errorbar(iterations, pos_control_2_topk_means, yerr=pos_control_2_topk_sems, marker='^', markersize=marker_size, color=color_map['pos-control-2'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)    
     plt.errorbar(iterations, experimental_topk_means, yerr=experimental_topk_sems, marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
 
+
+    with open('star-3-mistral-ablation-pos_control_1_means.json', 'w') as f:
+        json.dump(pos_control_1_means, f)
+    with open('star-3-mistral-ablation-pos_control_1_sems.json', 'w') as f:
+        json.dump(pos_control_1_sems, f)
+    with open('star-3-mistral-ablation-pos_control_1_topk_means.json', 'w') as f:
+        json.dump(pos_control_1_topk_means, f)
+    with open('star-3-mistral-ablation-pos_control_1_topk_sems.json', 'w') as f:
+        json.dump(pos_control_1_topk_sems, f)
+    with open('star-3-mistral-ablation-pos_control_2_means.json', 'w') as f:
+        json.dump(pos_control_2_means, f)
+    with open('star-3-mistral-ablation-pos_control_2_sems.json', 'w') as f:
+        json.dump(pos_control_2_sems, f)
+    with open('star-3-mistral-ablation-pos_control_2_topk_means.json', 'w') as f:
+        json.dump(pos_control_2_topk_means, f)
+    with open('star-3-mistral-ablation-pos_control_2_topk_sems.json', 'w') as f:
+        json.dump(pos_control_2_topk_sems, f)
+    with open('star-3-mistral-ablation-qa-experimental_means.json', 'w') as f:
+        json.dump(experimental_means, f)
+    with open('star-3-mistral-ablation-qa-experimental_sems.json', 'w') as f:
+        json.dump(experimental_sems, f)
+    with open('star-3-mistral-ablation-qa-experimental_topk_means.json', 'w') as f:
+        json.dump(experimental_topk_means, f)
+    with open('star-3-mistral-ablation-qa-experimental_topk_sems.json', 'w') as f:
+        json.dump(experimental_topk_sems, f)
+    with open('star-3-mistral-ablation-neg-control_means.json', 'w') as f:
+        json.dump(neg_control_means, f)
+    with open('star-3-mistral-ablation-neg-control_sems.json', 'w') as f:
+        json.dump(neg_control_sems, f)
+        
     # Set the x-axis to show the range up to iteration 5
     plt.xticks(range(4))  # This will show ticks from 0 to 5
     plt.xlim(-0.5, 5.5)  # Set the limit so the x-axis will start a bit before 0 and end a bit after 5

@@ -1,0 +1,6 @@
+defaults:
+  - model: mixtral-8x7b-instruct-vllm
+  - split: A # A, B, or test
+
+GENERATION_PROMPT_IDX: 2
+SYS_PROMPT_IDX: 0

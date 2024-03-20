@@ -84,6 +84,8 @@ def main(args: DictConfig) -> None:
     plt.plot(iterations, t3_winrates, marker='^', label='Turn 3 Win Rates', color='#6c8dfa')
     plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates', color='#ff6242')
 
+    with open('star-3-qsft-overall-winrates.json', 'w') as f:
+        json.dump(overall_winrates, f)
     # Adding titles and labels
     plt.title('m_t Win Rates over baseline model')
     plt.xlabel('Iteration Number')

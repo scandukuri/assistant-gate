@@ -1,0 +1,22 @@
+hydra:
+  run:
+    dir: outputs
+
+model_type: vllm
+name: mixtral-8x7b-instruct-vllm
+
+model_config:
+  model: mistralai/Mixtral-8x7B-Instruct-v0.1
+  download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+  dtype: auto
+  tensor_parallel_size: 2
+  seed: 1
+
+run:
+  verbose: false
+  completion_config:
+    do_sample: true
+    temperature: 0
+    top_p: 0.9
+    max_new_tokens: 700
+    num_return_sequences: 1

@@ -40,28 +40,27 @@ def main(args: DictConfig) -> None:
     logging.info(f"Plotting win rates for {args.split.name}...")
     random.seed(1)
     
-    ablations = [VERSION_1_ESFT, VERSION_2_BSFT, VERSION_2_MISTRAL_ABLATION]
     final_overall_lines = []
-    #ablations = [VERSION_1_ESFT, VERSION_2_BSFT, VERSION_3_QSFT]
+    ablations = [VERSION_2_BSFT, VERSION_3_QSFT, VERSION_2_MISTRAL_ABLATION, VERSION_3_MISTRAL_ABLATION]
     for ab in ablations:
         t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
         for i in range(1, args.N_ITER):
             overall_n, overall_d = 0, 0
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-1_win-rates-randomized.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
                 t1_winrates.append(wins['b']/(wins['a'] + wins['b']))
                 overall_n += wins['b']
                 overall_d += wins['a'] + wins['b']
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-2_win-rates.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-2_win-rates-randomized.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
                 t2_winrates.append(wins['b']/(wins['a'] + wins['b']))
                 overall_n += wins['b']
                 overall_d += wins['a'] + wins['b']
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-3_win-rates.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-3_win-rates-randomized.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
@@ -84,16 +83,19 @@ def main(args: DictConfig) -> None:
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
 
     # Plot each set of win rates
-    plt.plot(iterations, final_overall_lines[0], marker='o', label='star-1-esft', color='#00A86B')
-    plt.plot(iterations, final_overall_lines[1], marker='s', label='star-2-bsft', color='#65cbe9')
-    plt.plot(iterations, final_overall_lines[2], marker='^', label='star-2-bsft', color='red')
+    plt.plot(iterations, final_overall_lines[0], marker='o', label='star-2-bsft', color='#00A86B')
+    plt.plot(iterations, final_overall_lines[1], marker='s', label='star-3-qsft', color='#65cbe9')
+    plt.plot(iterations, final_overall_lines[2], marker='^', label='star-2-mistral-ablation', color='red')
+    plt.plot(iterations, final_overall_lines[3], marker='^', label='star-3-mistral-ablation', color='orange')
     plt.errorbar(iterations, final_overall_lines[0], yerr=sems[0], marker='o', color='#00A86B', linestyle='', capsize=0)
     plt.errorbar(iterations, final_overall_lines[1], yerr=sems[1], marker='s', color='#65cbe9', linestyle='', capsize=0)
     plt.errorbar(iterations, final_overall_lines[2], yerr=sems[2], marker='^', color='red', linestyle='', capsize=0)
+    plt.errorbar(iterations, final_overall_lines[3], yerr=sems[3], marker='^', color='orange', linestyle='', capsize=0)
     
-    plt.plot([0, 1], [0.5, final_overall_lines[0][0]], marker='o', label='star-1-esft', color='#00A86B', alpha=0.4)
-    plt.plot([0, 1], [0.5, final_overall_lines[1][0]], marker='s', label='star-2-bsft', color='#65cbe9', alpha=0.4)
+    plt.plot([0, 1], [0.5, final_overall_lines[0][0]], marker='o', label='star-2-bsft', color='#00A86B', alpha=0.4)
+    plt.plot([0, 1], [0.5, final_overall_lines[1][0]], marker='s', label='star-3-qsft', color='#65cbe9', alpha=0.4)
     plt.plot([0, 1], [0.5, final_overall_lines[2][0]], marker='^', label='star-2-mistral-ablation', color='red', alpha=0.4)
+    plt.plot([0, 1], [0.5, final_overall_lines[3][0]], marker='^', label='star-3-mistral-ablation', color='orange', alpha=0.4)
     
     # Adding titles and labels
     plt.title('Average m_t Win Rate over baseline model')
