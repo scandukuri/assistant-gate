@@ -1,4 +1,0 @@
-- model=m0
-- qa_model=m2
-- condition=neg-control
-- split=test
