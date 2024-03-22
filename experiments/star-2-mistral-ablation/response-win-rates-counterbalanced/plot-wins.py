@@ -41,23 +41,23 @@ def main(args: DictConfig) -> None:
     random.seed(1)
     
     t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
-    for i in range(args.N_ITER):
+    for i in range(1, args.N_ITER):
         overall_n, overall_d = 0, 0
-        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-1_win-rates-counterbalanced.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
             t1_winrates.append(wins['a']/(wins['a'] + wins['b']))
             overall_n += wins['a']
             overall_d += wins['a'] + wins['b']
-        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-2_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-2_win-rates-counterbalanced.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
             t2_winrates.append(wins['a']/(wins['a'] + wins['b']))
             overall_n += wins['a']
             overall_d += wins['a'] + wins['b']
-        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-3_win-rates.json", "r") as f:
+        with open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/baseline_m{i}/{args.split.name}_turn-3_win-rates-counterbalanced.json", "r") as f:
             dct = json.load(f)
             print(dct)
             wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
@@ -68,7 +68,7 @@ def main(args: DictConfig) -> None:
         overall_winrates.append(overall_n/overall_d)
     
     # Assuming the x-axis represents the iteration number
-    iterations = list(range(len(t1_winrates)))
+    iterations = list(range(1, len(t1_winrates) + 1))
 
 
 
@@ -79,13 +79,13 @@ def main(args: DictConfig) -> None:
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
 
     # Plot each set of win rates
-    plt.plot(iterations[1:], t1_winrates[1:], marker='o', label='Turn 1 Win Rates', color='#00A86B')
-    plt.plot(iterations[1:], t2_winrates[1:], marker='s', label='Turn 2 Win Rates', color='#65cbe9')
-    plt.plot(iterations[1:], t3_winrates[1:], marker='^', label='Turn 3 Win Rates', color='#6c8dfa')
-    plt.plot(iterations[1:], overall_winrates[1:], marker='*', label='Overall Win Rates', color='#ff6242')
+    plt.plot(iterations, t1_winrates, marker='o', label='Turn 1 Win Rates', color='#00A86B')
+    plt.plot(iterations, t2_winrates, marker='s', label='Turn 2 Win Rates', color='#65cbe9')
+    plt.plot(iterations, t3_winrates, marker='^', label='Turn 3 Win Rates', color='#6c8dfa')
+    plt.plot(iterations, overall_winrates, marker='*', label='Overall Win Rates', color='#ff6242')
 
-    with open('star-2-mistral-ablation-overall-winrates.json', 'w') as f:
-        json.dump(overall_winrates[1:], f)
+    with open('star-2-mistral-ablation-overall-winrates-counterbalanced.json', 'w') as f:
+        json.dump(overall_winrates, f)
     # Adding titles and labels
     plt.title('m_t Win Rates over baseline model')
     plt.xlabel('Iteration Number')

@@ -1,0 +1,49 @@
+model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m0-vllm
+  shortname: m0
+  model_config:
+    model: mistralai/Mistral-7B-Instruct-v0.2
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
+    dtype: auto
+    tensor_parallel_size: 2
+    seed: 1
+  run:
+    verbose: false
+    completion_config:
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+qa_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m3-vllm
+  shortname: m3
+  model_config:
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-mistral-ablation/m3/final
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-mistral-ablation/m3/final
+    dtype: auto
+    tensor_parallel_size: 4
+    seed: 1
+  run:
+    verbose: false
+    completion_config:
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+split:
+  name: test
+condition:
+  name: neg-control
+MAX_TURNS: 4
+QA_PROMPT_IDX: 12
+HUMAN_SYS_PROMPT_IDX: 1
+HUMAN_PROMPT_IDX: 4
+k: 1

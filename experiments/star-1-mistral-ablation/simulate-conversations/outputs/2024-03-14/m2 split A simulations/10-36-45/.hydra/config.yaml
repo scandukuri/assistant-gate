@@ -1,0 +1,58 @@
+qa_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mistral-m2-vllm
+  shortname: m2
+  model_config:
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-mistral-ablation/m2/final
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-1-mistral-ablation/m2/final
+    dtype: auto
+    tensor_parallel_size: 4
+    seed: 1
+  run:
+    batch_size: 1250
+    verbose: false
+    initial_completion_config:
+      do_sample: true
+      temperature: 0.9
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 10
+    completion_config:
+      do_sample: true
+      temperature: 0.9
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+human_model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: mixtral-m0-vllm
+  shortname: m0
+  model_config:
+    model: mistralai/Mixtral-8x7B-Instruct-v0.1
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mixtral-8x7B-Instruct-v0.1
+    dtype: auto
+    tensor_parallel_size: 4
+    seed: 1
+  run:
+    batch_size: 1250
+    verbose: false
+    completion_config:
+      do_sample: false
+      temperature: 0.0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+split:
+  name: A
+turn:
+  number: 3
+MAX_TURNS: 3
+QA_PROMPT_IDX: 13
+HUMAN_SYS_PROMPT_IDX: 1
+HUMAN_PROMPT_IDX: 4

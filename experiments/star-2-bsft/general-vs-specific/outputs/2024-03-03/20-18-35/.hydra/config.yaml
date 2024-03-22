@@ -1,5 +1,0 @@
-split:
-  name: test
-k: 1
-N_ITER: 3
-m0_probs: true

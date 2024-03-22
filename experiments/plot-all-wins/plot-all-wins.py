@@ -46,21 +46,21 @@ def main(args: DictConfig) -> None:
         t1_winrates, t2_winrates, t3_winrates, overall_winrates = list(), list(), list(), list()
         for i in range(1, args.N_ITER):
             overall_n, overall_d = 0, 0
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-1_win-rates-randomized.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-1_win-rates.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
                 t1_winrates.append(wins['b']/(wins['a'] + wins['b']))
                 overall_n += wins['b']
                 overall_d += wins['a'] + wins['b']
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-2_win-rates-randomized.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-2_win-rates.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])
                 t2_winrates.append(wins['b']/(wins['a'] + wins['b']))
                 overall_n += wins['b']
                 overall_d += wins['a'] + wins['b']
-            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-3_win-rates-randomized.json", "r") as f:
+            with open(f"{WINRATE_PATH}/{ab}/baseline_m{i}/{args.split.name}_turn-3_win-rates.json", "r") as f:
                 dct = json.load(f)
                 print(dct)
                 wins = Counter([rating[rating.find('Final Response:') + len('Final Response:'):].lower().strip() for key, rating in dct.items()])

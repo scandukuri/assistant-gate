@@ -7,8 +7,8 @@
 #SBATCH --mem=400G 
 #SBATCH --cpus-per-task=64
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs-2-bsft/get-responses.out
-#SBATCH --error=script-logs-2-bsft/get-responses.err
+#SBATCH --output=script-logs-3-qsft/get-responses.out
+#SBATCH --error=script-logs-3-qsft/get-responses.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
