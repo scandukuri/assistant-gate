@@ -4,11 +4,11 @@
 #SBATCH --partition=cocoflops
 #SBATCH -w cocoflops-hgx-1
 #SBATCH --gres=gpu:0  # Requesting four GPUs
-#SBATCH --mem=32G 
-#SBATCH --cpus-per-task=32
+#SBATCH --mem=2G 
+#SBATCH --cpus-per-task=4
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs-2-bsft/get-ratings-randomized.out
-#SBATCH --error=script-logs-2-bsft/get-ratings-randomized.err
+#SBATCH --output=out.out
+#SBATCH --error=err.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh

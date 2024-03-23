@@ -41,7 +41,6 @@ def main(args: DictConfig) -> None:
 
     answer_model = VLLMInferenceModel(**args.answer_model.model_config)
     
-    
     if not os.path.exists(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}'):
         os.makedirs(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}')
     
@@ -61,36 +60,34 @@ def main(args: DictConfig) -> None:
     for i in range(1, args.MAX_TURNS + 1):
         turns_conversations.append(json.load(open(f"{SIMULATION_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}_turn-{i}.json", "r")))
     pooled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}{f'_top-k-{args.k}' if args.k > 0 else ''}.json", "r"))
-  
+    
+    
     tokenizer = AutoTokenizer.from_pretrained(**args.qa_model.tokenizer_config)
     turns_1, turns_2, turns_3 = random.sample(list(turns_conversations[0].keys()), args.n//3), random.sample(list(turns_conversations[1].keys()), args.n//3), random.sample(list(turns_conversations[2].keys()), args.n//3)
     all_qa_responses = list()
     for t_num, group in enumerate([turns_1, turns_2, turns_3]):
         # group is a list of keys f'prompt-{i} persona-{j}' where prompt and persona can be used to index the prompts and personas list above
-        batch_conversations = [pooled_conversations[key] for key in group]
-        group_answer_prompts = list()
         
-        for conversations in batch_conversations:
+        conversations = [random.choice(pooled_conversations[key]) for key in group]
+        
+        group_answer_prompts = list()
+        group_prompt_indices = [int(key[key.find('prompt-') + len('prompt-'):key.find('persona-')].strip()) for key in group]
+        group_persona_indices = [int(key[key.find('persona-') + len('persona-'):].strip()) for key in group]
+        for c_idx, conversation in enumerate(conversations):
+            conversation = extract_history(conversation)
             
+            turns = create_turns(conversation)
+            turns[-1] += f'\n\n{turns[0]}'  ## add the prompt to the end of the conversation again to prompt the model to answer, rather than ask another elicitation question
+            turns[0] = f"My name is {names[group_persona_indices[c_idx]]}.\n\n{turns[0]}"
+            messages = [{"role": args.ROLES[i % 2], "content": turn} for i, turn in enumerate(turns)]
             
-            group_prompt_indices = [int(key[key.find('prompt-') + len('prompt-'):key.find('persona-')].strip()) for key in group]
-            group_persona_indices = [int(key[key.find('persona-') + len('persona-'):].strip()) for key in group]
-            for c_idx, conversation in enumerate(conversations):
-                conversation = extract_history(conversation)
-               
-                
-                turns = create_turns(conversation)
-                turns[-1] += f'\n\n{turns[0]}'  ## add the prompt to the end of the conversation again to prompt the model to answer, rather than ask another elicitation question
-                turns[0] = f"My name is {names[group_persona_indices[c_idx]]}.\n\n{turns[0]}"
-                messages = [{"role": args.ROLES[i % 2], "content": turn} for i, turn in enumerate(turns)]
-           
-                group_answer_prompts.append(tokenizer.decode(tokenizer.apply_chat_template(messages)))
+            group_answer_prompts.append(tokenizer.decode(tokenizer.apply_chat_template(messages)))
 
         group_answer_responses = answer_model.batch_prompt(group_answer_prompts, **args.answer_model.run.completion_config)
         
         with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}_turn-{t_num + 1}_responses_zero_shot.json', 'w') as f:
             json.dump(dict(zip(group, group_answer_responses)), f)
-        
+       
     
     
 if __name__ == '__main__':

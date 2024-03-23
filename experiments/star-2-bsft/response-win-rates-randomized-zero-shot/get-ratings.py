@@ -58,11 +58,11 @@ def main(args: DictConfig) -> None:
         
     qa_responses_1 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_1.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}_turn-{i}_responses.json', 'r')))
+        qa_responses_1.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}/{args.split.name}_turn-{i}_responses_zero_shot.json', 'r')))
     
     qa_responses_2 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_2.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model_2.shortname}/{args.split.name}_turn-{i}_responses.json', 'r')))
+        qa_responses_2.append(json.load(open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model_2.shortname}/{args.split.name}_turn-{i}_responses_zero_shot.json', 'r')))
     
     turns_1, turns_2, turns_3 = random.sample(list(qa_responses_1[0].keys()), args.n//3), random.sample(list(qa_responses_1[1].keys()), args.n//3), random.sample(list(qa_responses_1[2].keys()), args.n//3)
     for t_num, group in enumerate([turns_1, turns_2, turns_3]):
@@ -83,23 +83,28 @@ def main(args: DictConfig) -> None:
         ])
 
         rating_prompts = [RATER_MAIN_PROMPTS[args.RATER_MAIN_PROMPT_IDX].format(persona, prompt, qa_response_1, qa_response_2) for persona, prompt, qa_response_1, qa_response_2 in zip(group_personas, group_prompts, group_qa_responses_1, group_qa_responses_2)]
-        rating_messages = rating_model.batch_prompt(system_message=RATER_SYS_PROMPTS[args.RATER_SYS_PROMPT_IDX], messages=rating_prompts)
-        rating_messages = [msg[0] for msg in rating_messages]
-        for msg_idx, msg in enumerate(rating_messages):
-            if flips[msg_idx] == 1:
-                if msg[msg.find('Final Response:') + len('Final Response:'):].lower().strip() == 'a':
-                    rating_messages[msg_idx] = msg[:msg.find('Final Response:')] + 'Final Response: B'
-                elif msg[msg.find('Final Response:') + len('Final Response:'):].lower().strip() == 'b':
-                    rating_messages[msg_idx] = msg[:msg.find('Final Response:')] + 'Final Response: A'
-        
+        breakpoint()
+        if t_num == 2:
+            breakpoint()
+            rating_messages = rating_model.batch_prompt(system_message=RATER_SYS_PROMPTS[args.RATER_SYS_PROMPT_IDX], messages=rating_prompts)
+            rating_messages = [msg[0] for msg in rating_messages]
+            for msg_idx, msg in enumerate(rating_messages):
+                if flips[msg_idx] == 1:
+                    if msg[msg.find('Final Response:') + len('Final Response:'):].lower().strip() == 'a':
+                        rating_messages[msg_idx] = msg[:msg.find('Final Response:')] + 'Final Response: B'
+                    elif msg[msg.find('Final Response:') + len('Final Response:'):].lower().strip() == 'b':
+                        rating_messages[msg_idx] = msg[:msg.find('Final Response:')] + 'Final Response: A'
+                    elif msg[msg.find('Final Response:') + len('Final Response:'):].lower().strip() == 'c':
+                        rating_messages[msg_idx] = msg[:msg.find('Final Response:')] + 'Final Response: C'
             
-        logging.info(f"Turns {t_num + 1}:")
-        logging.info(f"Rating messages: ")
-        logging.info(rating_messages)
-        
-        with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates-randomized_0_shot.json', 'w') as f:
-            json.dump(dict(zip(group, rating_messages)), f)
-        
+                
+            logging.info(f"Turns {t_num + 1}:")
+            logging.info(f"Rating messages: ")
+            logging.info(rating_messages)
+            if t_num == 2:
+                with open(f'{WINRATE_PATH}/{VERSION_2_BSFT}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates-randomized_zero_shot.json', 'w') as f:
+                    json.dump(dict(zip(group, rating_messages)), f)
+            
         
     
     
