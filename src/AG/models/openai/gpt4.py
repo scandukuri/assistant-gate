@@ -96,6 +96,8 @@ class GPT4Agent():
         """
         messages = self.get_prompt(system_message=system_message, user_message=message)
         success = False
+        logging.warning("WARNING: Inserted hack for win-rates only. This wont work with other use-cases. Please fix...")    
+        # had to change this as i was getting model errors indefinitely; so now just returning Final Response: C (i.e. no response)
         for i in range(10):
             if i < 9:
                 try:
