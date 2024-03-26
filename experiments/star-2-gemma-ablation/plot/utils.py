@@ -3,7 +3,7 @@ from paths import *
 import json
 
 
-PREFIX = f'{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/'
+PREFIX = f'{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/'
 
 
 def flatten_list(lists):

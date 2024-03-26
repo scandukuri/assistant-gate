@@ -42,27 +42,26 @@ def main(args: DictConfig) -> None:
     answer_model = VLLMInferenceModel(**args.answer_model.model_config)
     
     
-    if not os.path.exists(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}'):
-        os.makedirs(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}')
+    if not os.path.exists(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}'):
+        os.makedirs(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}')
     
     
     # Load personas, prompts
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
         names = json.load(f)
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
-    with open(f"{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         gold = json.load(f)
         
     turns_conversations = []
     for i in range(1, args.MAX_TURNS + 1):
-        turns_conversations.append(json.load(open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{i}.json", "r")))
-    pooled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}{f'_top-k-{args.k}' if args.k > 0 else ''}.json", "r"))
-    
-    
+        turns_conversations.append(json.load(open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{i}.json", "r")))
+    pooled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}{f'_top-k-{args.k}' if args.k > 0 else ''}.json", "r"))
+
     tokenizer = AutoTokenizer.from_pretrained(**args.qa_model.tokenizer_config)
     turns_1, turns_2, turns_3 = random.sample(list(turns_conversations[0].keys()), args.n//3), random.sample(list(turns_conversations[1].keys()), args.n//3), random.sample(list(turns_conversations[2].keys()), args.n//3)
     all_qa_responses = list()
@@ -86,7 +85,7 @@ def main(args: DictConfig) -> None:
         
         group_answer_responses = answer_model.batch_prompt(group_answer_prompts, **args.answer_model.run.completion_config)
         
-        with open(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{t_num + 1}_responses_zero_shot.json', 'w') as f:
+        with open(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{t_num + 1}_responses_zero_shot.json', 'w') as f:
             json.dump(dict(zip(group, group_answer_responses)), f)
        
     

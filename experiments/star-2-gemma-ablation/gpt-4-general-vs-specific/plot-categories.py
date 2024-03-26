@@ -48,13 +48,13 @@ def main(args: DictConfig) -> None:
     EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/{args.split.name}.json' for i in range(args.N_ITER)]
     TOPK_EXPERIMENTAL = [f'{PREFIX}/qa-experimental/m{i}/{args.split.name}_top-k-{args.k}.json' for i in range(args.N_ITER)]
     
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     # Load personas
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
-    with open(f"{SPECIFICITY_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_ratings.json", "r") as f:
+    with open(f"{SPECIFICITY_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_ratings.json", "r") as f:
         ratings = json.load(f)
     
     
@@ -89,21 +89,21 @@ def main(args: DictConfig) -> None:
     experimental_topk_specific_means, experimental_topk_specific_sems = zip(*[calculate_mean_and_sem([lst for key, lst in logprobs.items()]) for logprobs in topk_experimental_specific])
     
     
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-general_means.json', 'w') as f:
         json.dump(experimental_general_means, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-specific_means.json', 'w') as f:
         json.dump(experimental_specific_means, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_topk_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-general_topk_means.json', 'w') as f:
         json.dump(experimental_topk_general_means, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_topk_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-specific_topk_means.json', 'w') as f:
         json.dump(experimental_topk_specific_means, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-general_sems.json', 'w') as f:
         json.dump(experimental_general_sems, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-specific_sems.json', 'w') as f:
         json.dump(experimental_specific_sems, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-general_topk_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-general_topk_sems.json', 'w') as f:
         json.dump(experimental_topk_general_sems, f)
-    with open('star-2-mistral-ablation-qa-experimental-GPT4-RATED-specific_topk_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental-GPT4-RATED-specific_topk_sems.json', 'w') as f:
         json.dump(experimental_topk_specific_sems, f)
     # Adjusting the provided code to use plot() instead of scatter(), and making the background grid light gray
     
@@ -127,7 +127,7 @@ def main(args: DictConfig) -> None:
     ax.errorbar(iterations, experimental_topk_specific_means, yerr=experimental_topk_specific_sems, fmt='o', color='#4285f4', label=f'Specific Top-{args.k}', markersize=marker_size, alpha=0.4, linestyle=':')
 
     # Title and labels
-    ax.set_title(f'{VERSION_2_MISTRAL_ABLATION}\nLog-Probability of Desired Results by GPT-4-determined Category')
+    ax.set_title(f'{VERSION_2_GEMMA_ABLATION}\nLog-Probability of Desired Results by GPT-4-determined Category')
     ax.set_xlabel('Iterations')
     ax.set_ylabel('Log-Probability')
 
@@ -138,10 +138,10 @@ def main(args: DictConfig) -> None:
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
     plt.tight_layout()
     # Show the plot
-    if not os.path.exists(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}'):
-        os.makedirs(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}')
-    # the file title is on purpose, the redundancy of VERSION_2_MISTRAL_ABLATION helps identify the experiment when we copy over outside of the regular working node (i.e. to send in Slack etc.)
-    plt.savefig(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}/{VERSION_2_MISTRAL_ABLATION}-log_probs_gpt-4-general-vs-specific-{args.split.name}_top-{args.k}.png')
+    if not os.path.exists(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}'):
+        os.makedirs(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}')
+    # the file title is on purpose, the redundancy of VERSION_2_GEMMA_ABLATION helps identify the experiment when we copy over outside of the regular working node (i.e. to send in Slack etc.)
+    plt.savefig(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}/{VERSION_2_GEMMA_ABLATION}-log_probs_gpt-4-general-vs-specific-{args.split.name}_top-{args.k}.png')
 
 
 

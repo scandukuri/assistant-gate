@@ -45,23 +45,23 @@ def main(args: DictConfig) -> None:
         return
     
     # Load prompts
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     # Load personas
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
     # Load names
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
     
-    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-        os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
+    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
     
     
-    if os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json"):
+    if os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json"):
         qa_model = VLLMInferenceModel(**args.qa_model.model_config)
-        pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
+        pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
         output_conversations = defaultdict(list)
         print("About to continue: ", pulled_conversations.keys())
         for j, persona in enumerate(personas):
@@ -97,7 +97,7 @@ def main(args: DictConfig) -> None:
                 output_conversations[pair_key].extend(sublist)
     
         
-        with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+        with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
             json.dump(output_conversations, f)
 
     else:
@@ -123,9 +123,9 @@ def main(args: DictConfig) -> None:
                     pair_key = f"prompt-{i} persona-{j}"
                     output_conversations[pair_key].extend(sublist)
                     
-        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
-        with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
+        with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
             json.dump(output_conversations, f)
 
 

@@ -11,7 +11,7 @@ model:
     wandb:
       project: assistant-gate
       log_model: checkpoint
-      name: star-2-mistral-ablation-train-m0
+      name: star-2-gemma-ablation-train-m0
     model_config:
       pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
       cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
@@ -30,16 +30,16 @@ qa_model:
     wandb:
       project: assistant-gate
       log_model: checkpoint
-      name: star-2-mistral-ablation-train-m2
+      name: star-2-gemma-ablation-train-m2
     model_config:
-      pretrained_model_name_or_path: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m2/final
-      cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m2/final
+      pretrained_model_name_or_path: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m2/final
+      cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m2/final
     tokenizer_config:
       pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
       cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
       model_max_length: 1024
     training_args:
-      output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/
+      output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/
       per_device_train_batch_size: 4
       per_device_eval_batch_size: 4
       gradient_accumulation_steps: 16
@@ -376,7 +376,7 @@ model_type:
   value: mistral
 output_dir:
   desc: null
-  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/
+  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/
 overwrite_output_dir:
   desc: null
   value: false
@@ -463,7 +463,7 @@ log_on_each_node:
   value: true
 logging_dir:
   desc: null
-  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/runs/Mar13_21-18-54_cocoflops2
+  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/runs/Mar13_21-18-54_cocoflops-hgx-1
 logging_strategy:
   desc: null
   value: steps
@@ -565,7 +565,7 @@ past_index:
   value: -1
 run_name:
   desc: null
-  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/
+  value: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/
 disable_tqdm:
   desc: null
   value: false

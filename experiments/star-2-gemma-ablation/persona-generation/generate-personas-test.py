@@ -91,10 +91,10 @@ def main(args: DictConfig) -> None:
                 )
     flattened_completions = [item for sublist in completions for item in sublist]
     
-    if not os.path.exists(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}'):
-        os.makedirs(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}')
+    if not os.path.exists(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}'):
+        os.makedirs(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}')
     
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', 'w') as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', 'w') as f:
         json.dump(flattened_completions, f)
     
     

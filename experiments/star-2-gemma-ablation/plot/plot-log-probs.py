@@ -134,33 +134,33 @@ def main(args: DictConfig) -> None:
     plt.errorbar(iterations, experimental_topk_means, yerr=experimental_topk_sems, marker='o', markersize=marker_size, color=color_map['qa-experimental'], linestyle='', capsize=0,  ecolor=error_color, zorder=z_order, fmt='none', label='_nolegend_', elinewidth=1)
 
 
-    with open('star-2-mistral-ablation-pos_control_1_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_1_means.json', 'w') as f:
         json.dump(pos_control_1_means, f)
-    with open('star-2-mistral-ablation-pos_control_1_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_1_sems.json', 'w') as f:
         json.dump(pos_control_1_sems, f)
-    with open('star-2-mistral-ablation-pos_control_1_topk_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_1_topk_means.json', 'w') as f:
         json.dump(pos_control_1_topk_means, f)
-    with open('star-2-mistral-ablation-pos_control_1_topk_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_1_topk_sems.json', 'w') as f:
         json.dump(pos_control_1_topk_sems, f)
-    with open('star-2-mistral-ablation-pos_control_2_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_2_means.json', 'w') as f:
         json.dump(pos_control_2_means, f)
-    with open('star-2-mistral-ablation-pos_control_2_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_2_sems.json', 'w') as f:
         json.dump(pos_control_2_sems, f)
-    with open('star-2-mistral-ablation-pos_control_2_topk_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_2_topk_means.json', 'w') as f:
         json.dump(pos_control_2_topk_means, f)
-    with open('star-2-mistral-ablation-pos_control_2_topk_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-pos_control_2_topk_sems.json', 'w') as f:
         json.dump(pos_control_2_topk_sems, f)
-    with open('star-2-mistral-ablation-qa-experimental_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental_means.json', 'w') as f:
         json.dump(experimental_means, f)
-    with open('star-2-mistral-ablation-qa-experimental_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental_sems.json', 'w') as f:
         json.dump(experimental_sems, f)
-    with open('star-2-mistral-ablation-qa-experimental_topk_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental_topk_means.json', 'w') as f:
         json.dump(experimental_topk_means, f)
-    with open('star-2-mistral-ablation-qa-experimental_topk_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-qa-experimental_topk_sems.json', 'w') as f:
         json.dump(experimental_topk_sems, f)
-    with open('star-2-mistral-ablation-neg-control_means.json', 'w') as f:
+    with open('star-2-gemma-ablation-neg-control_means.json', 'w') as f:
         json.dump(neg_control_means, f)
-    with open('star-2-mistral-ablation-neg-control_sems.json', 'w') as f:
+    with open('star-2-gemma-ablation-neg-control_sems.json', 'w') as f:
         json.dump(neg_control_sems, f)
     # Set the x-axis to show the range up to iteration 5
     plt.xticks(range(4))  # This will show ticks from 0 to 5
@@ -179,7 +179,7 @@ def main(args: DictConfig) -> None:
 
 # Show grid with light gray color
     plt.grid(True, color='white', linestyle='-', linewidth=0.9)
-    plt.title(f'{VERSION_2_MISTRAL_ABLATION}\nAverage Log-Probability of Desired Responses in {args.split.name} Split\n[n = {5000} simulations]')
+    plt.title(f'{VERSION_2_GEMMA_ABLATION}\nAverage Log-Probability of Desired Responses in {args.split.name} Split\n[n = {5000} simulations]')
 
 # Remove top and right spines
     ax.spines['top'].set_visible(False)
@@ -188,10 +188,10 @@ def main(args: DictConfig) -> None:
     plt.tight_layout()
 
 # Show the plot
-    if not os.path.exists(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}'):
-        os.makedirs(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}')
-    # the file title is on purpose, the redundancy of VERSION_2_MISTRAL_ABLATION helps identify the experiment when we copy over outside of the regular working node (i.e. to send in Slack etc.)
-    plt.savefig(f'{FIGURES_PATH}/{VERSION_2_MISTRAL_ABLATION}/{VERSION_2_MISTRAL_ABLATION}-log_probs_{args.split.name}_top-{args.k}.png')
+    if not os.path.exists(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}'):
+        os.makedirs(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}')
+    # the file title is on purpose, the redundancy of VERSION_2_GEMMA_ABLATION helps identify the experiment when we copy over outside of the regular working node (i.e. to send in Slack etc.)
+    plt.savefig(f'{FIGURES_PATH}/{VERSION_2_GEMMA_ABLATION}/{VERSION_2_GEMMA_ABLATION}-log_probs_{args.split.name}_top-{args.k}.png')
 
 
 

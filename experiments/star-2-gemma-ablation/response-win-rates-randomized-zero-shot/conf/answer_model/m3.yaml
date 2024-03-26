@@ -7,8 +7,8 @@ name: mistral-m3-vllm
 shortname: m3
 
 model_config:
-  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/final
-  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/final
+  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/final
+  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/final
   dtype: auto
   tensor_parallel_size: 1
   seed: 1

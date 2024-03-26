@@ -49,7 +49,7 @@ def main(args: DictConfig) -> None:
     rating_llm = AsyncAzureChatLLM(**args.rating_model.model_config.azure_api)
     rating_model = GPT4Agent(llm=rating_llm, **args.rating_model.run.completion_config)
     
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     
@@ -65,9 +65,9 @@ def main(args: DictConfig) -> None:
         except:
             final_ratings.append(0)
 
-    if not os.path.exists(f"{SPECIFICITY_PATH}/{VERSION_2_MISTRAL_ABLATION}"):
-        os.makedirs(f"{SPECIFICITY_PATH}/{VERSION_2_MISTRAL_ABLATION}")
-    with open(f"{SPECIFICITY_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_ratings.json", 'w') as f:
+    if not os.path.exists(f"{SPECIFICITY_PATH}/{VERSION_2_GEMMA_ABLATION}"):
+        os.makedirs(f"{SPECIFICITY_PATH}/{VERSION_2_GEMMA_ABLATION}")
+    with open(f"{SPECIFICITY_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_ratings.json", 'w') as f:
         json.dump(final_ratings, f)
     logging.info(f"Final ratings...")
     print(final_ratings)

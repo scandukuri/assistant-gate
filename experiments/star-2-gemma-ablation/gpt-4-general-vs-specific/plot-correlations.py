@@ -44,11 +44,11 @@ logging.basicConfig(level=logging.INFO)
 @hydra.main(version_base=None, config_path="conf", config_name='config')
 def main(args: DictConfig) -> None:
 
-    with open(f"{SPECIFICITY_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_ratings.json", "r") as f:
+    with open(f"{SPECIFICITY_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_ratings.json", "r") as f:
         ratings = json.load(f)
     with open(f"{LOGPROBS_PATH}/{VERSION_1_ESFT}/qa-experimental/m1/{args.split.name}.json", "r") as f:
         logprobs = json.load(f)
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/m3/{args.split.name}.json", "r") as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/m3/{args.split.name}.json", "r") as f:
         conversations = json.load(f)
     breakpoint()
     # Initialize a list of 50 sublists

@@ -6,7 +6,7 @@ omegaconf
 openai==1.14.0
 rouge_score
 torch
-transformers
+transformers==4.39.1
 wandb
 bitsandbytes
 peft
@@ -16,7 +16,7 @@ scipy
 fire
 sentencepiece
 trl
-vllm
+vllm==0.3.3
 langchain
 matplotlib
 seaborn

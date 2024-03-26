@@ -39,11 +39,11 @@ def main(args: DictConfig) -> None:
     tokenizer = AutoTokenizer.from_pretrained(**args.qa_model.tokenizer_config)
     
     
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
         conversations = json.load(f)
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
 
     
@@ -75,10 +75,10 @@ def main(args: DictConfig) -> None:
         
         output_responses = output_responses | dict(zip(persona_keys, [[res] for res in final_qa_responses]))
             
-    if not os.path.exists(f"{MODELRESPONSE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-        os.makedirs(f"{MODELRESPONSE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
+    if not os.path.exists(f"{MODELRESPONSE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{MODELRESPONSE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
     
-    with open(f"{MODELRESPONSE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'w') as f:
+    with open(f"{MODELRESPONSE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'w') as f:
         json.dump(dict(output_responses), f)
     
     return -1

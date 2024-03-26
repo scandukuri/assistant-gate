@@ -7,15 +7,15 @@
 #SBATCH --mem=32G 
 #SBATCH --cpus-per-task=32
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs-2-mistral-ablation/get-ratings.out
-#SBATCH --error=script-logs-2-mistral-ablation/get-ratings.err
+#SBATCH --output=script-logs-2-gemma-ablation/get-ratings.out
+#SBATCH --error=script-logs-2-gemma-ablation/get-ratings.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
 source activate assistant-gate
 
 # navigate to python script parent directory
-cd ~/research_projects/assistant-gate/experiments/star-2-mistral-ablation/response-win-rates/
+cd ~/research_projects/assistant-gate/experiments/star-2-gemma-ablation/response-win-rates/
 
 # python get-ratings.py qa_model=baseline qa_model_2=m0 split=test
 python get-ratings.py qa_model=baseline qa_model_2=m1 split=test

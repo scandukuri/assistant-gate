@@ -50,7 +50,7 @@ def main(args: DictConfig) -> None:
     if not os.path.exists(f'{training_args.output_dir}/final'):
         os.makedirs(f'{training_args.output_dir}/final')
 
-    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
+    targets = json.load(open(f"{SFT_DATA_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
     dataset = preprocess(targets=targets, tokenizer=tokenizer)
     dataset = dataset.shuffle(seed=42)
     

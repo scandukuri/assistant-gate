@@ -7,14 +7,14 @@
 #SBATCH --mem=32G 
 #SBATCH --cpus-per-task=4
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs-2-mistral-ablation/m3-test-log-probs-shuffled-filter.out
-#SBATCH --error=script-logs-2-mistral-ablation/m3-test-log-probs-shuffled-filter.err
+#SBATCH --output=script-logs-2-gemma-ablation/m3-test-log-probs-shuffled-filter.out
+#SBATCH --error=script-logs-2-gemma-ablation/m3-test-log-probs-shuffled-filter.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
 source activate assistant-gate
 
 # navigate to python script parent directory
-cd ~/research_projects/assistant-gate/experiments/star-2-mistral-ablation/shuffled-log-probs/
+cd ~/research_projects/assistant-gate/experiments/star-2-gemma-ablation/shuffled-log-probs/
 
 python filter.py model=m0 qa_model=m3 condition=qa-experimental split=test

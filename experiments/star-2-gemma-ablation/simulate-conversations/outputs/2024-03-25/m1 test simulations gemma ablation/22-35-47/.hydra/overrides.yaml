@@ -1,0 +1,4 @@
+- qa_model=m1
+- human_model=gemma
+- split=test
+- turn=t1

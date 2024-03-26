@@ -8,11 +8,11 @@ shortname: m2
 wandb:
   project: assistant-gate
   log_model: checkpoint
-  name: star-2-mistral-ablation-train-m2
+  name: star-2-gemma-ablation-train-m2
 
 model_config:
-  pretrained_model_name_or_path: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m2/final
-  cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m2/final
+  pretrained_model_name_or_path: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m2/final
+  cache_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m2/final
 
 
 tokenizer_config:
@@ -23,7 +23,7 @@ tokenizer_config:
 
 
 training_args:
-  output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m3/
+  output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m3/
   per_device_train_batch_size: 4
   per_device_eval_batch_size: 4
   gradient_accumulation_steps: 16

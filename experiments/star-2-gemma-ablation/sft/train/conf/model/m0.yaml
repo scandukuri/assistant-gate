@@ -8,7 +8,7 @@ shortname: m0
 wandb:
   project: assistant-gate
   log_model: checkpoint
-  name: star-2-mistral-ablation-train-m0
+  name: star-2-gemma-ablation-train-m0
 
 model_config:
   pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2

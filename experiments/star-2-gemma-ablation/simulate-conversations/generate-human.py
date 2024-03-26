@@ -40,20 +40,20 @@ def main(args: DictConfig) -> None:
         logging.info(f"Cannot exceed {args.MAX_TURNS} turns per conversation. Exiting.")
         return
     
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     # Load personas
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', "r") as f:
         personas = json.load(f)
     # Load names
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
     
-    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-        os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
+    if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
     
-    pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
+    pulled_conversations = json.load(open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r'))
     output_conversations = defaultdict(list)
     human_model = VLLMInferenceModel(**args.human_model.model_config)
     for j, persona in enumerate(personas):
@@ -82,13 +82,14 @@ def main(args: DictConfig) -> None:
         for batch_index, conversation_batch in enumerate(conversation_batches):
             logging.info(f"Running batch {batch_index} of {len(conversation_batches)}...")
             histories = [extract_history(c) for c in conversation_batch]
-
+            
             roleplay_prompts = [f"{BOS_TOKEN}{B_INST} {HUMAN_SYS_MSGS[args.HUMAN_SYS_PROMPT_IDX]}\n\n{HUMAN_PROMPTS[args.HUMAN_PROMPT_IDX].format(persona, prompt, history) }{E_INST}" for prompt, history in zip(prompt_batches[batch_index], histories)]
-
+            roleplay_prompts = [prompt.replace(BOS_TOKEN, '<bos>') for prompt in roleplay_prompts]
+            roleplay_prompts = [prompt.replace(B_INST, '<start_of_turn>user\n') for prompt in roleplay_prompts]
+            roleplay_prompts = [prompt.replace(E_INST, '<end_of_turn>\n<start_of_turn>model\n') for prompt in roleplay_prompts]
+            roleplay_prompts = [prompt.replace(EOS_TOKEN, '') for prompt in roleplay_prompts]
             human_responses = human_model.batch_prompt(roleplay_prompts, **args.human_model.run.completion_config)
-
             appended_conversations = [unfinished_conversation + '\n' + B_INST + f" {human_response} " + E_INST for unfinished_conversation, human_response in zip(conversation_batch, human_responses)]
-
             final_conversations.extend(appended_conversations)
             
         
@@ -109,15 +110,15 @@ def main(args: DictConfig) -> None:
     
         print('Finished: ', finished.keys())
         print('Continuing', unfinished.keys())
-        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
+        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
 
-        with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+        with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
             json.dump(unfinished, f)
-        with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{args.turn.number}.json", 'w') as f:
+        with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{args.turn.number}.json", 'w') as f:
             json.dump(finished, f)
     else:
-        with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{args.turn.number}.json", 'w') as f:
+        with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{args.turn.number}.json", 'w') as f:
             json.dump(output_conversations, f)
         
 

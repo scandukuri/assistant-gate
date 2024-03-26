@@ -43,27 +43,27 @@ def main(args: DictConfig) -> None:
     rating_llm = AsyncAzureChatLLM(**args.rating_model.model_config.azure_api)
     rating_model = GPT4Agent(llm=rating_llm, **args.rating_model.run.completion_config)
     
-    if not os.path.exists(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}'):
-        os.makedirs(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}')
+    if not os.path.exists(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}'):
+        os.makedirs(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}')
     
     
     # Load personas, prompts
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
         names = json.load(f)
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     
         
     qa_responses_1 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_1.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{f'0{int(args.qa_model.run.completion_config.temperature * 10)}_' if args.qa_model.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
+        qa_responses_1.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{f'0{int(args.qa_model.run.completion_config.temperature * 10)}_' if args.qa_model.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
     
     qa_responses_2 = []
     for i in range(1, args.MAX_TURNS + 1):
-        qa_responses_2.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model_2.shortname}/{f'0{int(args.qa_model_2.run.completion_config.temperature * 10)}_' if args.qa_model_2.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
+        qa_responses_2.append(json.load(open(f"{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model_2.shortname}/{f'0{int(args.qa_model_2.run.completion_config.temperature * 10)}_' if args.qa_model_2.run.completion_config.temperature > 0.0 else ''}{args.split.name}_turn-{i}_responses.json", 'r')))
 
     turns_1, turns_2, turns_3 = random.sample(list(qa_responses_1[0].keys()), args.n//3), random.sample(list(qa_responses_1[1].keys()), args.n//3), random.sample(list(qa_responses_1[2].keys()), args.n//3)
     for t_num, group in enumerate([turns_1, turns_2, turns_3]):
@@ -82,7 +82,7 @@ def main(args: DictConfig) -> None:
         logging.info(f"Rating messages: ")
         logging.info(rating_messages)
         
-        with open(f'{WINRATE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates.json', 'w') as f:
+        with open(f'{WINRATE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}_{args.qa_model_2.shortname}/{args.split.name}_turn-{t_num + 1}_win-rates.json', 'w') as f:
             json.dump(dict(zip(group, rating_messages)), f)
     
 if __name__ == '__main__':

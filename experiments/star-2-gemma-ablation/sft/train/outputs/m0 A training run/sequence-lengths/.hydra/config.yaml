@@ -7,7 +7,7 @@ model:
   wandb:
     project: assistant-gate
     log_model: checkpoint
-    name: star-2-mistral-ablation-train-m0
+    name: star-2-gemma-ablation-train-m0
   model_config:
     pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
     cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
@@ -16,7 +16,7 @@ model:
     cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
     model_max_length: 1024
   training_args:
-    output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m1/
+    output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m1/
     per_device_train_batch_size: 4
     per_device_eval_batch_size: 4
     gradient_accumulation_steps: 16
@@ -43,7 +43,7 @@ qa_model:
   wandb:
     project: assistant-gate
     log_model: checkpoint
-    name: star-2-mistral-ablation-train-m0
+    name: star-2-gemma-ablation-train-m0
   model_config:
     pretrained_model_name_or_path: mistralai/Mistral-7B-Instruct-v0.2
     cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
@@ -52,7 +52,7 @@ qa_model:
     cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models/Mistral-7B-Instruct-v0.2
     model_max_length: 1024
   training_args:
-    output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m1/
+    output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m1/
     per_device_train_batch_size: 4
     per_device_eval_batch_size: 4
     gradient_accumulation_steps: 16

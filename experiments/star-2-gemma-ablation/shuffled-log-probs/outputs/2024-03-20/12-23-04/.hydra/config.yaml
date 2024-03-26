@@ -26,8 +26,8 @@ qa_model:
   name: mistral-m1-vllm
   shortname: m1
   model_config:
-    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m1/final
-    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-mistral-ablation/m1/final
+    model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m1/final
+    download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-2-gemma-ablation/m1/final
     dtype: auto
     tensor_parallel_size: 4
     seed: 1

@@ -50,20 +50,20 @@ def main(args: DictConfig) -> None:
         
     
     # Load prompts
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
     
     # Load personas
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
     # Load names
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json", 'r') as f:
         names = json.load(f)
     
 
-    with open(f'{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json', 'r') as f:
+    with open(f'{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json', 'r') as f:
         gold_responses = json.load(f)
         
     final_log_probs = defaultdict(list)
@@ -80,9 +80,9 @@ def main(args: DictConfig) -> None:
                     final_log_probs[f'prompt-{i} persona-{j}'].extend(log_probs.tolist())
                     
 
-    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}"):
-        os.makedirs(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}")
-    with open(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}"):
+        os.makedirs(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}")
+    with open(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
         json.dump(final_log_probs, f)
     
 

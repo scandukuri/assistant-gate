@@ -46,7 +46,7 @@ def main(args: DictConfig) -> None:
         model = GPT4Agent(llm=llm, **args.model.run.completion_config)
     
     # Load personas, prompts
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
 
@@ -67,9 +67,9 @@ def main(args: DictConfig) -> None:
     if len(violating_personas) == 0:
         logging.info(f"No content violations found for personas in {args.split.name} split.")
     
-    if not os.path.exists(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_MISTRAL_ABLATION}"):
-        os.makedirs(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_MISTRAL_ABLATION}")
-    with open(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_GEMMA_ABLATION}"):
+        os.makedirs(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_GEMMA_ABLATION}")
+    with open(f"{CONTENT_VIOLATIONS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'w') as f:
         json.dump(violating_personas, f)
             
     

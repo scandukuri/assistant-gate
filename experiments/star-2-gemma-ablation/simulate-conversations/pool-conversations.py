@@ -38,11 +38,11 @@ def main(args: DictConfig) -> None:
     
     subset_conversations = list()
     for i in range(1, args.MAX_TURNS + 1):
-        subset_conversations.append(json.load(open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{i}.json", 'r')))
+        subset_conversations.append(json.load(open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_turn-{i}.json", 'r')))
 
     
     final_conversations = {key: value for d in subset_conversations for key, value in d.items()}
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
         json.dump(final_conversations, f)
     
 if __name__ == "__main__":

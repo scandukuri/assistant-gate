@@ -132,18 +132,18 @@ hydra:
   runtime:
     version: 1.3.2
     version_base: '1.3'
-    cwd: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/response-win-rates-randomized-zero-shot
+    cwd: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/response-win-rates-randomized-zero-shot
     config_sources:
     - path: hydra.conf
       schema: pkg
       provider: hydra
-    - path: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/response-win-rates-randomized-zero-shot/conf
+    - path: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/response-win-rates-randomized-zero-shot/conf
       schema: file
       provider: main
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/response-win-rates-randomized-zero-shot/outputs/2024-03-23/13-59-22
+    output_dir: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/response-win-rates-randomized-zero-shot/outputs/2024-03-23/13-59-22
     choices:
       split: test
       qa_model_2: m1

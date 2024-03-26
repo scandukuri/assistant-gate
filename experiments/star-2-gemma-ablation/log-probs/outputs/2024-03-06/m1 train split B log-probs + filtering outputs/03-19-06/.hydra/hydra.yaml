@@ -133,18 +133,18 @@ hydra:
   runtime:
     version: 1.3.2
     version_base: '1.3'
-    cwd: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/log-probs
+    cwd: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/log-probs
     config_sources:
     - path: hydra.conf
       schema: pkg
       provider: hydra
-    - path: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/log-probs/conf
+    - path: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/log-probs/conf
       schema: file
       provider: main
     - path: ''
       schema: structured
       provider: schema
-    output_dir: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/log-probs/outputs/2024-03-06/03-19-06
+    output_dir: /sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/log-probs/outputs/2024-03-06/03-19-06
     choices:
       condition: qa-experimental
       split: B

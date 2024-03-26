@@ -23,7 +23,7 @@ Comparison: <thorough discussion of the user query and explanation>
 Final Response: <integer between 1 and 6, inclusive">"""
 ]
 
-PREFIX = f'{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/'
+PREFIX = f'{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/'
 
 def flatten_list(lists):
     return [item for sublist in lists for item in sublist]

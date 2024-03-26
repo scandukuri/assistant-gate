@@ -52,18 +52,18 @@ def main(args: DictConfig) -> None:
 
     
     # Load personas, prompts
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", "r") as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", "r") as f:
         prompts = json.load(f)
         prompts = [s.strip() for s in prompts]
 
     logging.info(f"{len(personas)} total personas...")
     logging.info(f"{len(prompts)} total prompts...") 
     
-    if not os.path.exists(f"{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}"):
-        os.makedirs(f"{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}")
+    if not os.path.exists(f"{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}"):
+        os.makedirs(f"{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}")
 
 
     
@@ -97,10 +97,10 @@ def main(args: DictConfig) -> None:
                 if gold_responses_key not in gold_responses:
                     gold_responses[gold_responses_key] = []
                 gold_responses[gold_responses_key].extend([response])
-        with open(f"{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'w') as f:
+        with open(f"{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'w') as f:
             json.dump(gold_responses, f)
     
-    with open(f"{GOLD_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'w') as f:
+    with open(f"{GOLD_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'w') as f:
         json.dump(gold_responses, f)
             
     

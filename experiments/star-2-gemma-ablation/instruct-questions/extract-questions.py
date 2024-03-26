@@ -38,16 +38,16 @@ def main(args: DictConfig) -> None:
     private_exchanges = full_dataset.iloc[args.PUBLIC_ROWS * 2:args.PUBLIC_ROWS * 2 + args.PRIVATE_ROWS]['prompt'].tolist()
     private_initial_turns = [extract_initial_prompt(exchange) for exchange in private_exchanges]
     
-    if not os.path.exists(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}'):
-        os.makedirs(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}')
+    if not os.path.exists(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}'):
+        os.makedirs(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}')
     
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/A.json', 'w') as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/A.json', 'w') as f:
         json.dump(A_public_initial_turns, f)
     
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/B.json', 'w') as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/B.json', 'w') as f:
         json.dump(B_public_initial_turns, f)
     
-    with open(f'{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/test.json', 'w') as f:
+    with open(f'{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/test.json', 'w') as f:
         json.dump(private_initial_turns, f)
     
     

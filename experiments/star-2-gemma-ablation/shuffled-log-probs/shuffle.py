@@ -38,11 +38,11 @@ def main(args: DictConfig) -> None:
     logging.info(f"Loading models for shuffling from {args.split.name}...")
     random.seed(1)
     
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
         conversations = json.load(f)
-    with open(f"{PROMPT_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PROMPT_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         prompts = json.load(f)
-    with open(f"{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}.json", 'r') as f:
+    with open(f"{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}.json", 'r') as f:
         personas = json.load(f)
     
     output_conversations = dict()
@@ -53,7 +53,7 @@ def main(args: DictConfig) -> None:
         output_conversations |= shuffled_subset_dict
         
     
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}-shuffled.json", 'w') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}-shuffled.json", 'w') as f:
         json.dump(output_conversations, f)
 
 

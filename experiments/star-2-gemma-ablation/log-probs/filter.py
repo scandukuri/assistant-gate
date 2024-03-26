@@ -37,11 +37,11 @@ def main(args: DictConfig) -> None:
     
     
     # Load conversations
-    with open(f'{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json', 'r') as f:
+    with open(f'{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json', 'r') as f:
         conversations = json.load(f)
     
     # Load corresponding logprobs
-    with open(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
+    with open(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}.json", 'r') as f:
         logprobs = json.load(f)
     
     
@@ -59,18 +59,18 @@ def main(args: DictConfig) -> None:
         filtered_logprobs[key] = [logprobs[key][idx] for idx in max_indices_sorted]
         filtered_conversations[key] = [conversations[key][idx] for idx in max_indices_sorted]
 
-    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}"):
-        os.makedirs(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}")
+    if not os.path.exists(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}"):
+        os.makedirs(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}")
 
-    with open(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'w') as f:
+    with open(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'w') as f:
         json.dump(filtered_logprobs, f)
-    with open(f"{LOGPROBS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}_indices.json", 'w') as f:
+    with open(f"{LOGPROBS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.condition.name}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}_indices.json", 'w') as f:
         json.dump(filtered_indices, f)
     # THIS LAST ONE IS WRONG, fix later
     if args.condition.name == 'qa-experimental':
-        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
-        with open(f'{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json', 'w') as f:
+        if not os.path.exists(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+            os.makedirs(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
+        with open(f'{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json', 'w') as f:
             json.dump(filtered_conversations, f)
             
     

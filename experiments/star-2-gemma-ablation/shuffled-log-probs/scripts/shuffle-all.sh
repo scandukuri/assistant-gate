@@ -7,15 +7,15 @@
 #SBATCH --mem=32G 
 #SBATCH --cpus-per-task=20
 #SBATCH --time=48:00:00
-#SBATCH --output=script-logs-2-mistral-ablation/shuffle.out
-#SBATCH --error=script-logs-2-mistral-ablation/shuffle.err
+#SBATCH --output=script-logs-2-gemma-ablation/shuffle.out
+#SBATCH --error=script-logs-2-gemma-ablation/shuffle.err
 
 # Load conda environment
 source /scr/andukuri/miniconda3/etc/profile.d/conda.sh
 source activate assistant-gate
 
 # navigate to python script parent directory
-cd ~/research_projects/assistant-gate/experiments/star-2-mistral-ablation/shuffled-log-probs/
+cd ~/research_projects/assistant-gate/experiments/star-2-gemma-ablation/shuffled-log-probs/
 
 python shuffle.py qa_model=m0 split=test
 python shuffle.py qa_model=m1 split=test

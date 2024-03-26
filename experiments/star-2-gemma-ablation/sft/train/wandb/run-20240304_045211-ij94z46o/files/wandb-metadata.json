@@ -11,16 +11,16 @@
         "split=A"
     ],
     "state": "running",
-    "program": "/sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-mistral-ablation/sft/train/train_sft.py",
+    "program": "/sailhome/andukuri/research_projects/assistant-gate/experiments/star-2-gemma-ablation/sft/train/train_sft.py",
     "codePathLocal": "train_sft.py",
-    "codePath": "experiments/star-2-mistral-ablation/sft/train/train_sft.py",
+    "codePath": "experiments/star-2-gemma-ablation/sft/train/train_sft.py",
     "git": {
         "remote": "git@github.com:scandukuri/assistant-gate.git",
         "commit": "d735197b5594270779c7a94d4b9359bd29b65764"
     },
     "email": "andukuri@stanford.edu",
     "root": "/sailhome/andukuri/research_projects/assistant-gate",
-    "host": "cocoflops2",
+    "host": "cocoflops-hgx-1",
     "username": "andukuri",
     "executable": "/scr/andukuri/miniconda3/envs/assistant-gate/bin/python",
     "cpu_count": 64,

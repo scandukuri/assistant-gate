@@ -37,12 +37,12 @@ def main(args: DictConfig) -> None:
     # TODO: fix directory
     
 
-    with open(f"{SIMULATION_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
+    with open(f"{SIMULATION_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
         conversations = json.load(f)
     ### THIS DIRECTORY IS WRONG FIX IT
-    with open(f"{MODELRESPONSE_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
+    with open(f"{MODELRESPONSE_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}_top-k-{args.k}.json", 'r') as f:
         model_responses = json.load(f)
-    with open(f'{PERSONAS_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
+    with open(f'{PERSONAS_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.split.name}_NAMES.json', "r") as f:
         names = json.load(f)
     
     targets = list()
@@ -63,9 +63,9 @@ def main(args: DictConfig) -> None:
             
             targets.append(messages)
 
-    if not os.path.exists(f"{SFT_DATA_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}"):
-        os.makedirs(f"{SFT_DATA_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}")
-    with open(f"{SFT_DATA_PATH}/{VERSION_2_MISTRAL_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
+    if not os.path.exists(f"{SFT_DATA_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}"):
+        os.makedirs(f"{SFT_DATA_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}")
+    with open(f"{SFT_DATA_PATH}/{VERSION_2_GEMMA_ABLATION}/{args.qa_model.shortname}/{args.split.name}.json", 'w') as f:
         json.dump(targets, f)
             
     
