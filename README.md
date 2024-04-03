@@ -7,9 +7,9 @@ When prompting language models to complete a task, users often leave important a
 <p align="center">
   <br>
   <img src="https://github.com/scandukuri/assistant-gate/assets/87667591/7c2fe82a-04e8-4779-ab8d-c2476724ac69" alt="fig_3">
-  <br>
+  <br><br>
 </p>
-  
+
 ## Setup
 
 When creating your conda environment to set up the project, first navigate to the root directory and run the following commands:
@@ -23,31 +23,31 @@ By default, all data and model checkpoints are saved in subdirectories under a d
 ### Setup Weights & Biases (training only)
 
 To train models (not just use them), set up a [Weights & Biases account](https://wandb.ai/) for experiment logging, and create a project called ```assistant-gate```. After you create a project and log in to Weights & Biases using the command line interface as described [here](https://docs.wandb.ai/ref/cli/wandb-login), all training runs as described below should be logged.
-
-### How to do STaR-GATE
+<br><br>
+## How to do STaR-GATE
 
 Assuming you've reconfigured pointers to directories carefully as described above, and navigated to ```experiments/star-gate```, STaR-GATE can be run end-to-end with a series of shell scripts which point to organized python files. Note that depending on whether you use a SLURM job scheduler (as in the existing scripts) or interact directly with your machine, you may need to adjust the setup in these shell scripts.
 
-#### One-Time Procedures
+### One-Time Procedures
 1. **Extract initial tasks from source dataset.** Run the shell script ```instruct-questions/scripts/extract-all.sh```.
 2. **Generate personas few-shot.** Run the shell script ```persona-generation/scripts/generate-personas.sh```. Before this step, you should make sure your OpenAI API key has been set in your environment using ```export OPENAI_API_KEY=<your api key>```.
 3. **Construct the oracle responses by giving GPT-4 access to both personas and tasks for each split.** Run the shell scripts ```build-gold-responses/scripts/generate-all-gold-responses.sh``` and ```build-gold-responses/scripts/generate-all-gold-responses-test.sh```. You may have to run ```build-gold-responses/scripts/check-content-violations.sh``` beforehand; in some cases GPT-4 generates personas which another copy of itself might consider offensive, so flagging these can help you track down the offending persona.
 > [!IMPORTANT]
 > ***The above step is very expensive.*** We make one GPT-4 call for each item in (A) training split ```A``` with 250 tasks and 50 personas, (B) training split ```B``` with 250 tasks and 50 personas, and (C) the ```test``` split with 50 tasks and 10 personas. This step only happens once, so be careful and make sure your directories and output paths are configured correctly so the output oracle responses get saved the first time around.
 
-#### Expert Iteration
+### Expert Iteration
 At each iteration $t \in [0, 1, 2]$
 1. **Simulate conversations to generate training data.** Run the shell script ```simulate-conversations/scripts/m{t}-{split}.sh```, and pool the conversations by running ```simulate-conversations/scripts/m{t}-{split}-pool.sh```. The appropriate split is ```A``` for even $t$, and ```B``` for odd $t$; we alternate splits to ensure that $m_t$'s high-quality generated conversations are not memorized from the previous iteration.
 2. **Calculate log-probabilities of oracle responses to filter best questions.** Run the shell script ```log-probs/scripts/m{t}-{split}-log-probs.sh```, and filter the conversations by running ```log-probs/scripts/m{t}-{split}-filter.sh```. In the paper, we keep the top ```k = 1``` conversations out of 10 for each persona-task combination for the training set.
 3. **Generate regularizer responses.** Run the shell script ```sft/preprocess/scripts/m{t}-{split}-model-responses.sh```.
 4. **Preprocess the data for training.** Run the shell script ```sft/preprocess/scripts/m{t}-{split}-split.sh```.
 5. **Train the initial model $m_0$ to produce the weights $m_{t + 1}$.** Run the shell script ```sft/train/scripts/train-sft-m{t}-{split}.sh```.
-   
-#### Evaluation: Oracle Response Log Probabilities
+
+### Evaluation: Oracle Response Log Probabilities
 At each iteration $t \in [0, 1, 2, 3]$
 1. **Simulate conversations for the ```test``` split.** Run the shell script ```simulate-conversations/scripts/m{t}-test.sh```, and pool the conversations by running ```simulate-conversations/scripts/m{t}-test-pool.sh```.
 2. **Calculate log-probabilities of oracle responses for the ```test``` split.** Run the shell script ```log-probs/scripts/m{t}-test-log-probs.sh```.
 
-#### Evaluation: Win Rates
+### Evaluation: Win Rates
 1. **Generate responses from all $m_t$ for $t \in [0, 1, 2, 3]$, conditioned on a randomly sampled conversation for each persona-task combination.** Run the shell script ```response-win-rates-randomized-zero-shot/scripts/get-responses.sh```.
 2. **Generate win rates by prompting GPT-4 to select the more apt response between $m_t$ and $m_0$.** Run the shell script ```response-win-rates-randomized-zero-shot/scripts/get-ratings.sh```.
