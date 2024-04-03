@@ -46,7 +46,7 @@ At each iteration $t \in [0, 1, 2]$
 #### Evaluation: Oracle Response Log Probabilities
 At each iteration $t \in [0, 1, 2, 3]$
 1. **Simulate conversations for the ```test``` split.** Run the shell script ```simulate-conversations/scripts/m{t}-test.sh```, and pool the conversations by running ```simulate-conversations/scripts/m{t}-test-pool.sh```.
-2. **Calculate log-probabilities of oracle responses for the ```test``` split, and filter best questions.** Run the shell script ```log-probs/scripts/m{t}-test-log-probs.sh```, and filter the conversations by running ```log-probs/scripts/m{t}-test-filter.sh```. In the paper, we take the top ```k = 1``` conversations for each persona-task combination.
+2. **Calculate log-probabilities of oracle responses for the ```test``` split.** Run the shell script ```log-probs/scripts/m{t}-test-log-probs.sh```.
 
 #### Evaluation: Win Rates
 1. **Generate responses from all $m_t$ for $t \in [0, 1, 2, 3]$, conditioned on a randomly sampled conversation for each persona-task combination.** Run the shell script ```response-win-rates-randomized-zero-shot/scripts/get-responses.sh```.
