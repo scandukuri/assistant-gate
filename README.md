@@ -18,7 +18,7 @@ When creating your conda environment to set up the project, first navigate to th
 
 ### Setup local directories
 
-By default, all data and model checkpoints are saved in subdirectories under a directory called `/scr/andukuri/assistant-gate-hgx`. Make sure you adjust file paths as necessary.
+By default, all data and model checkpoints are saved in subdirectories under a directory called `/scr/andukuri/assistant-gate-hgx`. Make sure you adjust file paths as necessary. The final contents of the directory - corresponding to the paper's results - can be accessed [here](https://drive.google.com/file/d/1nt3J2LPANKvGmcKXhvoKgX7e4K_dJT2m/view?usp=sharing).
 
 ### Setup Weights & Biases (training only)
 
