@@ -10,6 +10,9 @@ When prompting language models to complete a task, users often leave important a
   <br><br>
 </p>
 
+The final model checkpoint for the main experiment is posted [here](https://huggingface.co/scandukuri/mistral-stargate) on the HuggingFace hub. Reach out over email or X (linked in my [GitHub profile](https://github.com/scandukuri)) if you have any questions.
+<br><br>
+
 ## Setup
 
 When creating your conda environment to set up the project, first navigate to the root directory and run the following commands:
