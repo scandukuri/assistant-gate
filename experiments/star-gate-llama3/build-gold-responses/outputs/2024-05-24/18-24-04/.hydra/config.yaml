@@ -1,0 +1,28 @@
+model:
+  hydra:
+    run:
+      dir: outputs
+  model_type: vllm
+  name: llama3-70b-instruct-vllm
+  model_config:
+    model: meta-llama/Meta-Llama-3-70B-Instruct
+    download_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    dtype: auto
+    tensor_parallel_size: 8
+    seed: 1
+  tokenizer_config:
+    pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+    cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    model_max_length: 1152
+  run:
+    batch_size: 2000
+    verbose: false
+    completion_config:
+      temperature: 0
+      top_p: 0.9
+      max_new_tokens: 700
+      num_return_sequences: 1
+split:
+  name: B
+GENERATION_PROMPT_IDX: 2
+SYS_PROMPT_IDX: 0

@@ -1,0 +1,63 @@
+hydra:
+  run:
+    dir: outputs
+
+name: mistral-7b-instruct-v02
+shortname: m0
+
+wandb:
+  project: assistant-gate
+  log_model: checkpoint
+  name: star-gate-llama3-train-m0
+
+model_config:
+  pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+
+tokenizer_config:
+  pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+  model_max_length: 1152
+
+
+
+# training_args:
+#   training:
+#     checkpoint_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-gate-llama3/m1/checkpoints/
+#     output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-gate-llama3/m1/
+#     per_device_train_batch_size: 2
+#     per_device_eval_batch_size: 2
+#     gradient_accumulation_steps: 16
+#     learning_rate: 2.0e-05
+#     num_train_epochs: 1
+#     save_total_limit: 4
+#     evaluation_strategy: epoch
+#     seed: 42
+#     save_strategy: epoch
+#     report_to: wandb
+#     bf16: true
+#     lr_scheduler_type: cosine
+#     warmup_ratio: 0.1
+#     do_eval: true
+#     logging_steps: 5  
+#     logging_strategy: steps
+
+training_args:
+  model_config:
+    pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+    cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+  training:
+    evaluate_before_training: false
+    evaluate: false
+    n_epochs: 1
+    lr: 2e-5
+    train_batch_size: 2
+    eval_batch_size: 2
+    train_split: 1.0
+    checkpoint_dir: /scr/andukuri/dpo-star-hgx/finetuned_models/v2/dpo-only-mistral-instruct-base
+    max_grad_norm: 1.0
+    num_warmup_steps: 1
+    gradient_accumulation_steps: 16
+    save_after_n_steps: 13000
+    seed: 42
+    model_archive: null

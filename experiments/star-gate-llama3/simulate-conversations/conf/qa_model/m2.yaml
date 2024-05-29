@@ -1,0 +1,31 @@
+hydra:
+  run:
+    dir: outputs
+
+model_type: vllm
+name: llama3-m2-vllm
+shortname: m2
+
+model_config:
+  model: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-gate-llama3/m2/final
+  download_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-gate-llama3/m2/final
+  dtype: auto
+  tensor_parallel_size: 8
+  seed: 1
+
+
+run:
+  batch_size: 750
+  verbose: false
+  initial_completion_config:
+    do_sample: true
+    temperature: 0.9
+    top_p: 0.9
+    max_new_tokens: 700
+    num_return_sequences: 10
+  completion_config:
+    do_sample: true
+    temperature: 0.9
+    top_p: 0.9
+    max_new_tokens: 700
+    num_return_sequences: 1

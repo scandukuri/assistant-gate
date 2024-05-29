@@ -1,0 +1,21 @@
+hydra:
+  run:
+    dir: outputs
+
+name: mistral-7b-instruct-v02
+shortname: m0
+
+wandb:
+  project: assistant-gate
+  log_model: checkpoint
+  name: star-gate-llama3-train-m0
+
+model_config:
+  pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+
+tokenizer_config:
+  pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+  cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+  model_max_length: 1152
+

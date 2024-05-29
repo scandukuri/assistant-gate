@@ -1,0 +1,4 @@
+- model=m0
+- qa_model=m3
+- condition=pos-control-2
+- split=test

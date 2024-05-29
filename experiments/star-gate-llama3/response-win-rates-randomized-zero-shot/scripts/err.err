@@ -1,0 +1,29 @@
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/bitsandbytes/cextension.py:34: UserWarning: The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+  warn("The installed version of bitsandbytes was compiled without GPU support. "
+/scr/andukuri/miniconda3/envs/assistant-gate/lib/python3.10/site-packages/hydra/_internal/defaults_list.py:251: UserWarning: In 'config': Defaults list is missing `_self_`. See https://hydra.cc/docs/1.2/upgrades/1.0_to_1.1/default_composition_order for more information
+  warnings.warn(msg, UserWarning)
+ERROR: Cannot find key: qa_model=baseline
+Usage: get-ratings.py <group|command|value>
+  available groups:      hydra | argparse | fire | pd | np | json | logging |
+                         torch | random | re | time | os | gc | signal | List |
+                         Tuple | RATER_SYS_PROMPTS | RATER_MAIN_PROMPTS
+  available commands:    DictConfig | OmegaConf | open_dict | tqdm |
+                         defaultdict | load_dataset | Dataset |
+                         destroy_model_parallel | AutoTokenizer |
+                         extract_history | create_turns |
+                         strip_whitespace_around_substring |
+                         generate_coin_flips | HFInferenceModel |
+                         AsyncAzureChatLLM | GPT4Agent | VLLMInferenceModel |
+                         main
+  available values:      SIMULATION_PATH | LOGPROBS_PATH | PERSONAS_PATH |
+                         GOLD_PATH | PROMPT_PATH | SFT_DATA_PATH |
+                         CONTENT_VIOLATIONS_PATH | FIGURES_PATH |
+                         WINRATE_PATH | MODELRESPONSE_PATH | SPECIFICITY_PATH |
+                         VERSION | VERSION_2 | VERSION_AG | LLAMA_VERSION |
+                         VERSION_2_MISTRAL_ABLATION | VERSION_1_ESFT |
+                         VERSION_3_QSFT | VERSION_3_MISTRAL_ABLATION |
+                         VERSION_1_MISTRAL_ABLATION | B_INST | E_INST |
+                         BOS_TOKEN | EOS_TOKEN | RATER_SYS_PROMPT_IDX
+
+For detailed information on this command, run:
+  get-ratings.py --help

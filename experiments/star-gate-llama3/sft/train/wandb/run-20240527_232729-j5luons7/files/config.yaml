@@ -1,0 +1,106 @@
+wandb_version: 1
+
+model:
+  desc: null
+  value:
+    hydra:
+      run:
+        dir: outputs
+    name: mistral-7b-instruct-v02
+    shortname: m0
+    wandb:
+      project: assistant-gate
+      log_model: checkpoint
+      name: star-gate-llama3-train-m0
+    model_config:
+      pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+      cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    tokenizer_config:
+      pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+      cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+      model_max_length: 1152
+qa_model:
+  desc: null
+  value:
+    hydra:
+      run:
+        dir: outputs
+    name: mistral-7b-instruct-v02
+    shortname: m0
+    wandb:
+      project: assistant-gate
+      log_model: checkpoint
+      name: star-gate-llama3-train-m0
+    model_config:
+      pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+      cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+    tokenizer_config:
+      pretrained_model_name_or_path: meta-llama/Meta-Llama-3-70B-Instruct
+      cache_dir: /scr/andukuri/assistant-gate-hgx/pretrained_models
+      model_max_length: 1152
+    training_args:
+      output_dir: /scr/andukuri/assistant-gate-hgx/finetuned_models/star-gate-llama3/m1/
+      per_device_train_batch_size: 2
+      per_device_eval_batch_size: 2
+      gradient_accumulation_steps: 16
+      learning_rate: 2.0e-05
+      num_train_epochs: 1
+      save_total_limit: 4
+      evaluation_strategy: epoch
+      seed: 42
+      save_strategy: epoch
+      report_to: wandb
+      bf16: true
+      lr_scheduler_type: cosine
+      warmup_ratio: 0.1
+      do_eval: true
+      logging_steps: 5
+      logging_strategy: steps
+split:
+  desc: null
+  value:
+    name: A
+validation_split_size:
+  desc: null
+  value: 0.05
+_wandb:
+  desc: null
+  value:
+    python_version: 3.10.13
+    cli_version: 0.16.2
+    framework: huggingface
+    huggingface_version: 4.39.1
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1716877649.926507
+    t:
+      1:
+      - 1
+      - 11
+      - 49
+      - 50
+      - 51
+      - 55
+      - 71
+      - 98
+      - 105
+      2:
+      - 1
+      - 11
+      - 49
+      - 50
+      - 51
+      - 55
+      - 71
+      - 98
+      - 105
+      3:
+      - 13
+      - 16
+      - 23
+      4: 3.10.13
+      5: 0.16.2
+      6: 4.39.1
+      8:
+      - 5
+      13: linux-x86_64
