@@ -10,6 +10,9 @@ When prompting language models to complete a task, users often leave important a
   <br><br>
 </p>
 
+The final model checkpoint for the main experiment is posted [here](https://huggingface.co/scandukuri/mistral-stargate) on the HuggingFace hub. Reach out over email or X (linked in my [GitHub profile](https://github.com/scandukuri)) if you have any questions.
+<br><br>
+
 ## Setup
 
 When creating your conda environment to set up the project, first navigate to the root directory and run the following commands:
@@ -18,7 +21,7 @@ When creating your conda environment to set up the project, first navigate to th
 
 ### Setup local directories
 
-By default, all data and model checkpoints are saved in subdirectories under a directory called `/scr/andukuri/assistant-gate-hgx`. Make sure you adjust file paths as necessary.
+By default, all data and model checkpoints are saved in subdirectories under a directory called `/scr/andukuri/assistant-gate-hgx`. Make sure you adjust file paths as necessary. The final contents of the directory - corresponding to the paper's results - can be accessed [here](https://drive.google.com/file/d/1nt3J2LPANKvGmcKXhvoKgX7e4K_dJT2m/view?usp=sharing).
 
 ### Setup Weights & Biases (training only)
 
